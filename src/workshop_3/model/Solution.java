@@ -2,8 +2,6 @@ package workshop_3.model;
 
 import java.sql.Timestamp;
 
-import org.apache.tomcat.jni.User;
-
 public class Solution {
 	
 	private int id;
