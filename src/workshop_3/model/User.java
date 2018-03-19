@@ -15,7 +15,7 @@ public class User {
 	public User(String name, String email, String password, int group_id) {
 		this.name = name;
 		this.email = email;
-		this.password = password;
+		this.setPassword(password);
 		this.group_id = group_id;
 	}
 

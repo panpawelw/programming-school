@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Solution {
 	
-	private int id;
+	private long id;
 	private Timestamp created;
 	private Timestamp updated;
 	private String description;
@@ -67,7 +67,17 @@ public class Solution {
 		this.user_id = user_id;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	@Override
+	public String toString() {
+		String solutionToString = this.id + ": " + this.description + " created: " + this.created + " updated: " + this.updated + " exercise: " + this.exercise_id + " user: " + this.user_id;
+		return solutionToString;
 	}
 }
