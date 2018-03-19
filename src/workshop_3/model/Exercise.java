@@ -32,4 +32,14 @@ public class Exercise {
 	public int getId() {
 		return id;
 	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	@Override
+	public String toString() {
+		String exerciseToString = "id: " + this.id + " title: " + this.title + " description: " + this.description;
+		return exerciseToString;
+	}
 }

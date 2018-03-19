@@ -1,7 +1,6 @@
 package workshop_3.DAO;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,7 +40,7 @@ public class UserGroupDAO {
 		}
 	}
 	
-	static public UserGroup loadGroupById(int id) {
+	static public UserGroup loadUserGroupById(int id) {
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM usergroup WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -59,11 +58,11 @@ public class UserGroupDAO {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		System.out.println("No such group!");
+		System.out.println("No such user group!");
 		return null;
 	}
 	
-	static public UserGroup[] loadAllGroups() {
+	static public UserGroup[] loadAllUserGroups() {
 		List<UserGroup> userGroups = new ArrayList<UserGroup>();
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM usergroup;";
@@ -86,7 +85,7 @@ public class UserGroupDAO {
 		return gArray;
 	}
 	
-	public void deleteGroup(UserGroup userGroup) {
+	public void deleteUserGroup(UserGroup userGroup) {
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "DELETE FROM usergroup WHERE id=?";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -99,5 +98,4 @@ public class UserGroupDAO {
 			e.printStackTrace();
 		}
 	}
-	
 }

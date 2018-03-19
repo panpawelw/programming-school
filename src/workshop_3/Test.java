@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import workshop_3.DAO.UserGroupDAO;
 import workshop_3.model.UserGroup;
+import workshop_3.DAO.ExerciseDAO;
+import workshop_3.model.Exercise;
 
 /**
  * Servlet implementation class Test
@@ -35,17 +37,29 @@ public class Test extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("<h1>Hello World!</h1>").append(request.getContextPath()+ "<br>");
-		UserGroup userGroup = new UserGroup("usergroup9");
-		UserGroupDAO userGroupDAO = new UserGroupDAO();
-		userGroupDAO.saveUserGroupToDB(userGroup);
-		UserGroupDAO.loadGroupById(userGroup.getId());
-		userGroup.setName("usergroup9modded");
-		userGroupDAO.saveUserGroupToDB(userGroup);
-		userGroupDAO.deleteGroup(userGroup);
-		UserGroup[] allUserGroups = UserGroupDAO.loadAllGroups();
-		for(UserGroup uG : allUserGroups) {
+		Exercise exercise = new Exercise("exercise8", "description8");
+		ExerciseDAO exerciseDAO = new ExerciseDAO();
+		exerciseDAO.saveExerciseToDB(exercise);
+		ExerciseDAO.loadExerciseById(exercise.getId());
+		exercise.setTitle("exercise8modded");
+		exercise.setDescription("description8modded");
+		exerciseDAO.saveExerciseToDB(exercise);
+		exerciseDAO.deleteExercise(exercise);
+		Exercise[] allExercises = ExerciseDAO.loadAllExercises();
+		for(Exercise uG : allExercises) {
 			response.getWriter().append("<br>" + uG.toString());
 		}
+//		UserGroup userGroup = new UserGroup("usergroup9");
+//		UserGroupDAO userGroupDAO = new UserGroupDAO();
+//		userGroupDAO.saveUserGroupToDB(userGroup);
+//		UserGroupDAO.loadUserGroupById(userGroup.getId());
+//		userGroup.setName("usergroup9modded");
+//		userGroupDAO.saveUserGroupToDB(userGroup);
+//		userGroupDAO.deleteUserGroup(userGroup);
+//		UserGroup[] allUserGroups = UserGroupDAO.loadAllUserGroups();
+//		for(UserGroup uG : allUserGroups) {
+//			response.getWriter().append("<br>" + uG.toString());
+//		}
 	}
 
 	/**
