@@ -1,16 +1,18 @@
 package workshop_3.model;
 
+import mindrot.jbcrypt.BCrypt;
+
 public class User {
 
 	private long id;
 	private String name;
 	private String email;
 	private String password;
-	private String group_id;
+	private int group_id;
 	
 	public User() {}
 
-	public User(String name, String email, String password, String group_id) {
+	public User(String name, String email, String password, int group_id) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
@@ -38,18 +40,28 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = BCrypt.hashpw(password, BCrypt.gensalt());
 	}
 
-	public String getGroup_id() {
+	public int getGroup_id() {
 		return group_id;
 	}
 
-	public void setGroup_id(String group_id) {
+	public void setGroup_id(int group_id) {
 		this.group_id = group_id;
 	}
 
 	public long getId() {
 		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	@Override
+	public String toString() {
+		String userToString = this.id + ": " + this.name + " email: " + this.email + " group: " + this.group_id;
+		return userToString;
 	}
 }
