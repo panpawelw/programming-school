@@ -39,21 +39,20 @@ public class Test extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("<h1>Hello World!</h1>").append(request.getContextPath()+ "<br>");
-		Solution solution = new Solution("description6", 6, 6);
+		Solution solution = new Solution("description7", 6, 6);
 		SolutionDAO solutionDAO = new SolutionDAO();
 		solutionDAO.saveSolutionToDB(solution);
-		solution = SolutionDAO.loadSolutionById(solution.getId());
-		solution.setDescription("description6modded");
-		solution.setExercise_id(6);
-		solution.setUser_id(6);
-		solutionDAO.saveSolutionToDB(solution);
-		solutionDAO.deleteSolution(solution);
-		Solution[] allSolutions = SolutionDAO.loadAllSolutions();
-		for(Solution s : allSolutions) {
-			response.getWriter().append("<br>" + s.toString());
-		}
+//		solution = SolutionDAO.loadSolutionById(solution.getId());
+//		solution.setDescription("description6modded");
+//		solution.setExercise_id(6);
+//		solution.setUser_id(6);
+//		solutionDAO.saveSolutionToDB(solution);
+//		solutionDAO.deleteSolution(solution);
+//		Solution[] allSolutions = SolutionDAO.loadAllSolutions();
+//		for(Solution s : allSolutions) {
+//			response.getWriter().append("<br>" + s.toString());
+//		}
 //		User user = new User("user10", "email10", "password10", 8);
 //		UserDAO userDAO = new UserDAO();
 //		userDAO.saveUserToDB(user);

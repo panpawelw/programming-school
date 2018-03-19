@@ -102,6 +102,34 @@ public class SolutionDAO {
 		return sArray;
 	}
 	
+	static public Solution[] loadAllSolutions(int number) {
+		List<Solution> solutions = new ArrayList<Solution>();
+		try (Connection con = DbUtil.getConn()) {
+			String sql = "SELECT * FROM solution ORDER BY GREATEST (updated IS NULL, created) LIMIT ?;";
+			try (PreparedStatement ps = con.prepareStatement(sql)) {
+				ps.setInt(1, number);
+				try (ResultSet rs = ps.executeQuery()) {
+					while(rs.next()) {
+						Solution loadedSolution = new Solution();
+						loadedSolution.setId(rs.getLong("id"));
+						loadedSolution.setDescription(rs.getString("description"));
+						loadedSolution.setCreated(rs.getTimestamp("created"));
+						loadedSolution.setUpdated(rs.getTimestamp("updated"));
+						loadedSolution.setExercise_id(rs.getInt("exercise_id"));
+						loadedSolution.setUser_id(rs.getLong("user_id"));
+						solutions.add(loadedSolution);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Database error!");
+			e.printStackTrace();
+		}
+		Solution sArray[] = new Solution[solutions.size()];
+		sArray = solutions.toArray(sArray);
+		return sArray;
+	}
+	
 	public void deleteSolution(Solution solution) {
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "DELETE FROM solution WHERE id=?";
