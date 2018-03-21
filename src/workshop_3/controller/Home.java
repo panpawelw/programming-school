@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import workshop_3.DAO.SolutionDAO;
-import workshop_3.model.Solution;
+import workshop_3.model.LastSolution;
 
 /**
  * Servlet implementation class Home
@@ -30,22 +30,18 @@ public class Home extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-//		String contextParam = getServletContext().getInitParameter("number-solutions");
-//		int recentSolutions;
-//		if(contextParam!=null & contextParam!="") {
-//			try {
-//				recentSolutions = Integer.parseInt(contextParam);
-//			}catch (NumberFormatException n) {
-//				System.out.println("Parameter must be an integer value, using default value of 5 instead!");
-//			}
-//		}
-//		Solution[] lastSolutions = SolutionDAO.loadAllSolutions(5);
-//		for(Solution s : lastSolutions) {
-//			response.getWriter().append("<p align='center'>" + s.toString() + "</p>");
-//		}
-		request.setAttribute("myAttribute", "myValue");
-		getServletContext().getRequestDispatcher("/WEB-INF/jsp/index.jsp").forward(request, response);
-//		getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+		String contextParam = getServletContext().getInitParameter("number-solutions");
+		int recentSolutions=5;
+		if(contextParam!=null & contextParam!="") {
+			try {
+				recentSolutions = Integer.parseInt(contextParam);
+			}catch (NumberFormatException n) {
+				System.out.println("Parameter must be an integer value, using default value of 5 instead!");
+			}
+		}
+		LastSolution[] lastSolutions = SolutionDAO.loadAllSolutions(recentSolutions);
+		request.setAttribute("lastSolutions", lastSolutions);
+		getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 	}
 
 	/**

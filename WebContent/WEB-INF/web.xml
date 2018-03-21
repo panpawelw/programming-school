@@ -11,6 +11,6 @@
   </welcome-file-list>
   <context-param>
   	<param-name>number-solutions</param-name>
-  	<param-value>5</param-value>
+  	<param-value>7</param-value>
   </context-param>
 </web-app>

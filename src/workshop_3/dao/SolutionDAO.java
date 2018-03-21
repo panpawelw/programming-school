@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import workshop_3.DbUtil;
+import workshop_3.model.LastSolution;
 import workshop_3.model.Solution;
 
 public class SolutionDAO {
@@ -102,21 +103,21 @@ public class SolutionDAO {
 		return sArray;
 	}
 	
-	static public Solution[] loadAllSolutions(int number) {
-		List<Solution> solutions = new ArrayList<Solution>();
+	static public LastSolution[] loadAllSolutions(int number) {
+		List<LastSolution> solutions = new ArrayList<LastSolution>();
 		try (Connection con = DbUtil.getConn()) {
-			String sql = "SELECT * FROM solution ORDER BY GREATEST (updated IS NULL, created) LIMIT ?;";
+			String sql = "SELECT exercise.title, user.name, IF(solution.updated > solution.created, solution.updated, solution.created),"
+					+ " solution.id FROM solution LEFT JOIN exercise ON solution.exercise_id=exercise.id"
+					+ " LEFT JOIN user ON solution.user_id=user.id ORDER BY IF(updated > created, updated, created) DESC LIMIT ?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, number);
 				try (ResultSet rs = ps.executeQuery()) {
 					while(rs.next()) {
-						Solution loadedSolution = new Solution();
-						loadedSolution.setId(rs.getLong("id"));
-						loadedSolution.setDescription(rs.getString("description"));
-						loadedSolution.setCreated(rs.getTimestamp("created"));
-						loadedSolution.setUpdated(rs.getTimestamp("updated"));
-						loadedSolution.setExercise_id(rs.getInt("exercise_id"));
-						loadedSolution.setUser_id(rs.getLong("user_id"));
+						LastSolution loadedSolution = new LastSolution();
+						loadedSolution.title = rs.getString(1);
+						loadedSolution.name = rs.getString(2);
+						loadedSolution.modified = rs.getTimestamp(3);
+						loadedSolution.id = rs.getInt(4);
 						solutions.add(loadedSolution);
 					}
 				}
@@ -125,7 +126,7 @@ public class SolutionDAO {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		Solution sArray[] = new Solution[solutions.size()];
+		LastSolution[] sArray = new LastSolution[solutions.size()];
 		sArray = solutions.toArray(sArray);
 		return sArray;
 	}
