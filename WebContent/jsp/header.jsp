@@ -8,9 +8,9 @@
 </head>
 <body>
 	<div align="center">
-		<a href="/Workshop_3/index.html">Home page</a>
-		<a href="/Workshop_3/test">Test1</a>
-		<a href="/Workshop_3/test">Test2</a>
+		<a href="/Workshop_3/test">| Home page |</a>
+		<a href="/Workshop_3/test">| User groups |</a>
+		<a href="/Workshop_3/test">| Admin panel |</a>
 	</div>
 </body>
 </html>

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import workshop_3.DbUtil;
+import workshop_3.misc.DbUtil;
 import workshop_3.model.User;
 
 public class UserDAO {

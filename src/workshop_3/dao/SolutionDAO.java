@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import workshop_3.DbUtil;
+import workshop_3.misc.DbUtil;
 import workshop_3.model.LastSolution;
 import workshop_3.model.Solution;
 

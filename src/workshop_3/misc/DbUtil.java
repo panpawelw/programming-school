@@ -1,4 +1,4 @@
-package workshop_3;
+package workshop_3.misc;
 
 import java.sql.Connection;
 import java.sql.SQLException;

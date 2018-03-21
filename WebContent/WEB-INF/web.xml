@@ -10,7 +10,7 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <context-param>
-  	<param-name>number-solutions</param-name>
-  	<param-value>7</param-value>
+    <param-name>number-solutions</param-name>
+    <param-value>7</param-value>
   </context-param>
 </web-app>

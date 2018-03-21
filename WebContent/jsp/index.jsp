@@ -61,7 +61,7 @@ table.cinereousTable tfoot td {
 				<td>${lastSolution.title}</td>
 				<td>${lastSolution.name}</td>
 				<td>${lastSolution.modified}</td>
-				<td>${lastSolution.id}</td>
+				<td><a href="/Workshop_3/solutiondetails?id=${lastSolution.id}">Details</a></td>
 			</tr>
 		</c:forEach>
 	</table>
