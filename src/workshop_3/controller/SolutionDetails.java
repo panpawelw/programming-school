@@ -27,7 +27,20 @@ public class SolutionDetails extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String idParam = request.getParameter("id").toString();
+		System.out.println(idParam);
+		int solutionId = 0;
+		solutionId = Integer.parseInt(idParam);
+//		if(idParam!=null & idParam!="") {
+//			try {
+//				solutionId = Integer.parseInt("idParam");
+//			}catch(NumberFormatException e) {
+//				System.out.println("Incorrect solution Id!");
+//				e.printStackTrace();
+//			}
+//		}
+		response.getWriter().append("Solution Id : " + solutionId);
 	}
 
 	/**
@@ -37,5 +50,4 @@ public class SolutionDetails extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }
