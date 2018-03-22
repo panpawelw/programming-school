@@ -8,39 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Programming school home page</title>
 <style type="text/css">
-table.cinereousTable {
-  border: 6px solid #948473;
-  background-color: #FFE3C6;
-  width: 50%;
-  text-align: center;
-}
-table.cinereousTable td, table.cinereousTable th {
-  border: 1px solid #948473;
-  padding: 4px 4px;
-}
-table.cinereousTable tbody td {
-  font-size: 13px;
-}
-table.cinereousTable thead {
-  background: #948473;
-  background: -moz-linear-gradient(top, #afa396 0%, #9e9081 66%, #948473 100%);
-  background: -webkit-linear-gradient(top, #afa396 0%, #9e9081 66%, #948473 100%);
-  background: linear-gradient(to bottom, #afa396 0%, #9e9081 66%, #948473 100%);
-}
-table.cinereousTable thead th {
-  font-size: 17px;
-  font-weight: bold;
-  color: #F0F0F0;
-  text-align: center;
-  border-left: 2px solid #948473;
-}
-table.cinereousTable thead th:first-child {
-  border-left: none;
-}
-
-table.cinereousTable tfoot td {
-  font-size: 16px;
-}
+    <%@include file="/jsp/style.css" %>
 </style>
 </head>
 <body>
@@ -49,7 +17,7 @@ table.cinereousTable tfoot td {
 	<h1 align="center">Programming school home page</h1>
 	<br>
 	<h3 align="center">Most recent solutions</h3>
-	<table align='center' class='cinereousTable'>
+	<table align='center' class='myTable'>
 		<tr>
 			<th>Exercise title</th>
 			<th>Author</th>

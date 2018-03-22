@@ -4,13 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Header</title>
+<title>Insert title here</title>
 </head>
 <body>
-	<div align="center">
-		<a href="/Workshop_3/">| Home page |</a>
-		<a href="/Workshop_3/usergroups">| User groups |</a>
-		<a href="/Workshop_3/test">| Admin panel |</a>
-	</div>
+
 </body>
 </html>

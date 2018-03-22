@@ -110,4 +110,31 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public static User[] loadAllbyGroupId(int group_id) {
+		ArrayList<User> groupUsers = new ArrayList<User>();
+		try (Connection con = DbUtil.getConn()) {
+			String sql = "SELECT * FROM user WHERE group_id=?;";
+			try (PreparedStatement ps = con.prepareStatement(sql)) {
+				ps.setInt(1, group_id);
+				try (ResultSet rs = ps.executeQuery()) {
+					while(rs.next()) {
+						User loadedUser = new User();
+						loadedUser.setId(rs.getLong("id"));
+						loadedUser.setName(rs.getString("name"));
+						loadedUser.setEmail(rs.getString("email"));
+						loadedUser.setPassword(rs.getString("password"));
+						loadedUser.setGroup_id(rs.getInt("group_id"));
+						groupUsers.add(loadedUser);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Database error!");
+			e.printStackTrace();
+		}
+		User[] guArray = new User[groupUsers.size()];
+		guArray = groupUsers.toArray(guArray);
+		return guArray;
+	} 
 }

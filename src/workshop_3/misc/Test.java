@@ -40,9 +40,9 @@ public class Test extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("<h1>Hello World!</h1>").append(request.getContextPath()+ "<br>");
-		Solution solution = new Solution("description7", 6, 6);
-		SolutionDAO solutionDAO = new SolutionDAO();
-		solutionDAO.saveSolutionToDB(solution);
+//		Solution solution = new Solution("description7", 6, 6);
+//		SolutionDAO solutionDAO = new SolutionDAO();
+//		solutionDAO.saveSolutionToDB(solution);
 //		solution = SolutionDAO.loadSolutionById(solution.getId());
 //		solution.setDescription("description6modded");
 //		solution.setExercise_id(6);

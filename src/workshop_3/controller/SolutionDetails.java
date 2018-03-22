@@ -14,26 +14,15 @@ import workshop_3.model.Exercise;
 import workshop_3.model.Solution;
 import workshop_3.model.User;
 
-/**
- * Servlet implementation class SolutionDetails
- */
 @WebServlet("/solutiondetails")
 public class SolutionDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public SolutionDetails() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		response.getWriter().append("Served at: ").append(request.getContextPath());
 		String idParam = request.getParameter("id").toString();
 		int solutionId = 0;
 		if(idParam!=null & idParam!="") {
@@ -57,9 +46,6 @@ public class SolutionDetails extends HttpServlet {
 		getServletContext().getRequestDispatcher("/jsp/solutiondetailsview.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
