@@ -7,6 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import workshop_3.DAO.ExerciseDAO;
+import workshop_3.DAO.SolutionDAO;
+import workshop_3.DAO.UserDAO;
+import workshop_3.model.Exercise;
+import workshop_3.model.Solution;
+import workshop_3.model.User;
+
 /**
  * Servlet implementation class SolutionDetails
  */
@@ -26,28 +33,34 @@ public class SolutionDetails extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
 		String idParam = request.getParameter("id").toString();
-		System.out.println(idParam);
 		int solutionId = 0;
-		solutionId = Integer.parseInt(idParam);
-//		if(idParam!=null & idParam!="") {
-//			try {
-//				solutionId = Integer.parseInt("idParam");
-//			}catch(NumberFormatException e) {
-//				System.out.println("Incorrect solution Id!");
-//				e.printStackTrace();
-//			}
-//		}
+		if(idParam!=null & idParam!="") {
+			try {
+				solutionId = Integer.parseInt(idParam);
+			}catch(NumberFormatException e) {
+				System.out.println("Incorrect solution Id!");
+				e.printStackTrace();
+			}
+		}
 		response.getWriter().append("Solution Id : " + solutionId);
+		Solution solution = new Solution();
+		solution = SolutionDAO.loadSolutionById(solutionId);
+		request.setAttribute("solution", solution);
+		User user = new User();
+		user = UserDAO.loadUserById(solution.getUser_id());
+		request.setAttribute("user", user);
+		Exercise exercise = new Exercise();
+		exercise = ExerciseDAO.loadExerciseById(solution.getExercise_id());
+		request.setAttribute("exercise", exercise);
+		getServletContext().getRequestDispatcher("/jsp/solutiondetailsview.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 }

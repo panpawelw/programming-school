@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import workshop_3.DAO.SolutionDAO;
+import workshop_3.DAO.LastSolutionDAO;
 import workshop_3.model.LastSolution;
 
 /**
@@ -39,7 +39,7 @@ public class Home extends HttpServlet {
 				System.out.println("Parameter must be an integer value, using default value of 5 instead!");
 			}
 		}
-		LastSolution[] lastSolutions = SolutionDAO.loadAllSolutions(recentSolutions);
+		LastSolution[] lastSolutions = LastSolutionDAO.loadAllSolutions(recentSolutions);
 		request.setAttribute("lastSolutions", lastSolutions);
 		getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 	}

@@ -7,6 +7,6 @@
 <title>Footer</title>
 </head>
 <body>
-	<h6 align="center">Programming School copyright 2018 pjm77</h6>
+	<h6 align="center">Programming School copyright © 2018 pjm77</h6>
 </body>
 </html>

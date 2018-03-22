@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div align="center">
-		<a href="/Workshop_3/test">| Home page |</a>
+		<a href="/Workshop_3/">| Home page |</a>
 		<a href="/Workshop_3/test">| User groups |</a>
 		<a href="/Workshop_3/test">| Admin panel |</a>
 	</div>
