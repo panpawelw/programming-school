@@ -7,16 +7,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/panel")
-public class AdminPanel extends HttpServlet {
+@WebServlet("/solutions")
+public class SolutionsAdminPanel extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public AdminPanel() {
+    public SolutionsAdminPanel() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		getServletContext().getRequestDispatcher("/jsp/panelview.jsp").forward(request, response);
+		response.getWriter().append("Manage solutions: ").append(request.getContextPath());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

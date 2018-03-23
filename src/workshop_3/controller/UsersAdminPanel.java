@@ -7,16 +7,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/panel")
-public class AdminPanel extends HttpServlet {
+@WebServlet("/users")
+public class UsersAdminPanel extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public AdminPanel() {
+    public UsersAdminPanel() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		getServletContext().getRequestDispatcher("/jsp/panelview.jsp").forward(request, response);
+		response.getWriter().append("Manage users: ").append(request.getContextPath());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -10,7 +10,7 @@
 	<div align="center">
 		<a href="/Workshop_3/">| Home page |</a>
 		<a href="/Workshop_3/usergroups">| User groups |</a>
-		<a href="/Workshop_3/test">| Admin panel |</a>
+		<a href="/Workshop_3/panel">| Admin panel |</a>
 	</div>
 </body>
 </html>
