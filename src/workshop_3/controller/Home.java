@@ -29,7 +29,7 @@ public class Home extends HttpServlet {
 			}
 		}
 		LastSolution[] lastSolutions = LastSolutionDAO.loadAllSolutions(recentSolutions);
-		request.setAttribute("lastSolutions", lastSolutions);
+		request.setAttribute("lastsolutions", lastSolutions);
 		getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request, response);
 	}
 

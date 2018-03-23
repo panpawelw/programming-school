@@ -115,4 +115,33 @@ public class SolutionDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public static Solution[] loadAllByUserId(int user_id) {
+		ArrayList<Solution> usersSolutions = new ArrayList<Solution>();
+		try (Connection con = DbUtil.getConn()) {
+			String sql = "SELECT * FROM solution WHERE user_id=?;";
+			try (PreparedStatement ps = con.prepareStatement(sql)) {
+				ps.setInt(1, user_id);
+				try (ResultSet rs = ps.executeQuery()) {
+					while(rs.next()) {
+						Solution loadedSolution = new Solution();
+						loadedSolution.setId(rs.getInt("id"));
+						loadedSolution.setCreated(rs.getTimestamp("created"));
+						loadedSolution.setUpdated(rs.getTimestamp("updated"));
+						loadedSolution.setDescription(rs.getString("description"));
+						loadedSolution.setExercise_id(rs.getInt("exercise_id"));
+						loadedSolution.setUser_id(rs.getInt("user_id"));
+						usersSolutions.add(loadedSolution);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Database error!");
+			e.printStackTrace();
+		}
+		Solution[] usersSolutionsArray = new Solution[usersSolutions.size()];
+		usersSolutionsArray = usersSolutions.toArray(usersSolutionsArray);
+		return usersSolutionsArray;
+	} 
+	
 }

@@ -4,10 +4,10 @@ import java.sql.Timestamp;
 
 public class LastSolution {
 
-	public String title;
-	public String name;
-	public Timestamp modified;
-	public long id;
+	private String title;
+	private String name;
+	private Timestamp modified;
+	private long id;
 	
 	public String getTitle() {
 		return title;

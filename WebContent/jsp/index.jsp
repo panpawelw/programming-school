@@ -24,7 +24,7 @@
 			<th>Last modified</th>
 			<th>Details</th>
 		</tr>
-		<c:forEach items="${lastSolutions}" var="lastSolution">
+		<c:forEach items="${lastsolutions}" var="lastSolution">
 			<tr>	
 				<td>${lastSolution.title}</td>
 				<td>${lastSolution.name}</td>
