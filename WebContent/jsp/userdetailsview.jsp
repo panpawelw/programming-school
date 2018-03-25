@@ -31,6 +31,7 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<br>
 	<div align='center'>
 		<button type="button" name="back" onclick="history.back()">back</button>
 	</div>

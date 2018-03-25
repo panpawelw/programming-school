@@ -24,10 +24,10 @@ public class SolutionDetails extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idParam = request.getParameter("id").toString();
-		int solutionId = 0;
+		long solutionId = 0;
 		if(idParam!=null & idParam!="") {
 			try {
-				solutionId = Integer.parseInt(idParam);
+				solutionId = Long.parseLong(idParam);
 			}catch(NumberFormatException e) {
 				System.out.println("Incorrect solution Id!");
 				e.printStackTrace();
