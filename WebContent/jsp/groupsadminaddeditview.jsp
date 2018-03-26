@@ -12,7 +12,6 @@
 </style>
 </head>
 <body>
-<p>${groupId}</p>
 	<form action='addeditgroup' method='post'>
 		<input type='hidden' name='id' value='${groupId}'/>
 		<input type='text' name='name' placeholder='${groupNamePH}'/>
