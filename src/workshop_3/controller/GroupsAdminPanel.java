@@ -19,7 +19,6 @@ public class GroupsAdminPanel extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Manage groups: ").append(request.getContextPath());
 		UserGroup[] groupsList = UserGroupDAO.loadAllUserGroups();
 		request.setAttribute("groupslist", groupsList);
 		getServletContext().getRequestDispatcher("/jsp/groupsadminview.jsp").forward(request,response);

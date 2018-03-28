@@ -7,7 +7,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/solutions")
+import workshop_3.DAO.SolutionDAO;
+import workshop_3.DAO.UserGroupDAO;
+import workshop_3.model.Solution;
+import workshop_3.model.UserGroup;
+
+@WebServlet("/solutionsadminpanel")
 public class SolutionsAdminPanel extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -16,7 +21,9 @@ public class SolutionsAdminPanel extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Manage solutions: ").append(request.getContextPath());
+		Solution[] solutionsList = SolutionDAO.loadAllSolutions();
+		request.setAttribute("solutionslist", solutionsList);
+		getServletContext().getRequestDispatcher("/jsp/solutionsadminview.jsp").forward(request,response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

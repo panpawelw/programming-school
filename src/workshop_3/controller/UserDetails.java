@@ -8,11 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import workshop_3.DAO.LastSolutionDAO;
-import workshop_3.DAO.SolutionDAO;
 import workshop_3.DAO.UserDAO;
 import workshop_3.DAO.UserGroupDAO;
 import workshop_3.model.LastSolution;
-import workshop_3.model.Solution;
 import workshop_3.model.User;
 import workshop_3.model.UserGroup;
 

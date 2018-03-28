@@ -6,15 +6,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>User group add or edit</title>
+<title>Solution add or edit</title>
 <style type="text/css">
     <%@include file="/jsp/style.css"%>
 </style>
 </head>
 <body>
-	<form action='addeditgroup' method='post'>
-		<input type='hidden' name='id' value='${groupId}'/>
-		Group name: <input type='text' name='name' placeholder='${groupNamePH}'/>
+	<form action='addeditsolution' method='post'>
+		<input type='hidden' name='id' value='${solutionId}'/>
+		Exercise Id: <input type='number' name='exercise_id' min='1' step='1' value='${solutionExercise_idPH}'/><br>
+		User Id: <input type='number' name='user_id' min='1' step='1' value='${solutionUser_idPH}'/><br>
+		Description: <br><textarea rows='30' cols='50' name='description'>${solutionDescriptionPH}</textarea><br>
 		<input type='submit' value='${buttonPH}'/>
 	</form>
 </body>
