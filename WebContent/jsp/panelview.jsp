@@ -12,7 +12,7 @@
 	<h1 align='center'>Admin panel</h1>
 	<br><br><br>
 	<h2 align='center'><a href="/Workshop_3/groupsadminpanel">Manage user groups</a></h2>
-	<h2 align='center'><a href="/Workshop_3/usersaminpanel">Manage users</a></h2>
+	<h2 align='center'><a href="/Workshop_3/usersadminpanel">Manage users</a></h2>
 	<h2 align='center'><a href="/Workshop_3/exercisesadminpanel">Manage exercises</a></h2>
 	<h2 align='center'><a href="/Workshop_3/solutionsadminpanel">Manage solutions</a></h2>
 	<br>
