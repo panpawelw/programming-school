@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style type="text/css">
-    <%@include file="/jsp/style.css" %>
+    <%@include file="/css/style.css" %>
 </style>
 <title>Group users list</title>
 </head>

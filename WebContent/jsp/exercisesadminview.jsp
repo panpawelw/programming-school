@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>User groups administration</title>
+<title>Exercises administration</title>
 <style type="text/css">
     <%@include file="/css/style.css"%>
 </style>
@@ -14,20 +14,22 @@
 <body>
 	<jsp:include page="/jsp/header.jsp"/>
 	<br>
-	<h1 align="center">User groups administration panel</h1>
-	<h3 align="center">User groups list</h3>
-	<p align='center'><a href='/Workshop_3/addeditgroup?id=0'>Add user group</a></p>
+	<h1 align="center">Exercises administration panel</h1>
+	<h3 align="center">Exercises list</h3>
+	<p align='center'><a href='/Workshop_3/addeditexercise?id=0'>Add exercise</a></p>
 	<br>
 	<table align='center' class='myTable'>
 		<tr>
-			<th>Group name</th>
+			<th>Exercise title</th>
+			<th>Exercise description</th>
 			<th colspan='2'>Actions</th>
 		</tr>
-		<c:forEach items="${groupslist}" var="group">
+		<c:forEach items="${exerciseslist}" var="exercise">
 			<tr>	
-				<td>${group.name}</td>
-				<td><a href="/Workshop_3/addeditgroup?id=${group.id}">Edit</a></td>
-				<td><a href="/Workshop_3/deletegroup?id=${group.id}">Delete</a></td>
+				<td>${exercise.title}</td>
+				<td>${exercise.description}</td>
+				<td><a href="/Workshop_3/addeditexercise?id=${exercise.id}">Edit</a></td>
+				<td><a href="/Workshop_3/deleteexercise?id=${exercise.id}">Delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>

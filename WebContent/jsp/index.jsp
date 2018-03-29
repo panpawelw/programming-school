@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Programming school home page</title>
 <style type="text/css">
-    <%@include file="/jsp/style.css" %>
+    <%@include file="/css/style.css" %>
 </style>
 </head>
 <body>

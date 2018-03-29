@@ -6,12 +6,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>User group add or edit</title>
+<title>Exercise add or edit</title>
 </head>
 <body>
-	<form action='addeditgroup' method='post'>
-		<input type='hidden' name='id' value='${groupId}'/>
-		Group name: <input type='text' name='name' placeholder='${groupNamePH}'/><br>
+	<form action='addeditexercise' method='post'>
+		<input type='hidden' name='id' value='${exerciseId}'/>
+		Exercise title: <input type='text' name='title' placeholder='${exerciseTitlePH}'/><br>
+		Exercise description: <input type='text' name='description' placeholder='${exerciseDescriptionPH}'/><br>
 		<input type='submit' value='${buttonPH}'/>
 	</form>
 </body>

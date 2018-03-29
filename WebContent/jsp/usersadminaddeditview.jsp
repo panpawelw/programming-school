@@ -7,9 +7,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>User add or edit</title>
-<style type="text/css">
-    <%@include file="/jsp/style.css"%>
-</style>
 </head>
 <body>
 	<form action='addedituser' method='post'>

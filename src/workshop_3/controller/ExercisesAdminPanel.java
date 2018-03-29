@@ -7,16 +7,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/exercises")
+import workshop_3.DAO.ExerciseDAO;
+import workshop_3.model.Exercise;
+
+@WebServlet("/exercisesadminpanel")
 public class ExercisesAdminPanel extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    
     public ExercisesAdminPanel() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Manage exercises: ").append(request.getContextPath());
+		Exercise[] exercisesList = ExerciseDAO.loadAllExercises();
+		request.setAttribute("exerciseslist", exercisesList);
+		getServletContext().getRequestDispatcher("/jsp/exercisesadminview.jsp").forward(request,response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
