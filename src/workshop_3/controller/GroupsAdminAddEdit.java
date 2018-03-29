@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import workshop_3.DAO.UserGroupDAO;
+import workshop_3.misc.ValPar;
 import workshop_3.model.UserGroup;
 
 @WebServlet("/addeditgroup")
@@ -21,26 +22,20 @@ public class GroupsAdminAddEdit extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String idParam = request.getParameter("id").toString();
-		int groupId = 0;
-		if (idParam != null & idParam != "") {
-			try {
-				groupId = Integer.parseInt(idParam);
-			} catch (NumberFormatException e) {
-				System.out.println("Incorrect group Id!");
-				e.printStackTrace();
-			}
-		}
-		if (groupId == 0) {
+		int groupId = ValPar.intVar(idParam, "Incorrect group Id!");
+		if(groupId == 0) {
 			request.setAttribute("groupId", groupId);
 			request.setAttribute("groupNamePH", "New group name");
 			request.setAttribute("buttonPH", "Add group");
 			getServletContext().getRequestDispatcher("/jsp/groupsadminaddeditview.jsp").forward(request, response);
-		} else {
+		}else if(groupId > 0){
 			UserGroup userGroup = UserGroupDAO.loadUserGroupById(groupId);
 			request.setAttribute("groupId", groupId);
 			request.setAttribute("groupNamePH", userGroup.getName());
 			request.setAttribute("buttonPH", "Edit group");
 			getServletContext().getRequestDispatcher("/jsp/groupsadminaddeditview.jsp").forward(request, response);
+		}else {
+			getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
 		}
 	}
 
@@ -48,18 +43,8 @@ public class GroupsAdminAddEdit extends HttpServlet {
 			throws ServletException, IOException {
 		String idParam = request.getParameter("id");
 		String groupName = request.getParameter("name");
-		int groupId = 0;
-		if (idParam != null & idParam != "") {
-			try {
-				groupId = Integer.parseInt(idParam);
-			} catch (NumberFormatException e) {
-				System.out.println("Incorrect group Id!");
-				e.printStackTrace();
-				return;
-			}
-		}
-		System.out.println(groupId + ", " + groupName);
-		if(groupName!=null & groupName!="") {
+		int groupId = ValPar.intVar(idParam, "Incorrect group Id!");
+		if(groupName!=null && groupName!="" && groupId >= 0) {
 			UserGroupDAO userGroupDAO = new UserGroupDAO();
 			UserGroup userGroup = new UserGroup();
 			if(groupId!=0) {

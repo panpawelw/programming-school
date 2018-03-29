@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import workshop_3.DAO.UserGroupDAO;
+import workshop_3.misc.ValPar;
 import workshop_3.model.UserGroup;
 
 @WebServlet("/deletegroup")
@@ -21,18 +22,12 @@ public class GroupsAdminDelete extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String idParam = request.getParameter("id").toString();
-		int groupId = 0;
-		if(idParam!=null & idParam!="") {
-			try {
-				groupId=Integer.parseInt(idParam);
-			}catch(NumberFormatException e) {
-				System.out.println("Incorrect group Id!");
-				e.printStackTrace();
-			}
+		int groupId = ValPar.intVar(idParam, "Incorrect group Id!");
+		if(groupId >= 0) {
+			UserGroupDAO userGroupDAO=new UserGroupDAO();
+			UserGroup userGroup=UserGroupDAO.loadUserGroupById(groupId);
+			userGroupDAO.deleteUserGroup(userGroup);
 		}
-		UserGroupDAO userGroupDAO=new UserGroupDAO();
-		UserGroup userGroup=UserGroupDAO.loadUserGroupById(groupId);
-		userGroupDAO.deleteUserGroup(userGroup);
 		getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
 	}
 
