@@ -15,7 +15,7 @@ public class UserDAO {
 	public void saveUserToDB(User user) {
 		try (Connection con = DbUtil.getConn()) {
 			if (user.getId() == 0) {
-				String sql = "INSERT INTO user(name, email, password, group_id) VALUES (?, ?, ?, ?);";
+				String sql = "INSERT INTO user(username, email, password, usergroup_id) VALUES (?, ?, ?, ?);";
 				String generatedColumns[] = { " ID " };
 				try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
 					ps.setString(1, user.getName());
@@ -30,7 +30,7 @@ public class UserDAO {
 					}
 				}
 			} else {
-				String sql = "UPDATE user SET name=?, email=?, password=?, group_id=? WHERE id = ?;";
+				String sql = "UPDATE user SET username=?, email=?, password=?, usergroup_id=? WHERE id = ?;";
 				try (PreparedStatement ps = con.prepareStatement(sql)) {
 					ps.setString(1, user.getName());
 					ps.setString(2, user.getEmail());
@@ -55,10 +55,10 @@ public class UserDAO {
 					if (rs.next()) {
 						User loadedUser = new User();
 						loadedUser.setId(rs.getLong("id"));
-						loadedUser.setName(rs.getString("name"));
+						loadedUser.setName(rs.getString("username"));
 						loadedUser.setEmail(rs.getString("email"));
 						loadedUser.setPassword(rs.getString("password"));
-						loadedUser.setGroup_id(rs.getInt("group_id"));
+						loadedUser.setGroup_id(rs.getInt("usergroup_id"));
 						return loadedUser;
 					}
 				}
@@ -80,10 +80,10 @@ public class UserDAO {
 					while(rs.next()) {
 						User loadedUser = new User();
 						loadedUser.setId(rs.getLong("id"));
-						loadedUser.setName(rs.getString("name"));
+						loadedUser.setName(rs.getString("username"));
 						loadedUser.setEmail(rs.getString("email"));
 						loadedUser.setPassword(rs.getString("password"));
-						loadedUser.setGroup_id(rs.getInt("group_id"));
+						loadedUser.setGroup_id(rs.getInt("usergroup_id"));
 						users.add(loadedUser);
 					}
 				}
@@ -114,17 +114,17 @@ public class UserDAO {
 	public static User[] loadAllbyGroupId(int group_id) {
 		ArrayList<User> groupUsers = new ArrayList<User>();
 		try (Connection con = DbUtil.getConn()) {
-			String sql = "SELECT * FROM user WHERE group_id=?;";
+			String sql = "SELECT * FROM user WHERE usergroup_id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, group_id);
 				try (ResultSet rs = ps.executeQuery()) {
 					while(rs.next()) {
 						User loadedUser = new User();
 						loadedUser.setId(rs.getLong("id"));
-						loadedUser.setName(rs.getString("name"));
+						loadedUser.setName(rs.getString("username"));
 						loadedUser.setEmail(rs.getString("email"));
 						loadedUser.setPassword(rs.getString("password"));
-						loadedUser.setGroup_id(rs.getInt("group_id"));
+						loadedUser.setGroup_id(rs.getInt("usergroup_id"));
 						groupUsers.add(loadedUser);
 					}
 				}

@@ -2,13 +2,13 @@
 <!DOCTYPE Context>
 <Context>
 	<Resource
-		name="jdbc/programmingschool"
+		name="jdbc/programming_school"
 		auth="Container"
 		type="javax.sql.DataSource"
 		username="root"
 		password="mojSQL"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://localhost:3306/programmingschool"
+		url="jdbc:mysql://localhost:3306/programming_school"
 		maxActive="100"
 		maxIdle="30"
 		maxWait="10000" />

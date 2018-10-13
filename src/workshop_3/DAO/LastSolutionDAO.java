@@ -15,7 +15,7 @@ public class LastSolutionDAO {
 	static public LastSolution[] loadAllSolutions(int number) {
 		List<LastSolution> solutions = new ArrayList<LastSolution>();
 		try (Connection con = DbUtil.getConn()) {
-			String sql = "SELECT exercise.title, user.name, IF(solution.updated > solution.created, solution.updated, solution.created),"
+			String sql = "SELECT exercise.title, user.username, IF(solution.updated > solution.created, solution.updated, solution.created),"
 					+ " solution.id FROM solution LEFT JOIN exercise ON solution.exercise_id=exercise.id"
 					+ " LEFT JOIN user ON solution.user_id=user.id ORDER BY IF(updated > created, updated, created) DESC LIMIT ?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -43,7 +43,7 @@ public class LastSolutionDAO {
 	static public LastSolution[] loadAllSolutionsByUserId(long user_id) {
 		List<LastSolution> solutions = new ArrayList<LastSolution>();
 		try (Connection con = DbUtil.getConn()) {
-			String sql = "SELECT exercise.title, user.name, IF(solution.updated > solution.created, solution.updated, solution.created),"
+			String sql = "SELECT exercise.title, user.username, IF(solution.updated > solution.created, solution.updated, solution.created),"
 					+ " solution.id FROM solution LEFT JOIN exercise ON solution.exercise_id=exercise.id"
 					+ " LEFT JOIN user ON solution.user_id=user.id  WHERE solution.user_id=? ORDER BY IF(updated > created, updated, created) DESC;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
