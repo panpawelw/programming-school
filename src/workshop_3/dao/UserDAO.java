@@ -53,13 +53,7 @@ public class UserDAO {
 				ps.setLong(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						User loadedUser = new User();
-						loadedUser.setId(rs.getLong("id"));
-						loadedUser.setName(rs.getString("username"));
-						loadedUser.setEmail(rs.getString("email"));
-						loadedUser.setPassword(rs.getString("password"));
-						loadedUser.setGroup_id(rs.getInt("usergroup_id"));
-						return loadedUser;
+						return loadUser(rs);
 					}
 				}
 			}
@@ -72,19 +66,13 @@ public class UserDAO {
 	}
 	
 	static public User[] loadAllUsers() {
-		List<User> users = new ArrayList<User>();
+		List<User> users = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM user;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				try (ResultSet rs = ps.executeQuery()) {
 					while(rs.next()) {
-						User loadedUser = new User();
-						loadedUser.setId(rs.getLong("id"));
-						loadedUser.setName(rs.getString("username"));
-						loadedUser.setEmail(rs.getString("email"));
-						loadedUser.setPassword(rs.getString("password"));
-						loadedUser.setGroup_id(rs.getInt("usergroup_id"));
-						users.add(loadedUser);
+						users.add(loadUser(rs));
 					}
 				}
 			}
@@ -112,20 +100,14 @@ public class UserDAO {
 	}
 	
 	public static User[] loadAllbyGroupId(int group_id) {
-		ArrayList<User> groupUsers = new ArrayList<User>();
+		ArrayList<User> groupUsers = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM user WHERE usergroup_id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, group_id);
 				try (ResultSet rs = ps.executeQuery()) {
 					while(rs.next()) {
-						User loadedUser = new User();
-						loadedUser.setId(rs.getLong("id"));
-						loadedUser.setName(rs.getString("username"));
-						loadedUser.setEmail(rs.getString("email"));
-						loadedUser.setPassword(rs.getString("password"));
-						loadedUser.setGroup_id(rs.getInt("usergroup_id"));
-						groupUsers.add(loadedUser);
+						groupUsers.add(loadUser(rs));
 					}
 				}
 			}
@@ -136,5 +118,15 @@ public class UserDAO {
 		User[] guArray = new User[groupUsers.size()];
 		guArray = groupUsers.toArray(guArray);
 		return guArray;
-	} 
+	}
+
+	private static User loadUser(ResultSet rs) throws SQLException{
+		User loadedUser = new User();
+		loadedUser.setId(rs.getLong("id"));
+		loadedUser.setName(rs.getString("username"));
+		loadedUser.setEmail(rs.getString("email"));
+		loadedUser.setPassword(rs.getString("password"));
+		loadedUser.setGroup_id(rs.getInt("usergroup_id"));
+		return loadedUser;
+	}
 }
