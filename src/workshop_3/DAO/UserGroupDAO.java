@@ -47,10 +47,7 @@ public class UserGroupDAO {
 				ps.setInt(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						UserGroup loadedGroup = new UserGroup();
-						loadedGroup.setId(rs.getInt("id"));
-						loadedGroup.setName(rs.getString("name"));
-						return loadedGroup;
+						return loadUserGroup(rs);
 					}
 				}
 			}
@@ -63,16 +60,13 @@ public class UserGroupDAO {
 	}
 	
 	static public UserGroup[] loadAllUserGroups() {
-		List<UserGroup> userGroups = new ArrayList<UserGroup>();
+		List<UserGroup> userGroups = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM usergroup;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				try (ResultSet rs = ps.executeQuery()) {
 					while(rs.next()) {
-						UserGroup loadedUserGroup = new UserGroup();
-						loadedUserGroup.setId(rs.getInt("id"));
-						loadedUserGroup.setName(rs.getString("name"));
-						userGroups.add(loadedUserGroup);
+						userGroups.add(loadUserGroup(rs));
 					}
 				}
 			}
@@ -97,5 +91,12 @@ public class UserGroupDAO {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
+	}
+
+	private static UserGroup loadUserGroup(ResultSet rs) throws SQLException{
+		UserGroup loadedUserGroup = new UserGroup();
+		loadedUserGroup.setId(rs.getInt("id"));
+		loadedUserGroup.setName(rs.getString("name"));
+		return loadedUserGroup;
 	}
 }

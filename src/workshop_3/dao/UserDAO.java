@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import workshop_3.misc.DbUtil;
 import workshop_3.model.User;
@@ -64,27 +63,6 @@ public class UserDAO {
 		System.out.println("No such user!");
 		return null;
 	}
-	
-	static public User[] loadAllUsers() {
-		List<User> users = new ArrayList<>();
-		try (Connection con = DbUtil.getConn()) {
-			String sql = "SELECT * FROM user;";
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						users.add(loadUser(rs));
-					}
-				}
-			}
-		} catch (SQLException e) {
-			System.out.println("Database error!");
-			e.printStackTrace();
-		}
-		User uArray[] = new User[users.size()];
-		uArray = users.toArray(uArray);
-		return uArray;
-	}
-	
 	public void deleteUser(User user) {
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "DELETE FROM user WHERE id=?";
@@ -98,16 +76,26 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 	}
-	
-	public static User[] loadAllbyGroupId(int group_id) {
-		ArrayList<User> groupUsers = new ArrayList<>();
+
+	static User[] loadAllUsers() {
+		return loadUsersBy(true, 0);
+	}
+
+	static User[] loadAllbyGroupId(int usergroup_id) {
+		return loadUsersBy(false, usergroup_id);
+	}
+
+	private static User[] loadUsersBy(boolean loadAll, int param){
+		String sql;
+		if(loadAll) sql = "SELECT * FROM user;";
+		else sql = "SELECT * FROM user WHERE usergroup_id=?;";
+		ArrayList<User> usersByParamArrayList = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
-			String sql = "SELECT * FROM user WHERE usergroup_id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				ps.setInt(1, group_id);
+				if(param!=0) ps.setInt(1, param);
 				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						groupUsers.add(loadUser(rs));
+					while (rs.next()) {
+						usersByParamArrayList.add(loadUser(rs));
 					}
 				}
 			}
@@ -115,9 +103,9 @@ public class UserDAO {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		User[] guArray = new User[groupUsers.size()];
-		guArray = groupUsers.toArray(guArray);
-		return guArray;
+		User[] usersByParamArray = new User[usersByParamArrayList.size()];
+		usersByParamArray = usersByParamArrayList.toArray(usersByParamArray);
+		return usersByParamArray;
 	}
 
 	private static User loadUser(ResultSet rs) throws SQLException{
