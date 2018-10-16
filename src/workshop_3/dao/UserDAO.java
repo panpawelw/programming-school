@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import workshop_3.misc.DbUtil;
 import workshop_3.model.User;
@@ -45,7 +46,7 @@ public class UserDAO {
 		}
 	}
 	
-	static public User loadUserById(long id) {
+	public static User loadUserById(long id) {
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM user WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -77,11 +78,11 @@ public class UserDAO {
 		}
 	}
 
-	static User[] loadAllUsers() {
+	public static User[] loadAllUsers() {
 		return loadUsersBy(true, 0);
 	}
 
-	static User[] loadAllbyGroupId(int usergroup_id) {
+	public static User[] loadAllbyGroupId(int usergroup_id) {
 		return loadUsersBy(false, usergroup_id);
 	}
 
@@ -89,7 +90,7 @@ public class UserDAO {
 		String sql;
 		if(loadAll) sql = "SELECT * FROM user;";
 		else sql = "SELECT * FROM user WHERE usergroup_id=?;";
-		ArrayList<User> usersByParamArrayList = new ArrayList<>();
+		List<User> usersByParamArrayList = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				if(param!=0) ps.setInt(1, param);
