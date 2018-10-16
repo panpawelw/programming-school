@@ -40,7 +40,7 @@ public class UserGroupDAO {
 		}
 	}
 	
-	static public UserGroup loadUserGroupById(int id) {
+	public static UserGroup loadUserGroupById(int id) {
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM usergroup WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -59,7 +59,7 @@ public class UserGroupDAO {
 		return null;
 	}
 	
-	static public UserGroup[] loadAllUserGroups() {
+	public static UserGroup[] loadAllUserGroups() {
 		List<UserGroup> userGroups = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM usergroup;";
