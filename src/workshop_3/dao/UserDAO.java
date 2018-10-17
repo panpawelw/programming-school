@@ -86,14 +86,14 @@ public class UserDAO {
 		return loadUsersBy(false, usergroup_id);
 	}
 
-	private static User[] loadUsersBy(boolean loadAll, int param){
+	private static User[] loadUsersBy(boolean loadAll, long param){
 		String sql;
 		if(loadAll) sql = "SELECT * FROM user;";
 		else sql = "SELECT * FROM user WHERE usergroup_id=?;";
 		List<User> usersByParamArrayList = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				if(param!=0) ps.setInt(1, param);
+				if(param!=0) ps.setLong(1, param);
 				try (ResultSet rs = ps.executeQuery()) {
 					while (rs.next()) {
 						usersByParamArrayList.add(loadUser(rs));

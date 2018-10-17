@@ -56,14 +56,7 @@ public class SolutionDAO {
 				ps.setLong(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						Solution loadedSolution = new Solution();
-						loadedSolution.setId(rs.getLong("id"));
-						loadedSolution.setDescription(rs.getString("description"));
-						loadedSolution.setCreated(rs.getTimestamp("created"));
-						loadedSolution.setUpdated(rs.getTimestamp("updated"));
-						loadedSolution.setExercise_id(rs.getInt("exercise_id"));
-						loadedSolution.setUser_id(rs.getLong("user_id"));
-						return loadedSolution;
+						return loadSolution(rs);
 					}
 				}
 			}
@@ -74,34 +67,7 @@ public class SolutionDAO {
 		System.out.println("No such solution!");
 		return null;
 	}
-	
-	static public Solution[] loadAllSolutions() {
-		List<Solution> solutions = new ArrayList<Solution>();
-		try (Connection con = DbUtil.getConn()) {
-			String sql = "SELECT * FROM solution;";
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						Solution loadedSolution = new Solution();
-						loadedSolution.setId(rs.getLong("id"));
-						loadedSolution.setDescription(rs.getString("description"));
-						loadedSolution.setCreated(rs.getTimestamp("created"));
-						loadedSolution.setUpdated(rs.getTimestamp("updated"));
-						loadedSolution.setExercise_id(rs.getInt("exercise_id"));
-						loadedSolution.setUser_id(rs.getLong("user_id"));
-						solutions.add(loadedSolution);
-					}
-				}
-			}
-		} catch (SQLException e) {
-			System.out.println("Database error!");
-			e.printStackTrace();
-		}
-		Solution sArray[] = new Solution[solutions.size()];
-		sArray = solutions.toArray(sArray);
-		return sArray;
-	}
-	
+
 	public void deleteSolution(Solution solution) {
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "DELETE FROM solution WHERE id=?";
@@ -116,22 +82,25 @@ public class SolutionDAO {
 		}
 	}
 	
+	static public Solution[] loadAllSolutions() {
+		return loadSolutionsBy(true, 0);
+	}
+
 	public static Solution[] loadAllByUserId(int user_id) {
-		ArrayList<Solution> usersSolutions = new ArrayList<Solution>();
+		return loadSolutionsBy(false, user_id);
+	} 
+
+	private static Solution[] loadSolutionsBy(boolean loadAll, long param){
+		String sql;
+		if(loadAll) sql = "SELECT * FROM solution;";
+			else sql = "SELECT * FROM solution WHERE user_id=?;";
+		List<Solution> solutions = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
-			String sql = "SELECT * FROM solution WHERE user_id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				ps.setInt(1, user_id);
+				if(param!=0) ps.setLong(1, param);
 				try (ResultSet rs = ps.executeQuery()) {
 					while(rs.next()) {
-						Solution loadedSolution = new Solution();
-						loadedSolution.setId(rs.getInt("id"));
-						loadedSolution.setCreated(rs.getTimestamp("created"));
-						loadedSolution.setUpdated(rs.getTimestamp("updated"));
-						loadedSolution.setDescription(rs.getString("description"));
-						loadedSolution.setExercise_id(rs.getInt("exercise_id"));
-						loadedSolution.setUser_id(rs.getInt("user_id"));
-						usersSolutions.add(loadedSolution);
+						solutions.add(loadSolution(rs));
 					}
 				}
 			}
@@ -139,9 +108,19 @@ public class SolutionDAO {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		Solution[] usersSolutionsArray = new Solution[usersSolutions.size()];
-		usersSolutionsArray = usersSolutions.toArray(usersSolutionsArray);
-		return usersSolutionsArray;
-	} 
-	
+		Solution sArray[] = new Solution[solutions.size()];
+		sArray = solutions.toArray(sArray);
+		return sArray;
+	}
+
+	private static Solution loadSolution(ResultSet rs) throws SQLException{
+		Solution loadedSolution = new Solution();
+		loadedSolution.setId(rs.getLong("id"));
+		loadedSolution.setDescription(rs.getString("description"));
+		loadedSolution.setCreated(rs.getTimestamp("created"));
+		loadedSolution.setUpdated(rs.getTimestamp("updated"));
+		loadedSolution.setExercise_id(rs.getInt("exercise_id"));
+		loadedSolution.setUser_id(rs.getLong("user_id"));
+		return loadedSolution;
+	}
 }

@@ -42,18 +42,14 @@ public class ExerciseDAO {
 		}
 	}
 	
-	static public Exercise loadExerciseById(int id) {
+	public static Exercise loadExerciseById(int id) {
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM exercise WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						Exercise loadedExercise = new Exercise();
-						loadedExercise.setId(rs.getInt("id"));
-						loadedExercise.setTitle(rs.getString("title"));
-						loadedExercise.setDescription(rs.getString("description"));
-						return loadedExercise;
+						return loadExercise(rs);
 					}
 				}
 			}
@@ -65,18 +61,14 @@ public class ExerciseDAO {
 		return null;
 	}
 	
-	static public Exercise[] loadAllExercises() {
-		List<Exercise> exercises = new ArrayList<Exercise>();
+	public static Exercise[] loadAllExercises() {
+		List<Exercise> exercises = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM exercise;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				try (ResultSet rs = ps.executeQuery()) {
 					while(rs.next()) {
-						Exercise loadedExercise = new Exercise();
-						loadedExercise.setId(rs.getInt("id"));
-						loadedExercise.setTitle(rs.getString("title"));
-						loadedExercise.setDescription(rs.getString("description"));
-						exercises.add(loadedExercise);
+						exercises.add(loadExercise(rs));
 					}
 				}
 			}
@@ -101,5 +93,13 @@ public class ExerciseDAO {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
+	}
+
+	private static Exercise loadExercise(ResultSet rs) throws SQLException{
+		Exercise loadedExercise = new Exercise();
+		loadedExercise.setId(rs.getInt("id"));
+		loadedExercise.setTitle(rs.getString("title"));
+		loadedExercise.setDescription(rs.getString("description"));
+		return loadedExercise;
 	}
 }
