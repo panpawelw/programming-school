@@ -8,7 +8,7 @@
 		username="root"
 		password="mojSQL"
 		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://localhost:3306/programming_school"
+		url="jdbc:mysql://localhost:3306/programming_school?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"
 		maxActive="100"
 		maxIdle="30"
 		maxWait="10000" />

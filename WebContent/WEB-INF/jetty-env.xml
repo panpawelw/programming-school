@@ -4,9 +4,10 @@
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
 
 	<New id="programming_school" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg></Arg>
 		<Arg>jdbc/programming_school</Arg>
 		<Arg>
-			<New class="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource">
+			<New class="com.mysql.jdbc.jdbc2.optional.MysqlDataSource">
 				<Set name="Url">jdbc:mysql://localhost:3306/programming_school</Set>
 				<Set name="User">root</Set>
 				<Set name="Password">mojSQL</Set>
@@ -14,4 +15,26 @@
 		</Arg>
 	</New>
 
+	<!--<New id="programming_school" class="org.eclipse.jetty.plus.jndi.Resource">-->
+		<!--<Arg><Ref id="Server"/></Arg>-->
+		<!--<Arg>jdbc/programming_school</Arg>-->
+		<!--<Arg>-->
+			<!--<New class="org.apache.commons.dbcp.BasicDataSource">-->
+				<!--<Set name="driverClassName">com.mysql.jdbc.Driver</Set>-->
+				<!--<Set name="url">jdbc:mysql://localhost:3306/programming_school</Set>-->
+				<!--<Set name="username">root</Set>-->
+				<!--<Set name="password">mojSQL</Set>-->
+				<!--<Set name="maxActive" type="int">100</Set>-->
+				<!--<Set name="maxIdle" type="int">30</Set>-->
+				<!--<Set name="maxWait" type="int">1000</Set>-->
+				<!--<Set name="defaultAutoCommit" type="boolean">true</Set>-->
+				<!--<Set name="removeAbandoned" type="boolean">true</Set>-->
+				<!--<Set name="removeAbandonedTimeout" type="int">60</Set>-->
+				<!--<Set name="logAbandoned" type="boolean">true</Set>-->
+				<!--<Set name="validationQuery">SELECT 1</Set>-->
+			<!--</New>-->
+		<!--</Arg>-->
+	<!--</New>-->
+
 </Configure>
+
