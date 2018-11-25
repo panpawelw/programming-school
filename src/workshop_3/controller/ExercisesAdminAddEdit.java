@@ -21,7 +21,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String idParam = request.getParameter("id").toString();
+		String idParam = request.getParameter("id");
 		int exerciseId = ValPar.intVar(idParam, "Incorrect exercise Id!");
 		if(exerciseId == 0) {
 			request.setAttribute("exerciseId", exerciseId);
@@ -47,7 +47,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
 		String exerciseTitle = request.getParameter("title");
 		String exerciseDescription = request.getParameter("description");
 		int exerciseId = ValPar.intVar(idParam, "Incorrect exercise Id!");
-		if(exerciseTitle!=null && exerciseTitle!="" && exerciseDescription!=null && exerciseDescription!="" && exerciseId >= 0) {
+		if(exerciseTitle!=null && !exerciseTitle.equals("") && exerciseDescription!=null && !exerciseDescription.equals("") && exerciseId >= 0) {
 			ExerciseDAO exerciseDAO = new ExerciseDAO();
 			Exercise exercise = new Exercise();
 			if(exerciseId!=0) {

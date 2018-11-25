@@ -21,7 +21,7 @@ public class ExercisesAdminDelete extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String idParam = request.getParameter("id").toString();
+		String idParam = request.getParameter("id");
 		int exerciseId = ValPar.intVar(idParam, "Incorrect exercise Id!");
 		if(exerciseId >= 0) {
 			ExerciseDAO userGroupDAO=new ExerciseDAO();

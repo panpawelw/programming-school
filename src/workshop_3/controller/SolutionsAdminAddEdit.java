@@ -23,7 +23,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String idParam = request.getParameter("id").toString();
+		String idParam = request.getParameter("id");
 		int solutionId = ValPar.intVar(idParam, "Incorrect solution Id!");
 		if (solutionId == 0) {
 			request.setAttribute("solutionId", solutionId);
@@ -54,7 +54,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 		long solutionId = ValPar.longVar(idParam, "Incorrect solution Id!");
 		int solutionExercise_id = ValPar.intVar(exercise_idParam, "Incorrect exercise Id!");
 		long solutionUser_id = ValPar.longVar(user_idParam, "Incorrect user Id!");
-		if(solutionDescription!=null && solutionDescription!="" && solutionExercise_id!=0 && solutionUser_id!=0 && solutionId >=0) {
+		if(solutionDescription!=null && !solutionDescription.equals("") && solutionExercise_id!=0 && solutionUser_id!=0 && solutionId >=0) {
 			SolutionDAO solutionDAO = new SolutionDAO();
 			Solution solution = new Solution();
 			if(solutionId!=0) {

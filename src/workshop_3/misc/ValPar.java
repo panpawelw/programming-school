@@ -3,8 +3,8 @@ package workshop_3.misc;
 public class ValPar {
 
 	public static long longVar (String param, String message) {
-		long result = 0;
-		if (param != null && param != "") {
+		long result;
+		if (param != null && !param.equals("")) {
 			try {
 				result = Long.parseLong(param);
 			} catch (NumberFormatException e) {
@@ -20,8 +20,8 @@ public class ValPar {
 	}
 	
 	public static int intVar (String param, String message) {
-		int result = 0;
-		if (param != null && param != "") {
+		int result;
+		if (param != null && !param.equals("")) {
 			try {
 				result = Integer.parseInt(param);
 			} catch (NumberFormatException e) {

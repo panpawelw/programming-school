@@ -23,9 +23,9 @@ public class SolutionDetails extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String idParam = request.getParameter("id").toString();
+		String idParam = request.getParameter("id");
 		long solutionId = 0;
-		if(idParam!=null & idParam!="") {
+		if(idParam!=null & !idParam.equals("")) {
 			try {
 				solutionId = Long.parseLong(idParam);
 			}catch(NumberFormatException e) {
@@ -34,14 +34,11 @@ public class SolutionDetails extends HttpServlet {
 			}
 		}
 		response.getWriter().append("Solution Id : " + solutionId);
-		Solution solution = new Solution();
-		solution = SolutionDAO.loadSolutionById(solutionId);
+		Solution solution = SolutionDAO.loadSolutionById(solutionId);
 		request.setAttribute("solution", solution);
-		User user = new User();
-		user = UserDAO.loadUserById(solution.getUser_id());
+		User user = UserDAO.loadUserById(solution.getUser_id());
 		request.setAttribute("user", user);
-		Exercise exercise = new Exercise();
-		exercise = ExerciseDAO.loadExerciseById(solution.getExercise_id());
+		Exercise exercise = ExerciseDAO.loadExerciseById(solution.getExercise_id());
 		request.setAttribute("exercise", exercise);
 		getServletContext().getRequestDispatcher("/jsp/solutiondetailsview.jsp").forward(request, response);
 	}

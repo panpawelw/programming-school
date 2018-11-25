@@ -21,7 +21,7 @@ public class GroupsAdminAddEdit extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String idParam = request.getParameter("id").toString();
+		String idParam = request.getParameter("id");
 		int groupId = ValPar.intVar(idParam, "Incorrect group Id!");
 		if(groupId == 0) {
 			request.setAttribute("groupId", groupId);
@@ -44,7 +44,7 @@ public class GroupsAdminAddEdit extends HttpServlet {
 		String idParam = request.getParameter("id");
 		String groupName = request.getParameter("name");
 		int groupId = ValPar.intVar(idParam, "Incorrect group Id!");
-		if(groupName!=null && groupName!="" && groupId >= 0) {
+		if(groupName!=null && !groupName.equals("") && groupId >= 0) {
 			UserGroupDAO userGroupDAO = new UserGroupDAO();
 			UserGroup userGroup = new UserGroup();
 			if(groupId!=0) {

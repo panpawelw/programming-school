@@ -23,9 +23,9 @@ public class UserDetails extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String idParam = request.getParameter("id").toString();
+		String idParam = request.getParameter("id");
 		int userId = 0;
-		if(idParam!=null & idParam!="") {
+		if(idParam!=null & !idParam.equals("")) {
 			try {
 				userId = Integer.parseInt(idParam);
 			}catch(NumberFormatException e) {

@@ -22,7 +22,7 @@ public class UsersAdminAddEdit extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String idParam = request.getParameter("id").toString();
+		String idParam = request.getParameter("id");
 		int userId = ValPar.intVar(idParam, "Incorrect user Id!");
 		if (userId == 0) {
 			request.setAttribute("userId", userId);
@@ -55,7 +55,7 @@ public class UsersAdminAddEdit extends HttpServlet {
 		String group_idParam = request.getParameter("group_id");
 		long userId = ValPar.longVar(idParam, "Incorrect user Id!");
 		int userGroup_id = ValPar.intVar(group_idParam, "Incorrect group Id!");
-		if(userName!=null && userName!="" && userEmail!=null && userEmail!="" && userPassword!=null && userPassword!="" && userGroup_id>0 && userId >=0) {
+		if(userName!=null && !userName.equals("") && userEmail!=null && !userEmail.equals("") && userPassword!=null && !userPassword.equals("") && userGroup_id>0 && userId >=0) {
 			UserDAO userDAO = new UserDAO();
 			User user = new User();
 			if(userId!=0) {

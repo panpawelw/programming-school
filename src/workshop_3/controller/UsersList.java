@@ -15,18 +15,18 @@ import workshop_3.model.UserGroup;
 @WebServlet("/userslist")
 public class UsersList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public UsersList() {
-        super();
-    }
+
+	public UsersList() {
+		super();
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String idParam = request.getParameter("id").toString();
+		String idParam = request.getParameter("id");
 		int userGroupId = 0;
-		if(idParam!=null & idParam!="") {
+		if (idParam != null && !idParam.equals("")) {
 			try {
 				userGroupId = Integer.parseInt(idParam);
-			}catch(NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				System.out.println("Incorrect group Id!");
 				e.printStackTrace();
 			}

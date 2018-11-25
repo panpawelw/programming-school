@@ -21,7 +21,7 @@ public class Home extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String contextParam = getServletContext().getInitParameter("number-solutions");
 		int recentSolutions=5;
-		if(contextParam!=null & contextParam!="") {
+		if(contextParam!=null & !contextParam.equals("")) {
 			try {
 				recentSolutions = Integer.parseInt(contextParam);
 			}catch (NumberFormatException n) {
