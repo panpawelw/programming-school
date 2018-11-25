@@ -7,9 +7,9 @@
 		type="javax.sql.DataSource"
 		username="root"
 		password="mojSQL"
-		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://localhost:3306/programming_school?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"
-		maxActive="100"
+		driverClassName="com.mysql.cj.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/programming_school?autoReconnect=true&amp;useSSL=false&amp;useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"
+		maxTotal="100"
 		maxIdle="30"
-		maxWait="10000" />
+		maxWaitMillis="10000" />
 </Context>
