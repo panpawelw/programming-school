@@ -12,7 +12,7 @@
 	<form action='addeditexercise' method='post'>
 		<input type='hidden' name='id' value='${exerciseId}'/>
 		Exercise title: <input type='text' name='title' placeholder='${exerciseTitlePH}'/><br>
-		Exercise description: <input type='text' name='description' placeholder='${exerciseDescriptionPH}'/><br>
+		Exercise description: <br><textarea rows='30' cols='50' name='description'>${exerciseDescriptionPH}</textarea><br>
 		<input type='submit' value='${buttonPH}'/>
 	</form>
 </body>
