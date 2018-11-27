@@ -61,7 +61,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
 			System.out.println(exercise.toString());
 			exerciseDAO.saveExerciseToDB(exercise);
 		}
-		System.out.println("OK");
+		System.out.println("OK ąćźż");
 		getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
 	}
 }

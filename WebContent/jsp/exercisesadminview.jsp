@@ -16,7 +16,7 @@
 	<br>
 	<h1 align="center">Exercises administration panel</h1>
 	<h3 align="center">Exercises list</h3>
-	<p align='center'><a href='/Workshop_3/addeditexercise?id=0'>Add exercise</a></p>
+	<p align='center'><a href='${pageContext.request.contextPath}/addeditexercise?id=0'>Add exercise</a></p>
 	<br>
 	<table align='center' class='myTable'>
 		<tr>
@@ -28,8 +28,8 @@
 			<tr>	
 				<td>${exercise.title}</td>
 				<td>${exercise.description}</td>
-				<td><a href="/Workshop_3/addeditexercise?id=${exercise.id}">Edit</a></td>
-				<td><a href="/Workshop_3/deleteexercise?id=${exercise.id}">Delete</a></td>
+				<td><a href="${pageContext.request.contextPath}/addeditexercise?id=${exercise.id}">Edit</a></td>
+				<td><a href="${pageContext.request.contextPath}/deleteexercise?id=${exercise.id}">Delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>
