@@ -16,7 +16,7 @@
 	<br>
 	<h1 align="center">Users administration panel</h1>
 	<h3 align="center">Users list</h3>
-	<p align="center"><a href="/Workshop_3/addedituser?id=0">Add user</a></p>
+	<p align="center"><a href="${pageContext.request.contextPath}/addedituser?id=0">Add user</a></p>
 	<br>
 	<table align='center' class='myTable'>
 		<tr>
@@ -30,8 +30,8 @@
 				<td>${user.name}</td>
 				<td>${user.email}</td>
 				<td>${user.group_id}</td>
-				<td><a href="/Workshop_3/addedituser?id=${user.id}">Edit</a></td>
-				<td><a href="/Workshop_3/deleteuser?id=${user.id}">Delete</a></td>
+				<td><a href="${pageContext.request.contextPath}/addedituser?id=${user.id}">Edit</a></td>
+				<td><a href="${pageContext.request.contextPath}/deleteuser?id=${user.id}">Delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>

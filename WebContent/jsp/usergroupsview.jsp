@@ -22,7 +22,7 @@
 		<c:forEach items="${usergroups}" var="UserGroup">
 			<tr>	
 				<td>${UserGroup.name}</td>
-				<td><a href="/Workshop_3/userslist?id=${UserGroup.id}">User list</a></td>
+				<td><a href="${pageContext.request.contextPath}/userslist?id=${UserGroup.id}">User list</a></td>
 			</tr>
 		</c:forEach>
 	</table>

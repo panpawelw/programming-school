@@ -27,7 +27,7 @@
 			<tr>	
 				<td>${usersSolution.title}</td>
 				<td>${usersSolution.modified}</td>
-				<td><a href="/Workshop_3/solutiondetails?id=${usersSolution.id}">Details</a></td>
+				<td><a href="${pageContext.request.contextPath}/solutiondetails?id=${usersSolution.id}">Details</a></td>
 			</tr>
 		</c:forEach>
 	</table>

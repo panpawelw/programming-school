@@ -24,7 +24,7 @@
 			<tr>	
 				<td>${User.name}</td>
 				<td>${User.email}</td>
-				<td><a href="/Workshop_3/userdetails?id=${User.id}">User details</a></td>
+				<td><a href="${pageContext.request.contextPath}/userdetails?id=${User.id}">User details</a></td>
 			</tr>
 		</c:forEach>
 	</table>

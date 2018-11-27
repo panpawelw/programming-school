@@ -16,7 +16,7 @@
 	<br>
 	<h1 align="center">User groups administration panel</h1>
 	<h3 align="center">User groups list</h3>
-	<p align='center'><a href='/Workshop_3/addeditgroup?id=0'>Add user group</a></p>
+	<p align='center'><a href='${pageContext.request.contextPath}/addeditgroup?id=0'>Add user group</a></p>
 	<br>
 	<table align='center' class='myTable'>
 		<tr>
@@ -26,8 +26,8 @@
 		<c:forEach items="${groupslist}" var="group">
 			<tr>	
 				<td>${group.name}</td>
-				<td><a href="/Workshop_3/addeditgroup?id=${group.id}">Edit</a></td>
-				<td><a href="/Workshop_3/deletegroup?id=${group.id}">Delete</a></td>
+				<td><a href="${pageContext.request.contextPath}/addeditgroup?id=${group.id}">Edit</a></td>
+				<td><a href="${pageContext.request.contextPath}/deletegroup?id=${group.id}">Delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>

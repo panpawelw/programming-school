@@ -16,7 +16,7 @@
 	<br>
 	<h1 align="center">Solutions administration panel</h1>
 	<h3 align="center">Solutions list</h3>
-	<p align='center'><a href='/Workshop_3/addeditsolution?id=0'>Add solution</a></p>
+	<p align='center'><a href='${pageContext.request.contextPath}/addeditsolution?id=0'>Add solution</a></p>
 	<br>
 	<table align='center' class='myTable'>
 		<tr>
@@ -34,8 +34,8 @@
 				<td>${solution.description}</td>
 				<td>${solution.exercise_id}</td>
 				<td>${solution.user_id}</td>
-				<td><a href="/Workshop_3/addeditsolution?id=${solution.id}">Edit</a></td>
-				<td><a href="/Workshop_3/deletesolution?id=${solution.id}">Delete</a></td>
+				<td><a href="${pageContext.request.contextPath}/addeditsolution?id=${solution.id}">Edit</a></td>
+				<td><a href="${pageContext.request.contextPath}/deletesolution?id=${solution.id}">Delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>
