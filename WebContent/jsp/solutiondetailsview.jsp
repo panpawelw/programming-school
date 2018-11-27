@@ -21,9 +21,7 @@
 		<textarea rows=50 cols=150>${solution.description}</textarea>
 	</div>
 	<br>
-	<div>
-		<button type="button" name="back" onclick="history.back()">back</button>
-	</div>
+	<button type="button" name="back" onclick="history.back()">back</button>
 </div>
 <jsp:include page="/jsp/footer.jsp"/>
 </body>
