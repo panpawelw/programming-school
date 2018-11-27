@@ -61,7 +61,6 @@ public class User {
 	
 	@Override
 	public String toString() {
-		String userToString = this.id + ": " + this.name + " email: " + this.email + " group: " + this.group_id;
-		return userToString;
+		return this.id + ": " + this.name + " email: " + this.email + " group: " + this.group_id;
 	}
 }

@@ -77,7 +77,6 @@ public class Solution {
 	
 	@Override
 	public String toString() {
-		String solutionToString = this.id + ": " + this.description + " created: " + this.created + " updated: " + this.updated + " exercise: " + this.exercise_id + " user: " + this.user_id;
-		return solutionToString;
+		return this.id + ": " + this.description + " created: " + this.created + " updated: " + this.updated + " exercise: " + this.exercise_id + " user: " + this.user_id;
 	}
 }

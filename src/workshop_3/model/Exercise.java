@@ -39,7 +39,6 @@ public class Exercise {
 	
 	@Override
 	public String toString() {
-		String exerciseToString = "id: " + this.id + " title: " + this.title + " description: " + this.description;
-		return exerciseToString;
+		return "id: " + this.id + " title: " + this.title + " description: " + this.description;
 	}
 }

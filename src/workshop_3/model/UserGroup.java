@@ -29,7 +29,6 @@ public class UserGroup {
 	
 	@Override
 	public String toString() {
-		String userGroupToStr = "id: " + this.id + " name: " + this.name;
-		return userGroupToStr;
+		return "id: " + this.id + " name: " + this.name;
 	}
 }

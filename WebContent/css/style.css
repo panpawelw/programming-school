@@ -5,6 +5,16 @@
 	text-align: center;
 }
 
+.centered {
+	margin: 0 auto;
+	text-align: center;
+}
+
+.footer {
+	text-align: center;
+	margin: 2% auto 0;
+}
+
 table.myTable {
 	margin: 0 auto;
 	border: 6px solid #948473;

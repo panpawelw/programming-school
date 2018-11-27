@@ -7,10 +7,10 @@
 <title>Header</title>
 </head>
 <body>
-	<div align="center">
-		<a href="/Workshop_3/">| Home page |</a>
-		<a href="/Workshop_3/usergroups">| User groups |</a>
-		<a href="/Workshop_3/panel">| Admin panel |</a>
+	<div class="centered">
+		<a href="${pageContext.request.contextPath}/">| Home page |</a>
+		<a href="${pageContext.request.contextPath}/usergroups">| User groups |</a>
+		<a href="${pageContext.request.contextPath}/panel">| Admin panel |</a>
 	</div>
 </body>
 </html>

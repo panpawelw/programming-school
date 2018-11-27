@@ -25,16 +25,16 @@ public class ExercisesAdminAddEdit extends HttpServlet {
 		int exerciseId = ValPar.intVar(idParam, "Incorrect exercise Id!");
 		if(exerciseId == 0) {
 			request.setAttribute("exerciseId", exerciseId);
-			request.setAttribute("exerciseTitlePH", "New exercise title");
-			request.setAttribute("exerciseDescriptionPH", "New exercise description");
-			request.setAttribute("buttonPH", "Add exercise");
+			request.setAttribute("exerciseTitle", "");
+			request.setAttribute("exerciseDescription", "");
+			request.setAttribute("button", "Add exercise");
 			getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp").forward(request, response);
 		}else if(exerciseId > 0){
 			Exercise exercise = ExerciseDAO.loadExerciseById(exerciseId);
 			request.setAttribute("exerciseId", exerciseId);
-			request.setAttribute("exerciseTitlePH", exercise.getTitle());
-			request.setAttribute("exerciseDescriptionPH", exercise.getDescription());
-			request.setAttribute("buttonPH", "Edit exercise");
+			request.setAttribute("exerciseTitle", exercise.getTitle());
+			request.setAttribute("exerciseDescription", exercise.getDescription());
+			request.setAttribute("button", "Edit exercise");
 			getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp").forward(request, response);
 		}else {
 			getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
@@ -58,8 +58,10 @@ public class ExercisesAdminAddEdit extends HttpServlet {
 				exercise.setTitle(exerciseTitle);
 				exercise.setDescription(exerciseDescription);
 			}
+			System.out.println(exercise.toString());
 			exerciseDAO.saveExerciseToDB(exercise);
 		}
+		System.out.println("OK");
 		getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
 	}
 }
