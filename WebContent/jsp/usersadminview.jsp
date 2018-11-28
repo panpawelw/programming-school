@@ -6,10 +6,8 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="css/style.css">
 	<title>Users administration</title>
-	<style type="text/css">
-		<%@include file="/css/style.css"%>
-	</style>
 </head>
 <body>
 <jsp:include page="/jsp/header.jsp"/>

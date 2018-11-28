@@ -5,9 +5,7 @@
 <html lang="pl-PL">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<style type="text/css">
-		<%@include file="/css/style.css" %>
-	</style>
+	<link rel="stylesheet" href="css/style.css">
 	<title>Exercise add or edit</title>
 </head>
 <body>
