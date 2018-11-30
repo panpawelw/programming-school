@@ -26,20 +26,18 @@ public class UsersAdminAddEdit extends HttpServlet {
 		int userId = ValPar.intVar(idParam, "Incorrect user Id!");
 		if (userId == 0) {
 			request.setAttribute("userId", userId);
-			request.setAttribute("buttonPH", "Add user");
-			request.setAttribute("userNamePH", "New user name");
-			request.setAttribute("userEmailPH", "New user email");
-			request.setAttribute("userPasswordPH", "New user password");
-			request.setAttribute("userGroup_idPH", 0);
+			request.setAttribute("button", "Add user");
+			request.setAttribute("userName", "New user name");
+			request.setAttribute("userEmail", "New user email");
+			request.setAttribute("userGroup_id", 0);
 			getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp").forward(request, response);
 		} else if(userId > 0){
 			User user = UserDAO.loadUserById(userId);
 			request.setAttribute("userId", userId);
-			request.setAttribute("buttonPH", "Edit user");
-			request.setAttribute("userNamePH", user.getName());
-			request.setAttribute("userEmailPH", user.getEmail());
-			request.setAttribute("userPasswordPH", "New user password");
-			request.setAttribute("userGroup_idPH", user.getGroup_id());
+			request.setAttribute("button", "Edit user");
+			request.setAttribute("userName", user.getName());
+			request.setAttribute("userEmail", user.getEmail());
+			request.setAttribute("userGroup_id", user.getGroup_id());
 			getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp").forward(request, response);
 		} else {
 			getServletContext().getRequestDispatcher("/usersadminpanel").forward(request, response);

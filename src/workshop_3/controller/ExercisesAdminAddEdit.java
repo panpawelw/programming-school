@@ -26,7 +26,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
 		if(exerciseId == 0) {
 			request.setAttribute("exerciseId", exerciseId);
 			request.setAttribute("exerciseTitle", "");
-			request.setAttribute("exerciseDescription", "");
+			request.setAttribute("exerciseDescription", null);
 			request.setAttribute("button", "Add exercise");
 			getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp").forward(request, response);
 		}else if(exerciseId > 0){

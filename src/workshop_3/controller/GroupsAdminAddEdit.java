@@ -25,14 +25,14 @@ public class GroupsAdminAddEdit extends HttpServlet {
 		int groupId = ValPar.intVar(idParam, "Incorrect group Id!");
 		if(groupId == 0) {
 			request.setAttribute("groupId", groupId);
-			request.setAttribute("groupNamePH", "New group name");
-			request.setAttribute("buttonPH", "Add group");
+			request.setAttribute("groupName", null);
+			request.setAttribute("button", "Add group");
 			getServletContext().getRequestDispatcher("/jsp/groupsadminaddeditview.jsp").forward(request, response);
 		}else if(groupId > 0){
 			UserGroup userGroup = UserGroupDAO.loadUserGroupById(groupId);
 			request.setAttribute("groupId", groupId);
-			request.setAttribute("groupNamePH", userGroup.getName());
-			request.setAttribute("buttonPH", "Edit group");
+			request.setAttribute("groupName", userGroup.getName());
+			request.setAttribute("button", "Edit group");
 			getServletContext().getRequestDispatcher("/jsp/groupsadminaddeditview.jsp").forward(request, response);
 		}else {
 			getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);

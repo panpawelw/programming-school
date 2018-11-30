@@ -14,12 +14,12 @@
 	<h3>Add / edit user</h3>
 	<form action="addedituser" method="post">
 		<input type="hidden" name="id" value="${userId}"/>
-		User name: <input type="text" name="name" placeholder="${userNamePH}"/><br>
-		User email: <input type="text" name="email" placeholder="${userEmailPH}"/><br>
-		User password: <input type="text" name="password" placeholder="${userPasswordPH}"/><br>
-		Group Id: <input type="number" name="group_id" min="1" step="1" value="${userGroup_idPH}"/><br>
+		User name: <input type="text" name="name" value="${userName}"/><br>
+		User email: <input type="text" name="email" value="${userEmail}"/><br>
+		User password: <input type="text" name="password"/><br>
+		Group Id: <input type="number" name="group_id" min="1" step="1" value="${userGroup_id}"/><br>
 		<br>
-		<input type="submit" value="${buttonPH}"/>
+		<input type="submit" value="${button}"/>
 	</form>
 </div>
 </body>

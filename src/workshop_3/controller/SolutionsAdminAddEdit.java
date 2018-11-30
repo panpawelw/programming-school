@@ -27,18 +27,18 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 		int solutionId = ValPar.intVar(idParam, "Incorrect solution Id!");
 		if (solutionId == 0) {
 			request.setAttribute("solutionId", solutionId);
-			request.setAttribute("buttonPH", "Add solution");
-			request.setAttribute("solutionDescriptionPH", null);
-			request.setAttribute("solutionExercise_idPH", 0);
-			request.setAttribute("solutionUser_idPH", 0);
+			request.setAttribute("button", "Add solution");
+			request.setAttribute("solutionDescription", null);
+			request.setAttribute("solutionExercise_id", 0);
+			request.setAttribute("solutionUser_id", 0);
 			getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
 		} else if(solutionId > 0){
 			Solution solution = SolutionDAO.loadSolutionById(solutionId);
 			request.setAttribute("solutionId", solutionId);
-			request.setAttribute("buttonPH", "Edit solution");
-			request.setAttribute("solutionDescriptionPH", solution.getDescription());
-			request.setAttribute("solutionExercise_idPH", solution.getExercise_id());
-			request.setAttribute("solutionUser_idPH", solution.getUser_id());
+			request.setAttribute("button", "Edit solution");
+			request.setAttribute("solutionDescription", solution.getDescription());
+			request.setAttribute("solutionExercise_id", solution.getExercise_id());
+			request.setAttribute("solutionUser_id", solution.getUser_id());
 			getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
 		} else {
 			getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);

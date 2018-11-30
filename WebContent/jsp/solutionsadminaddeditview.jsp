@@ -14,9 +14,9 @@
 	<h3>Add / edit solution</h3>
 	<form action="addeditsolution" method="post">
 		<input type="hidden" name="id" value="${solutionId}"/>
-		Exercise Id: <input type="number" name="exercise_id" min="1" step="1" value="${solutionExercise_idPH}"/><br>
-		User Id: <input type="number" name="user_id" min="1" step="1" value="${solutionUser_idPH}"/><br>
-		Description: <br><textarea rows="30" cols="50" name="description">${solutionDescriptionPH}</textarea><br>
+		Exercise Id: <input type="number" name="exercise_id" min="1" step="1" value="${solutionExercise_id}"/><br>
+		User Id: <input type="number" name="user_id" min="1" step="1" value="${solutionUser_id}"/><br>
+		Description: <br><textarea rows="30" cols="50" name="description">${solutionDescription}</textarea><br>
 		<br>
 		<input type="submit" value="${buttonPH}"/>
 	</form>
