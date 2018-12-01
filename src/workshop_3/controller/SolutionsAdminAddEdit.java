@@ -32,7 +32,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 			request.setAttribute("solutionExercise_id", 0);
 			request.setAttribute("solutionUser_id", 0);
 			getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
-		} else if(solutionId > 0){
+		} else if (solutionId > 0) {
 			Solution solution = SolutionDAO.loadSolutionById(solutionId);
 			request.setAttribute("solutionId", solutionId);
 			request.setAttribute("button", "Edit solution");
@@ -54,10 +54,10 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 		long solutionId = ValPar.longVar(idParam, "Incorrect solution Id!");
 		int solutionExercise_id = ValPar.intVar(exercise_idParam, "Incorrect exercise Id!");
 		long solutionUser_id = ValPar.longVar(user_idParam, "Incorrect user Id!");
-		if(solutionDescription!=null && !solutionDescription.equals("") && solutionExercise_id!=0 && solutionUser_id!=0 && solutionId >=0) {
+		if (solutionDescription != null && !solutionDescription.equals("") && solutionExercise_id != 0 && solutionUser_id != 0 && solutionId >= 0) {
 			SolutionDAO solutionDAO = new SolutionDAO();
 			Solution solution = new Solution();
-			if(solutionId!=0) {
+			if (solutionId != 0) {
 				solution = SolutionDAO.loadSolutionById(solutionId);
 				solution.setDescription(solutionDescription);
 				solution.setExercise_id(solutionExercise_id);
@@ -65,7 +65,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 				Date date = new Date();
 				java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
 				solution.setUpdated(sqlDate);
-			}else {
+			} else {
 				solution.setDescription(solutionDescription);
 				solution.setExercise_id(solutionExercise_id);
 				solution.setUser_id(solutionUser_id);
@@ -74,6 +74,8 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 				solution.setCreated(sqlDate);
 			}
 			solutionDAO.saveSolutionToDB(solution);
+		} else {
+			request.setAttribute("errorMessage", "Solution exercise Id, user Id nor description can't be empty!"); // detect empty fields and pass error message
 		}
 		getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);
 	}

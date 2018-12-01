@@ -21,6 +21,10 @@ public class UsersAdminPanel extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User[] usersList = UserDAO.loadAllUsers();
 		request.setAttribute("userslist", usersList);
+		String errorMessage = (String) request.getAttribute("errorMessage");
+		if (errorMessage != null) { // pass on error message to another view if there is any
+			request.setAttribute("errorMessage", errorMessage);
+		}
 		getServletContext().getRequestDispatcher("/jsp/usersadminview.jsp").forward(request,response);
 	}
 

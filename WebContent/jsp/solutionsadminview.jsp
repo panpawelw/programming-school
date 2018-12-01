@@ -15,6 +15,7 @@
 	<h1>Solutions administration panel</h1>
 	<h3>Solutions list</h3>
 	<p><a href="${pageContext.request.contextPath}/addeditsolution?id=0">Add solution</a></p>
+	<p class="error">${errorMessage}</p>
 	<br>
 	<table class="myTable">
 		<tr>

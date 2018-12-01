@@ -18,7 +18,7 @@
 		User Id: <input type="number" name="user_id" min="1" step="1" value="${solutionUser_id}"/><br>
 		Description: <br><textarea rows="30" cols="50" name="description">${solutionDescription}</textarea><br>
 		<br>
-		<input type="submit" value="${buttonPH}"/>
+		<input type="submit" value="${button}"/>
 	</form>
 </div>
 </body>

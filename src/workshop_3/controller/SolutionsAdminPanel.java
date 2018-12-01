@@ -21,6 +21,10 @@ public class SolutionsAdminPanel extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Solution[] solutionsList = SolutionDAO.loadAllSolutions();
 		request.setAttribute("solutionslist", solutionsList);
+		String errorMessage = (String) request.getAttribute("errorMessage");
+		if (errorMessage != null) { // pass on error message to another view if there is any
+			request.setAttribute("errorMessage", errorMessage);
+		}
 		getServletContext().getRequestDispatcher("/jsp/solutionsadminview.jsp").forward(request,response);
 	}
 

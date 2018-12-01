@@ -19,6 +19,10 @@ body {
 	margin: 2% auto 0;
 }
 
+.error {
+	color: red;
+}
+
 table.myTable {
 	margin: 0 auto;
 	border: 6px solid #948473;

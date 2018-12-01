@@ -27,11 +27,11 @@ public class UsersAdminAddEdit extends HttpServlet {
 		if (userId == 0) {
 			request.setAttribute("userId", userId);
 			request.setAttribute("button", "Add user");
-			request.setAttribute("userName", "New user name");
-			request.setAttribute("userEmail", "New user email");
-			request.setAttribute("userGroup_id", 0);
+			request.setAttribute("userName", null);
+			request.setAttribute("userEmail", null);
+			request.setAttribute("userGroup_id", null);
 			getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp").forward(request, response);
-		} else if(userId > 0){
+		} else if (userId > 0) {
 			User user = UserDAO.loadUserById(userId);
 			request.setAttribute("userId", userId);
 			request.setAttribute("button", "Edit user");
@@ -53,22 +53,24 @@ public class UsersAdminAddEdit extends HttpServlet {
 		String group_idParam = request.getParameter("group_id");
 		long userId = ValPar.longVar(idParam, "Incorrect user Id!");
 		int userGroup_id = ValPar.intVar(group_idParam, "Incorrect group Id!");
-		if(userName!=null && !userName.equals("") && userEmail!=null && !userEmail.equals("") && userPassword!=null && !userPassword.equals("") && userGroup_id>0 && userId >=0) {
+		if (userName != null && !userName.equals("") && userEmail != null && !userEmail.equals("") && userPassword != null && !userPassword.equals("") && userGroup_id > 0 && userId >= 0) {
 			UserDAO userDAO = new UserDAO();
 			User user = new User();
-			if(userId!=0) {
+			if (userId != 0) {
 				user = UserDAO.loadUserById(userId);
 				user.setName(userName);
 				user.setEmail(userEmail);
 				user.setPassword(userPassword);
 				user.setGroup_id(userGroup_id);
-			}else {
+			} else {
 				user.setName(userName);
 				user.setEmail(userEmail);
 				user.setPassword(userPassword);
 				user.setGroup_id(userGroup_id);
 			}
 			userDAO.saveUserToDB(user);
+		} else {
+			request.setAttribute("errorMessage", "User name, email, password nor group can't be empty!"); // detect empty fields and pass error message
 		}
 		getServletContext().getRequestDispatcher("/usersadminpanel").forward(request, response);
 	}
