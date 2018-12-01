@@ -35,7 +35,7 @@
 		</c:forEach>
 	</table>
 	<br>
-	<button type="button" name="back" onclick="history.back()">back</button>
+	<button type="button" name="back" onclick="window.location.href = '${pageContext.request.contextPath}/panel'">back</button>
 </div>
 <jsp:include page="/jsp/footer.jsp"/>
 </body>

@@ -11,10 +11,10 @@ import workshop_3.DAO.UserGroupDAO;
 import workshop_3.model.UserGroup;
 
 @WebServlet("/groupsadminpanel")
-public class GroupsAdminPanel extends HttpServlet {
+public class UserGroupsAdminPanel extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public GroupsAdminPanel() {
+	public UserGroupsAdminPanel() {
 		super();
 	}
 
@@ -25,7 +25,7 @@ public class GroupsAdminPanel extends HttpServlet {
 		if (errorMessage != null) { // pass on error message to another view if there is any
 			request.setAttribute("errorMessage", errorMessage);
 		}
-		getServletContext().getRequestDispatcher("/jsp/groupsadminview.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/jsp/usergroupsadminview.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

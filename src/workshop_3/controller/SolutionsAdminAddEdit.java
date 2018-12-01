@@ -26,11 +26,11 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 		String idParam = request.getParameter("id");
 		int solutionId = ValPar.intVar(idParam, "Incorrect solution Id!");
 		if (solutionId == 0) {
-			request.setAttribute("solutionId", solutionId);
+			request.setAttribute("solutionId", 0);
 			request.setAttribute("button", "Add solution");
 			request.setAttribute("solutionDescription", null);
-			request.setAttribute("solutionExercise_id", 0);
-			request.setAttribute("solutionUser_id", 0);
+			request.setAttribute("solutionExercise_id", null);
+			request.setAttribute("solutionUser_id", null);
 			getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
 		} else if (solutionId > 0) {
 			Solution solution = SolutionDAO.loadSolutionById(solutionId);

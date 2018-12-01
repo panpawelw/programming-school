@@ -17,7 +17,7 @@
 	<h2><a href="${pageContext.request.contextPath}/exercisesadminpanel">Manage exercises</a></h2>
 	<h2><a href="${pageContext.request.contextPath}/solutionsadminpanel">Manage solutions</a></h2>
 	<br>
-	<button type="button" name="back" onclick="history.back()">back</button>
+	<button type="button" name="back" onclick="window.location.href = '${pageContext.request.contextPath}/'">back</button>
 </div>
 <jsp:include page="/jsp/footer.jsp"/>
 </body>

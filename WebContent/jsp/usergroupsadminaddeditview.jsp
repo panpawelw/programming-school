@@ -14,7 +14,7 @@
 	<h3>Add / edit user group</h3>
 	<form action="addeditgroup" method="post">
 		<input type="hidden" name="id" value="${groupId}"/>
-		Group name: <input type="text" name="name" value="${groupName}"/><br>
+		Group name: <input type="text" name="name" autofocus value="${groupName}"/><br>
 		<br>
 		<input type="submit" value="${button}"/>
 	</form>

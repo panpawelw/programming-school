@@ -25,7 +25,7 @@ public class UsersAdminAddEdit extends HttpServlet {
 		String idParam = request.getParameter("id");
 		int userId = ValPar.intVar(idParam, "Incorrect user Id!");
 		if (userId == 0) {
-			request.setAttribute("userId", userId);
+			request.setAttribute("userId", 0);
 			request.setAttribute("button", "Add user");
 			request.setAttribute("userName", null);
 			request.setAttribute("userEmail", null);

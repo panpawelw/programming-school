@@ -24,8 +24,8 @@ public class ExercisesAdminAddEdit extends HttpServlet {
 		String idParam = request.getParameter("id");
 		int exerciseId = ValPar.intVar(idParam, "Incorrect exercise Id!");
 		if (exerciseId == 0) {
-			request.setAttribute("exerciseId", exerciseId);
-			request.setAttribute("exerciseTitle", "");
+			request.setAttribute("exerciseId", 0);
+			request.setAttribute("exerciseTitle", null);
 			request.setAttribute("exerciseDescription", null);
 			request.setAttribute("button", "Add exercise");
 			getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp").forward(request, response);
@@ -58,7 +58,6 @@ public class ExercisesAdminAddEdit extends HttpServlet {
 				exercise.setTitle(exerciseTitle);
 				exercise.setDescription(exerciseDescription);
 			}
-			System.out.println(exercise.toString());
 			exerciseDAO.saveExerciseToDB(exercise);
 		} else {
 			request.setAttribute("errorMessage", "Exercise title nor description can't be empty!"); // detect empty fields and pass error message

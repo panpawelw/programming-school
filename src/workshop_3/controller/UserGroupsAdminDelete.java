@@ -12,10 +12,10 @@ import workshop_3.misc.ValPar;
 import workshop_3.model.UserGroup;
 
 @WebServlet("/deletegroup")
-public class GroupsAdminDelete extends HttpServlet {
+public class UserGroupsAdminDelete extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public GroupsAdminDelete() {
+	public UserGroupsAdminDelete() {
 		super();
 	}
 

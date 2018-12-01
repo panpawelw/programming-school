@@ -12,10 +12,10 @@ import workshop_3.misc.ValPar;
 import workshop_3.model.UserGroup;
 
 @WebServlet("/addeditgroup")
-public class GroupsAdminAddEdit extends HttpServlet {
+public class UserGroupsAdminAddEdit extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public GroupsAdminAddEdit() {
+	public UserGroupsAdminAddEdit() {
 		super();
 	}
 
@@ -27,13 +27,13 @@ public class GroupsAdminAddEdit extends HttpServlet {
 			request.setAttribute("groupId", groupId);
 			request.setAttribute("groupName", null);
 			request.setAttribute("button", "Add group");
-			getServletContext().getRequestDispatcher("/jsp/groupsadminaddeditview.jsp").forward(request, response);
+			getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
 		}else if(groupId > 0){
 			UserGroup userGroup = UserGroupDAO.loadUserGroupById(groupId);
 			request.setAttribute("groupId", groupId);
 			request.setAttribute("groupName", userGroup.getName());
 			request.setAttribute("button", "Edit group");
-			getServletContext().getRequestDispatcher("/jsp/groupsadminaddeditview.jsp").forward(request, response);
+			getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
 		}else {
 			getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
 		}

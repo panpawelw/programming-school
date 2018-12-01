@@ -13,7 +13,7 @@
 	<h3>Add / edit exercise</h3>
 	<form action="addeditexercise" accept-charset="UTF-8" method="post">
 		<input type="hidden" name="id" value="${exerciseId}"/>
-		Exercise title: <input type="text" name="title" value="${exerciseTitle}"/><br>
+		Exercise title: <input type="text" name="title" autofocus value="${exerciseTitle}"/><br>
 		Exercise description: <br><textarea rows="30" cols="50" name="description">${exerciseDescription}</textarea><br>
 		<br>
 		<input type="submit" value="${button}"/>
