@@ -15,7 +15,7 @@
 	<h1>User ${user.name} details</h1>
 	<h4> Email: ${user.email}</h4>
 	<h4> Group: ${groupname}</h4>
-	<h3> User"s solutions</h3>
+	<h3> User's solutions</h3>
 	<table class="myTable">
 		<tr>
 			<th>Exercise title</th>
