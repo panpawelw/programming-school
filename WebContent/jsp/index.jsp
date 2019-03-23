@@ -31,8 +31,8 @@
         </c:forEach>
     </table>
 
-    <%--<p>Results: ${results}</p>--%>
-    <%--<p>Results1: ${results1}</p>--%>
+    <p>Results: ${results}</p>
+    <p>Results1: ${results1}</p>
 </div>
 <jsp:include page="/jsp/footer.jsp"/>
 </body>

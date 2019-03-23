@@ -21,22 +21,22 @@ public class Home extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		String contextParam = getServletContext().getInitParameter("number-solutions");
-//		int recentSolutions=5;
-//		if(contextParam!=null & !contextParam.equals("")) {
-//			try {
-//				recentSolutions = Integer.parseInt(contextParam);
-//			}catch (NumberFormatException n) {
-//				System.out.println("Parameter must be an integer value, using default value of 5 instead!");
-//			}
-//		}
-//		LastSolution[] lastSolutions = LastSolutionDAO.loadAllSolutions(recentSolutions);
-//		request.setAttribute("lastsolutions", lastSolutions);
+		String contextParam = getServletContext().getInitParameter("number-solutions");
+		int recentSolutions=5;
+		if(contextParam!=null & !contextParam.equals("")) {
+			try {
+				recentSolutions = Integer.parseInt(contextParam);
+			}catch (NumberFormatException n) {
+				System.out.println("Parameter must be an integer value, using default value of 5 instead!");
+			}
+		}
+		LastSolution[] lastSolutions = LastSolutionDAO.loadAllSolutions(recentSolutions);
+		request.setAttribute("lastsolutions", lastSolutions);
 
         Connection conn = null;
-//        Statement stmnt = null;
-//        String results = "";
-//        String results1 = "";
+        Statement stmnt = null;
+        String results = "";
+        String results1 = "";
 
         try {
             // Create connection to RDS DB instance
@@ -49,11 +49,22 @@ public class Home extends HttpServlet {
 //            }
 
 //            stmnt = conn.createStatement();
-//            stmnt.addBatch("CREATE TABLE Usergroup (id INT AUTO_INCREMENT, name VARCHAR(255), PRIMARY KEY (id));");
-//            stmnt.addBatch("CREATE TABLE User (id BIGINT AUTO_INCREMENT NOT NULL, username VARCHAR(255) NOT NULL, email VARCHAR(255) UNIQUE NOT NULL, password VARCHAR(245) NOT NULL, usergroup_id INT, PRIMARY KEY(id), FOREIGN KEY(usergroup_id) REFERENCES Usergroup(id) ON DELETE CASCADE);");
-//            stmnt.addBatch("CREATE TABLE Exercise (id INT AUTO_INCREMENT, title VARCHAR (255), description TEXT, PRIMARY KEY(id));");
-//            stmnt.addBatch("CREATE TABLE Solution (id INT AUTO_INCREMENT, created DATETIME, updated DATETIME,	description TEXT, exercise_id INT, user_id BIGINT, PRIMARY KEY (id), FOREIGN KEY(exercise_id) REFERENCES Exercise(id) ON DELETE CASCADE, FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE);");
+//            stmnt.addBatch("DROP TABLE Usergroup");
+//            stmnt.addBatch("DROP TABLE User");
+//            stmnt.addBatch("DROP TABLE Exercise");
+//            stmnt.addBatch("DROP TABLE Solution");
+//            stmnt.addBatch("CREATE TABLE usergroup (id INT AUTO_INCREMENT, name VARCHAR(255), PRIMARY KEY (id));");
+//            stmnt.addBatch("CREATE TABLE user (id BIGINT AUTO_INCREMENT NOT NULL, username VARCHAR(255) NOT NULL, email VARCHAR(255) UNIQUE NOT NULL, password VARCHAR(245) NOT NULL, usergroup_id INT, PRIMARY KEY(id), FOREIGN KEY(usergroup_id) REFERENCES Usergroup(id) ON DELETE CASCADE);");
+//            stmnt.addBatch("CREATE TABLE exercise (id INT AUTO_INCREMENT, title VARCHAR (255), description TEXT, PRIMARY KEY(id));");
+//            stmnt.addBatch("CREATE TABLE solution (id INT AUTO_INCREMENT, created DATETIME, updated DATETIME, description TEXT, exercise_id INT, user_id BIGINT, PRIMARY KEY (id), FOREIGN KEY(exercise_id) REFERENCES Exercise(id) ON DELETE CASCADE, FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE);");
+//            stmnt.executeBatch();
 //            stmnt.close();
+//            ResultSet rs1 = stmnt.executeQuery("SELECT * FROM Solution");
+//            ResultSetMetaData rsmd = rs1.getMetaData();
+//            results += "No. of columns : " + rsmd.getColumnCount() + " ";
+//            results += "Column name of 1st column : " + rsmd.getColumnName(1) + " ";
+//            results += "Column type of 1st column : " + rsmd.getColumnTypeName(1);
+
 
 //            dbmd = conn.getMetaData();
 //            rs = dbmd.getTables(null, null, "%", types);
@@ -98,8 +109,8 @@ public class Home extends HttpServlet {
             } catch (SQLException ignore) {
             }
         }
-//        request.setAttribute("results", results);
-//        request.setAttribute("results1", results1);
+        request.setAttribute("results", results);
+        request.setAttribute("results1", results1);
         getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request, response);
     }
 

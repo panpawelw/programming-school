@@ -16,7 +16,7 @@ public class SolutionDAO {
 	public void saveSolutionToDB(Solution solution) {
 		try (Connection con = DbUtil.getConn()) {
 			if (solution.getId() == 0) {
-				String sql = "INSERT INTO solution(created, updated, description, exercise_id, user_id) VALUES (?, ?, ?, ?, ?);";
+				String sql = "INSERT INTO Solution(created, updated, description, exercise_id, user_id) VALUES (?, ?, ?, ?, ?);";
 				String generatedColumns[] = { " ID " };
 				Date date = new Date();
 				java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
@@ -34,7 +34,7 @@ public class SolutionDAO {
 					}
 				}
 			} else {
-				String sql = "UPDATE solution SET updated=Now(), description=?, exercise_id=?, user_id=? WHERE id = ?;";
+				String sql = "UPDATE Solution SET updated=Now(), description=?, exercise_id=?, user_id=? WHERE id = ?;";
 				try (PreparedStatement ps = con.prepareStatement(sql)) {
 					ps.setString(1, solution.getDescription());
 					ps.setInt(2, solution.getExercise_id());
@@ -51,7 +51,7 @@ public class SolutionDAO {
 	
 	static public Solution loadSolutionById(long id) {
 		try (Connection con = DbUtil.getConn()) {
-			String sql = "SELECT * FROM solution WHERE id=?;";
+			String sql = "SELECT * FROM Solution WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setLong(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
@@ -70,7 +70,7 @@ public class SolutionDAO {
 
 	public void deleteSolution(Solution solution) {
 		try (Connection con = DbUtil.getConn()) {
-			String sql = "DELETE FROM solution WHERE id=?";
+			String sql = "DELETE FROM Solution WHERE id=?";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setLong(1, solution.getId());
 				ps.executeUpdate();
@@ -92,8 +92,8 @@ public class SolutionDAO {
 
 	private static Solution[] loadSolutionsBy(boolean loadAll, long param){
 		String sql;
-		if(loadAll) sql = "SELECT * FROM solution;";
-			else sql = "SELECT * FROM solution WHERE user_id=?;";
+		if(loadAll) sql = "SELECT * FROM Solution;";
+			else sql = "SELECT * FROM Solution WHERE user_id=?;";
 		List<Solution> solutions = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {

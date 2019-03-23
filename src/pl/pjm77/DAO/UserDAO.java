@@ -15,7 +15,7 @@ public class UserDAO {
 	public void saveUserToDB(User user) {
 		try (Connection con = DbUtil.getConn()) {
 			if (user.getId() == 0) {
-				String sql = "INSERT INTO user(username, email, password, usergroup_id) VALUES (?, ?, ?, ?);";
+				String sql = "INSERT INTO User(username, email, password, usergroup_id) VALUES (?, ?, ?, ?);";
 				String generatedColumns[] = { " ID " };
 				try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
 					ps.setString(1, user.getName());
@@ -30,7 +30,7 @@ public class UserDAO {
 					}
 				}
 			} else {
-				String sql = "UPDATE user SET username=?, email=?, password=?, usergroup_id=? WHERE id = ?;";
+				String sql = "UPDATE User SET username=?, email=?, password=?, usergroup_id=? WHERE id = ?;";
 				try (PreparedStatement ps = con.prepareStatement(sql)) {
 					ps.setString(1, user.getName());
 					ps.setString(2, user.getEmail());
@@ -48,7 +48,7 @@ public class UserDAO {
 	
 	public static User loadUserById(long id) {
 		try (Connection con = DbUtil.getConn()) {
-			String sql = "SELECT * FROM user WHERE id=?;";
+			String sql = "SELECT * FROM User WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setLong(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
@@ -66,7 +66,7 @@ public class UserDAO {
 	}
 	public void deleteUser(User user) {
 		try (Connection con = DbUtil.getConn()) {
-			String sql = "DELETE FROM user WHERE id=?";
+			String sql = "DELETE FROM User WHERE id=?";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setLong(1, user.getId());
 				ps.executeUpdate();
@@ -88,8 +88,8 @@ public class UserDAO {
 
 	private static User[] loadUsersBy(boolean loadAll, long param){
 		String sql;
-		if(loadAll) sql = "SELECT * FROM user;";
-		else sql = "SELECT * FROM user WHERE usergroup_id=?;";
+		if(loadAll) sql = "SELECT * FROM User;";
+		else sql = "SELECT * FROM User WHERE usergroup_id=?;";
 		List<User> usersByParamArrayList = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
 			try (PreparedStatement ps = con.prepareStatement(sql)) {

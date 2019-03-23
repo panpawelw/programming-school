@@ -15,7 +15,7 @@ public class ExerciseDAO {
     public void saveExerciseToDB(Exercise exercise) {
         try (Connection con = DbUtil.getConn()) {
             if (exercise.getId() == 0) {
-                String sql = "INSERT INTO exercise (title, description) VALUES (?, ?)";
+                String sql = "INSERT INTO Exercise (title, description) VALUES (?, ?)";
                 String generatedColumns[] = { " ID " };
                 try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
                     ps.setString(1, exercise.getTitle());
@@ -28,7 +28,7 @@ public class ExerciseDAO {
                     }
                 }
             } else {
-                String sql = "UPDATE exercise SET title=?, description=? WHERE id=?;";
+                String sql = "UPDATE Exercise SET title=?, description=? WHERE id=?;";
                 try (PreparedStatement ps = con.prepareStatement(sql)) {
                     ps.setString(1, exercise.getTitle());
                     ps.setString(2, exercise.getDescription());
@@ -44,7 +44,7 @@ public class ExerciseDAO {
 
     public static Exercise loadExerciseById(int id) {
         try (Connection con = DbUtil.getConn()) {
-            String sql = "SELECT * FROM exercise WHERE id=?;";
+            String sql = "SELECT * FROM Exercise WHERE id=?;";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setInt(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -64,7 +64,7 @@ public class ExerciseDAO {
     public static Exercise[] loadAllExercises() {
         List<Exercise> exercises = new ArrayList<>();
         try (Connection con = DbUtil.getConn()) {
-            String sql = "SELECT * FROM exercise;";
+            String sql = "SELECT * FROM Exercise;";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 try (ResultSet rs = ps.executeQuery()) {
                     while(rs.next()) {
@@ -83,7 +83,7 @@ public class ExerciseDAO {
 
     public void deleteExercise(Exercise exercise) {
         try (Connection con = DbUtil.getConn()) {
-            String sql = "DELETE FROM exercise WHERE id=?";
+            String sql = "DELETE FROM Exercise WHERE id=?";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setInt(1, exercise.getId());
                 ps.executeUpdate();
