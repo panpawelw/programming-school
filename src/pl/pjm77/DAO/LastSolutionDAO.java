@@ -23,12 +23,12 @@ public class LastSolutionDAO {
     private static LastSolution[] loadSolutionsBy(boolean all, int number, long param) {
         List<LastSolution> solutions = new ArrayList<>();
         String sql;
-        if(all) sql = "SELECT Exercise.title, User.username, IF(Solution.updated > Solution.created, Solution.updated, Solution.created),"
-                + " Solution.id FROM Solution LEFT JOIN Exercise ON Solution.exercise_id=Exercise.id"
-                + " LEFT JOIN User ON Solution.user_id=User.id ORDER BY IF(updated > created, updated, created) DESC LIMIT ?;";
-        else sql = "SELECT Exercise.title, User.username, IF(Solution.updated > Solution.created, Solution.updated, Solution.created),"
-                + " Solution.id FROM Solution LEFT JOIN Exercise ON Solution.exercise_id=Exercise.id"
-                + " LEFT JOIN User ON Solution.user_id=User.id  WHERE Solution.user_id=? ORDER BY IF(updated > created, updated, created) DESC;";
+        if(all) sql = "SELECT exercise.title, user.username, IF(solution.updated > solution.created, solution.updated, solution.created),"
+                + " solution.id FROM solution LEFT JOIN exercise ON solution.exercise_id=exercise.id"
+                + " LEFT JOIN user ON solution.user_id=user.id ORDER BY IF(updated > created, updated, created) DESC LIMIT ?;";
+        else sql = "SELECT exercise.title, user.username, IF(solution.updated > solution.created, solution.updated, solution.created),"
+                + " solution.id FROM solution LEFT JOIN exercise ON solution.exercise_id=exercise.id"
+                + " LEFT JOIN user ON solution.user_id=user.id  WHERE solution.user_id=? ORDER BY IF(updated > created, updated, created) DESC;";
         try (Connection con = DbUtil.getConn()) {
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 if (all) ps.setInt(1,number);

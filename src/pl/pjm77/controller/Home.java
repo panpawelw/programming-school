@@ -21,17 +21,17 @@ public class Home extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String contextParam = getServletContext().getInitParameter("number-solutions");
-		int recentSolutions=5;
-		if(contextParam!=null & !contextParam.equals("")) {
-			try {
-				recentSolutions = Integer.parseInt(contextParam);
-			}catch (NumberFormatException n) {
-				System.out.println("Parameter must be an integer value, using default value of 5 instead!");
-			}
-		}
-		LastSolution[] lastSolutions = LastSolutionDAO.loadAllSolutions(recentSolutions);
-		request.setAttribute("lastsolutions", lastSolutions);
+        String contextParam = getServletContext().getInitParameter("number-solutions");
+        int recentSolutions=5;
+        if(contextParam!=null & !contextParam.equals("")) {
+            try {
+                recentSolutions = Integer.parseInt(contextParam);
+            }catch (NumberFormatException n) {
+                System.out.println("Parameter must be an integer value, using default value of 5 instead!");
+            }
+        }
+        LastSolution[] lastSolutions = LastSolutionDAO.loadAllSolutions(recentSolutions);
+        request.setAttribute("lastsolutions", lastSolutions);
         getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request, response);
     }
 
@@ -45,23 +45,13 @@ public class Home extends HttpServlet {
 //        String results = "";
 //        String results1 = "";
 //        try {
-        // Create connection to RDS DB instance
+    // Create connection to RDS DB instance
 //            conn = DbUtil.getConn();
-//            DatabaseMetaData dbmd = conn.getMetaData();
-//            String[] types = {"TABLE"};
-//            ResultSet rs = dbmd.getTables(null, null, "%", types);
-//            while (rs.next()) {
-//                results += (rs.getString("TABLE_NAME")) + " ";
-//            }
 //            stmnt = conn.createStatement();
-//            stmnt.addBatch("DROP TABLE Usergroup");
-//            stmnt.addBatch("DROP TABLE User");
-//            stmnt.addBatch("DROP TABLE Exercise");
-//            stmnt.addBatch("DROP TABLE Solution");
 //            stmnt.addBatch("CREATE TABLE usergroup (id INT AUTO_INCREMENT, name VARCHAR(255), PRIMARY KEY (id));");
-//            stmnt.addBatch("CREATE TABLE user (id BIGINT AUTO_INCREMENT NOT NULL, username VARCHAR(255) NOT NULL, email VARCHAR(255) UNIQUE NOT NULL, password VARCHAR(245) NOT NULL, usergroup_id INT, PRIMARY KEY(id), FOREIGN KEY(usergroup_id) REFERENCES Usergroup(id) ON DELETE CASCADE);");
+//            stmnt.addBatch("CREATE TABLE user (id BIGINT AUTO_INCREMENT NOT NULL, username VARCHAR(255) NOT NULL, email VARCHAR(255) UNIQUE NOT NULL, password VARCHAR(245) NOT NULL, usergroup_id INT, PRIMARY KEY(id), FOREIGN KEY(usergroup_id) REFERENCES usergroup(id) ON DELETE CASCADE);");
 //            stmnt.addBatch("CREATE TABLE exercise (id INT AUTO_INCREMENT, title VARCHAR (255), description TEXT, PRIMARY KEY(id));");
-//            stmnt.addBatch("CREATE TABLE solution (id INT AUTO_INCREMENT, created DATETIME, updated DATETIME, description TEXT, exercise_id INT, user_id BIGINT, PRIMARY KEY (id), FOREIGN KEY(exercise_id) REFERENCES Exercise(id) ON DELETE CASCADE, FOREIGN KEY(user_id) REFERENCES User(id) ON DELETE CASCADE);");
+//            stmnt.addBatch("CREATE TABLE solution (id INT AUTO_INCREMENT, created DATETIME, updated DATETIME, description TEXT, exercise_id INT, user_id BIGINT, PRIMARY KEY (id), FOREIGN KEY(exercise_id) REFERENCES exercise(id) ON DELETE CASCADE, FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE);");
 //            stmnt.executeBatch();
 //            stmnt.close();
 //            ResultSet rs1 = stmnt.executeQuery("SELECT * FROM Solution");
@@ -98,7 +88,7 @@ public class Home extends HttpServlet {
 //			setupStatement.addBatch(showDatabases);
 //			setupStatement.executeBatch();
 //			stmnt.close();
-//
+
 //        } catch (SQLException ex) {
 //            // Handle any errors
 //            System.out.println("SQLException: " + ex.getMessage());
