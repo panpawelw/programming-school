@@ -32,22 +32,27 @@ public class Home extends HttpServlet {
 		}
 		LastSolution[] lastSolutions = LastSolutionDAO.loadAllSolutions(recentSolutions);
 		request.setAttribute("lastsolutions", lastSolutions);
+        getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request, response);
+    }
 
-        Connection conn = null;
-        Statement stmnt = null;
-        String results = "";
-        String results1 = "";
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 
-        try {
-            // Create connection to RDS DB instance
-            conn = DbUtil.getConn();
+//    private void setUpDatabase() {
+//        Connection conn = null;
+//        Statement stmnt = null;
+//        String results = "";
+//        String results1 = "";
+//        try {
+        // Create connection to RDS DB instance
+//            conn = DbUtil.getConn();
 //            DatabaseMetaData dbmd = conn.getMetaData();
 //            String[] types = {"TABLE"};
 //            ResultSet rs = dbmd.getTables(null, null, "%", types);
 //            while (rs.next()) {
 //                results += (rs.getString("TABLE_NAME")) + " ";
 //            }
-
 //            stmnt = conn.createStatement();
 //            stmnt.addBatch("DROP TABLE Usergroup");
 //            stmnt.addBatch("DROP TABLE User");
@@ -64,8 +69,6 @@ public class Home extends HttpServlet {
 //            results += "No. of columns : " + rsmd.getColumnCount() + " ";
 //            results += "Column name of 1st column : " + rsmd.getColumnName(1) + " ";
 //            results += "Column type of 1st column : " + rsmd.getColumnTypeName(1);
-
-
 //            dbmd = conn.getMetaData();
 //            rs = dbmd.getTables(null, null, "%", types);
 //            while (rs.next()) {
@@ -73,7 +76,6 @@ public class Home extends HttpServlet {
 //            }
 //			stmnt = conn.createStatement();
 //			resultSet = stmnt.executeQuery("SHOW DATABASES;");
-
 //			if(stmnt.execute("SHOW TABLES;")){
 //				resultSet = stmnt.getResultSet();
 //			}
@@ -96,25 +98,20 @@ public class Home extends HttpServlet {
 //			setupStatement.addBatch(showDatabases);
 //			setupStatement.executeBatch();
 //			stmnt.close();
-
-        } catch (SQLException ex) {
-            // Handle any errors
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        } finally {
-            System.out.println("Closing the connection.");
-            if (conn != null) try {
-                conn.close();
-            } catch (SQLException ignore) {
-            }
-        }
-        request.setAttribute("results", results);
-        request.setAttribute("results1", results1);
-        getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
+//
+//        } catch (SQLException ex) {
+//            // Handle any errors
+//            System.out.println("SQLException: " + ex.getMessage());
+//            System.out.println("SQLState: " + ex.getSQLState());
+//            System.out.println("VendorError: " + ex.getErrorCode());
+//        } finally {
+//            System.out.println("Closing the connection.");
+//            if (conn != null) try {
+//                conn.close();
+//            } catch (SQLException ignore) {
+//            }
+//        }
+//        request.setAttribute("results", results);
+//        request.setAttribute("results1", results1);
+//    }
 }

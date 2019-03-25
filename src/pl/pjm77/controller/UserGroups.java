@@ -12,19 +12,19 @@ import pl.pjm77.model.UserGroup;
 
 @WebServlet("/usergroups")
 public class UserGroups extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+    private static final long serialVersionUID = 1L;
+
     public UserGroups() {
         super();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserGroup[] userGroups = UserGroupDAO.loadAllUserGroups();
-		request.setAttribute("usergroups", userGroups);
-		getServletContext().getRequestDispatcher("/jsp/usergroupsview.jsp").forward(request, response);
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        UserGroup[] userGroups = UserGroupDAO.loadAllUserGroups();
+        request.setAttribute("usergroups", userGroups);
+        getServletContext().getRequestDispatcher("/jsp/usergroupsview.jsp").forward(request, response);
+    }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 }

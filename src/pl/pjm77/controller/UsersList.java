@@ -14,31 +14,31 @@ import pl.pjm77.model.UserGroup;
 
 @WebServlet("/userslist")
 public class UsersList extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public UsersList() {
-		super();
-	}
+    public UsersList() {
+        super();
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String idParam = request.getParameter("id");
-		int userGroupId = 0;
-		if (idParam != null && !idParam.equals("")) {
-			try {
-				userGroupId = Integer.parseInt(idParam);
-			} catch (NumberFormatException e) {
-				System.out.println("Incorrect group Id!");
-				e.printStackTrace();
-			}
-		}
-		User[] GroupUsersList = UserDAO.loadAllbyGroupId(userGroupId);
-		request.setAttribute("groupuserslist", GroupUsersList);
-		UserGroup userGroup = UserGroupDAO.loadUserGroupById(userGroupId);
-		request.setAttribute("groupname", userGroup.getName());
-		getServletContext().getRequestDispatcher("/jsp/userslistview.jsp").forward(request, response);
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String idParam = request.getParameter("id");
+        int userGroupId = 0;
+        if (idParam != null && !idParam.equals("")) {
+            try {
+                userGroupId = Integer.parseInt(idParam);
+            } catch (NumberFormatException e) {
+                System.out.println("Incorrect group Id!");
+                e.printStackTrace();
+            }
+        }
+        User[] GroupUsersList = UserDAO.loadAllbyGroupId(userGroupId);
+        request.setAttribute("groupuserslist", GroupUsersList);
+        UserGroup userGroup = UserGroupDAO.loadUserGroupById(userGroupId);
+        request.setAttribute("groupname", userGroup.getName());
+        getServletContext().getRequestDispatcher("/jsp/userslistview.jsp").forward(request, response);
+    }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 }
