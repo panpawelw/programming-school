@@ -13,7 +13,10 @@ public class DbUtil {
     private static DataSource ds;
 
     public static Connection getConn() throws SQLException {
+        // get local JDBC database connection
 //        return getInstance().getConnection();
+
+        // or get AWS database connection
         return getRDSConnection();
     }
 

@@ -31,8 +31,9 @@
         </c:forEach>
     </table>
 
-    <%--<p>Results: ${results}</p>--%>
-    <%--<p>Results1: ${results1}</p>--%>
+    <!--Display AWS database connection data-->
+    <%--<p>Database: ${jdbcUrl}</p>--%>
+    
 </div>
 <jsp:include page="/jsp/footer.jsp"/>
 </body>

@@ -1,7 +1,9 @@
+/* background image */
 body {
 	background: url("../images/background.png") repeat;
 }
 
+/* main content */
 .content {
 	height: 100%;
 	width: 100%;
@@ -9,20 +11,24 @@ body {
 	text-align: center;
 }
 
+/* class to center text in elements */
 .centered {
 	margin: 0 auto;
 	text-align: center;
 }
 
+/* footer */
 .footer {
 	text-align: center;
 	margin: 2% auto 0;
 }
 
+/* error messages */
 .error {
 	color: red;
 }
 
+/* table layout */
 table.myTable {
 	margin: 0 auto;
 	border: 6px solid #948473;
