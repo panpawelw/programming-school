@@ -9,7 +9,8 @@ public class RequestEncodeFilter implements Filter {
 
     //Default constructor
     public RequestEncodeFilter() {
-        System.out.println("Request response encoder Filter object has been created");
+        System.out.println
+                ("Request response encoder Filter object has been created");
     }
 
     //Intitialization method
@@ -17,7 +18,9 @@ public class RequestEncodeFilter implements Filter {
         this.filterConfig = filterConfig;
     }
 
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request,
+                         ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         //Setting the character set for the request
         request.setCharacterEncoding("UTF-8");
 

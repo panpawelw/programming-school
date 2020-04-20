@@ -14,22 +14,23 @@ public class DbUtil {
 
     public static Connection getConn() throws SQLException {
         // get local JDBC database connection
-//        return getInstance().getConnection();
+        return getLocalConnection();
 
         // or get AWS database connection
-        return getRDSConnection();
+//        return getRDSConnection();
     }
 
-    private static DataSource getInstance() {
+    private static Connection getLocalConnection() throws SQLException {
         if (ds == null) {
             try {
                 Context ctx = new InitialContext();
-                ds = (DataSource) ctx.lookup("java:comp/env/jdbc/programming_school");
+                ds = (DataSource) ctx.lookup
+                        ("java:comp/env/jdbc/programming_school");
             } catch (NamingException e) {
                 e.printStackTrace();
             }
         }
-        return ds;
+        return ds.getConnection();
     }
 
     private static Connection getRDSConnection() throws SQLException {
@@ -40,8 +41,8 @@ public class DbUtil {
         String password = System.getProperty("RDS_PASSWORD");
         String hostname = System.getProperty("RDS_HOSTNAME");
         String port = System.getProperty("RDS_PORT");
-        String jdbcUrl = "jdbc:mysql://" + hostname + ":" +
-                port + "/" + dbName + "?user=" + userName + "&password=" + password;
+        String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/"
+                + dbName + "?user=" + userName + "&password=" + password;
 
         // Load the JDBC driver
         try {
@@ -49,11 +50,12 @@ public class DbUtil {
             Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("Driver loaded!");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Cannot find the driver in the classpath!", e);
+            throw new RuntimeException
+                    ("Cannot find the driver in the classpath!", e);
         }
 
         // Get connection
-        Connection conn = null;
+        Connection conn;
         conn = DriverManager.getConnection(jdbcUrl);
         return conn;
     }

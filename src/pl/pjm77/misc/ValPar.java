@@ -1,10 +1,11 @@
 package pl.pjm77.misc;
 
-/* This class contains two methods to validate number contained in string parameter (param).
-* Message parameter is the message displayed in case of error.
+/* This class contains two methods to validate number contained in string
+* parameter. Message parameter is the message displayed in case of error.
 * In case of success number returned is 0 or greater.
 * -2 is returned in case of NumberFormatException and message is displayed
-* -1 is returned when string parameter is null or empty and message is also displayed
+* -1 is returned when string parameter is null or empty and message is also
+* displayed
 * longVar returns long
 * intVar returns integer */
 public class ValPar {

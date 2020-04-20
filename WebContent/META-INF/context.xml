@@ -8,7 +8,9 @@
         username="root"
         password="mojSQL"
         driverClassName="com.mysql.cj.jdbc.Driver"
-        url="jdbc:mysql://localhost:3306/programming_school?autoReconnect=true&amp;useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=EET"
+        url="jdbc:mysql://localhost:3306/programming_school?autoReconnect=true&amp;useSSL=false
+            &amp;useUnicode=true&amp;characterEncoding=utf8&amp;useJDBCCompliantTimezoneShift=true
+            &amp;useLegacyDatetimeCode=false&amp;serverTimezone=EET"
         maxTotal="100"
         maxIdle="30"
         maxWaitMillis="10000"/>
