@@ -42,14 +42,14 @@ public class ExerciseDAO {
 		}
 	}
 	
-	public static Exercise loadExerciseById(int id) {
+	public Exercise loadExerciseById(int id) {
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM exercise WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setInt(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						return loadExercise(rs);
+						return loadSingleExercise(rs);
 					}
 				}
 			}
@@ -61,14 +61,14 @@ public class ExerciseDAO {
 		return null;
 	}
 	
-	public static Exercise[] loadAllExercises() {
+	public Exercise[] loadAllExercises() {
 		List<Exercise> exercises = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM exercise;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				try (ResultSet rs = ps.executeQuery()) {
 					while(rs.next()) {
-						exercises.add(loadExercise(rs));
+						exercises.add(loadSingleExercise(rs));
 					}
 				}
 			}
@@ -95,7 +95,13 @@ public class ExerciseDAO {
 		}
 	}
 
-	private static Exercise loadExercise(ResultSet rs) throws SQLException{
+	/**
+	 * Gets single Exercise object from result set.
+	 * @param rs - ResultSet
+	 * @return - Exercise object
+	 * @throws SQLException - in case of database problems
+	 */
+	private Exercise loadSingleExercise(ResultSet rs) throws SQLException{
 		Exercise loadedExercise = new Exercise();
 		loadedExercise.setId(rs.getInt("id"));
 		loadedExercise.setTitle(rs.getString("title"));

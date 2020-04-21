@@ -49,10 +49,8 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             UserGroup userGroup = new UserGroup();
             if(groupId!=0) {
                 userGroup = new UserGroupDAO().loadUserGroupById(groupId);
-                userGroup.setName(groupName);
-            }else {
-                userGroup.setName(groupName);
             }
+            userGroup.setName(groupName);
             userGroupDAO.saveUserGroupToDB(userGroup);
         }else{
             request.setAttribute("errorMessage", "Group name can't be empty!"); // detect empty fields and pass error message

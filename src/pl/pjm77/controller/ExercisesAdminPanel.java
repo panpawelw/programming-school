@@ -19,7 +19,7 @@ public class ExercisesAdminPanel extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Exercise[] exercisesList = ExerciseDAO.loadAllExercises();
+		Exercise[] exercisesList = new ExerciseDAO().loadAllExercises();
 		request.setAttribute("exerciseslist", exercisesList);
 		String errorMessage = (String) request.getAttribute("errorMessage");
 		if (errorMessage != null) { // pass on error message to another view if there is any

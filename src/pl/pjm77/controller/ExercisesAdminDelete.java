@@ -13,21 +13,21 @@ import pl.pjm77.model.Exercise;
 
 @WebServlet("/deleteexercise")
 public class ExercisesAdminDelete extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public ExercisesAdminDelete() {
-		super();
-	}
+    public ExercisesAdminDelete() {
+        super();
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String idParam = request.getParameter("id");
-		int exerciseId = ValPar.intVar(idParam, "Incorrect exercise Id!");
-		if(exerciseId >= 0) {
-			ExerciseDAO userGroupDAO=new ExerciseDAO();
-			Exercise userGroup=ExerciseDAO.loadExerciseById(exerciseId);
-			userGroupDAO.deleteExercise(userGroup);
-		}
-		getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String idParam = request.getParameter("id");
+        int exerciseId = ValPar.intVar(idParam, "Incorrect exercise Id!");
+        if (exerciseId >= 0) {
+            ExerciseDAO exerciseDAO = new ExerciseDAO();
+            Exercise exercise = new ExerciseDAO().loadExerciseById(exerciseId);
+            exerciseDAO.deleteExercise(exercise);
+        }
+        getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
+    }
 }

@@ -116,7 +116,7 @@ public class UserDAO {
     }
 
     /**
-     * Gets single user object from result set.
+     * Gets single User object from result set.
      * @param rs - ResultSet
      * @return - User object
      * @throws SQLException - in case of database problems

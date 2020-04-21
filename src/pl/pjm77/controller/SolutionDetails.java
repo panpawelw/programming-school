@@ -38,7 +38,7 @@ public class SolutionDetails extends HttpServlet {
 		request.setAttribute("solution", solution);
 		User user = new UserDAO().loadUserById(solution.getUser_id());
 		request.setAttribute("user", user);
-		Exercise exercise = ExerciseDAO.loadExerciseById(solution.getExercise_id());
+		Exercise exercise = new ExerciseDAO().loadExerciseById(solution.getExercise_id());
 		request.setAttribute("exercise", exercise);
 		getServletContext().getRequestDispatcher("/jsp/solutiondetailsview.jsp").forward(request, response);
 	}

@@ -30,7 +30,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
 			request.setAttribute("button", "Add exercise");
 			getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp").forward(request, response);
 		} else if (exerciseId > 0) {
-			Exercise exercise = ExerciseDAO.loadExerciseById(exerciseId);
+			Exercise exercise = new ExerciseDAO().loadExerciseById(exerciseId);
 			request.setAttribute("exerciseId", exerciseId);
 			request.setAttribute("exerciseTitle", exercise.getTitle());
 			request.setAttribute("exerciseDescription", exercise.getDescription());
@@ -51,7 +51,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
 			ExerciseDAO exerciseDAO = new ExerciseDAO();
 			Exercise exercise = new Exercise();
 			if (exerciseId != 0) {
-				exercise = ExerciseDAO.loadExerciseById(exerciseId);
+				exercise = new ExerciseDAO().loadExerciseById(exerciseId);
 				exercise.setTitle(exerciseTitle);
 				exercise.setDescription(exerciseDescription);
 			} else {
