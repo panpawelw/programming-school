@@ -32,7 +32,7 @@ public class UsersAdminAddEdit extends HttpServlet {
 			request.setAttribute("userGroup_id", null);
 			getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp").forward(request, response);
 		} else if (userId > 0) {
-			User user = UserDAO.loadUserById(userId);
+			User user = new UserDAO().loadUserById(userId);
 			request.setAttribute("userId", userId);
 			request.setAttribute("button", "Edit user");
 			request.setAttribute("userName", user.getName());
@@ -57,7 +57,7 @@ public class UsersAdminAddEdit extends HttpServlet {
 			UserDAO userDAO = new UserDAO();
 			User user = new User();
 			if (userId != 0) {
-				user = UserDAO.loadUserById(userId);
+				user = userDAO.loadUserById(userId);
 				user.setName(userName);
 				user.setEmail(userEmail);
 				user.setPassword(userPassword);

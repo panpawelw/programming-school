@@ -17,7 +17,7 @@ import pl.pjm77.model.User;
 @WebServlet("/solutiondetails")
 public class SolutionDetails extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
     public SolutionDetails() {
         super();
     }
@@ -36,7 +36,7 @@ public class SolutionDetails extends HttpServlet {
 		response.getWriter().append("Solution Id : " + solutionId);
 		Solution solution = SolutionDAO.loadSolutionById(solutionId);
 		request.setAttribute("solution", solution);
-		User user = UserDAO.loadUserById(solution.getUser_id());
+		User user = new UserDAO().loadUserById(solution.getUser_id());
 		request.setAttribute("user", user);
 		Exercise exercise = ExerciseDAO.loadExerciseById(solution.getExercise_id());
 		request.setAttribute("exercise", exercise);

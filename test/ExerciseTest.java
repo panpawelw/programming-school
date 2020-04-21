@@ -6,14 +6,14 @@ import pl.pjm77.model.Exercise;
 public class ExerciseTest {
 
     public static final int EXPECTED_ID = 0;
-    public static final String EXPECTED_TITLE = "Whatever title";
-    public static final String EXPECTED_DESCRIPTION = "Whatever description";
+    public static final String EXPECTED_TITLE = "whatever title";
+    public static final String EXPECTED_DESCRIPTION = "whatever description";
 
     private Exercise exercise;
 
     @Before
     public void setup() throws Exception {
-        exercise = new Exercise("Whatever title", "Whatever description");
+        exercise = new Exercise("whatever title", "whatever description");
     }
 
     @Test

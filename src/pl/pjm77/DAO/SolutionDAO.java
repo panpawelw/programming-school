@@ -17,7 +17,7 @@ public class SolutionDAO {
 		try (Connection con = DbUtil.getConn()) {
 			if (solution.getId() == 0) {
 				String sql = "INSERT INTO solution(created, updated, description, exercise_id, user_id) VALUES (?, ?, ?, ?, ?);";
-				String generatedColumns[] = { " ID " };
+				String[] generatedColumns = { " ID " };
 				Date date = new Date();
 				java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
 				try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {

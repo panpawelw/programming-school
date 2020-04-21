@@ -16,7 +16,7 @@ public class UserGroupDAO {
         try (Connection con = DbUtil.getConn()) {
             if (userGroup.getId() == 0) {
                 String sql = "INSERT INTO usergroup (name) VALUES (?)";
-                String generatedColumns[] = { " ID " };
+                String[] generatedColumns = { " ID " };
                 try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
                     ps.setString(1, userGroup.getName());
                     ps.executeUpdate();
@@ -74,7 +74,7 @@ public class UserGroupDAO {
             System.out.println("Database error!");
             e.printStackTrace();
         }
-        UserGroup gArray[] = new UserGroup[userGroups.size()];
+        UserGroup[] gArray = new UserGroup[userGroups.size()];
         gArray = userGroups.toArray(gArray);
         return gArray;
     }

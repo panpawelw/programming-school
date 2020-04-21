@@ -33,7 +33,7 @@ public class UserDetails extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        User user = UserDAO.loadUserById(userId);
+        User user = new UserDAO().loadUserById(userId);
         request.setAttribute("user", user);
         UserGroup userGroup = UserGroupDAO.loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());

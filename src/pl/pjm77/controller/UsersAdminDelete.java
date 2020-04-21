@@ -13,26 +13,26 @@ import pl.pjm77.model.User;
 
 @WebServlet("/deleteuser")
 public class UsersAdminDelete extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public UsersAdminDelete() {
-		super();
-	}
+    public UsersAdminDelete() {
+        super();
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String idParam = request.getParameter("id");
-		long userId = ValPar.longVar(idParam, "Incorrect user Id!");
-		if(userId >= 0) {
-			UserDAO userDAO=new UserDAO();
-			User user=UserDAO.loadUserById(userId);
-			userDAO.deleteUser(user);
-		}
-		getServletContext().getRequestDispatcher("/usersadminpanel").forward(request, response);
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String idParam = request.getParameter("id");
+        long userId = ValPar.longVar(idParam, "Incorrect user Id!");
+        if (userId >= 0) {
+            UserDAO userDAO = new UserDAO();
+            User user = new UserDAO().loadUserById(userId);
+            userDAO.deleteUser(user);
+        }
+        getServletContext().getRequestDispatcher("/usersadminpanel").forward(request, response);
+    }
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
 }

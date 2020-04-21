@@ -16,7 +16,7 @@ public class ExerciseDAO {
 		try (Connection con = DbUtil.getConn()) {
 			if (exercise.getId() == 0) {
 				String sql = "INSERT INTO exercise (title, description) VALUES (?, ?)";
-				String generatedColumns[] = { " ID " };
+				String[] generatedColumns = { " ID " };
 				try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
 					ps.setString(1, exercise.getTitle());
 					ps.setString(2, exercise.getDescription());
@@ -76,7 +76,7 @@ public class ExerciseDAO {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		Exercise eArray[] = new Exercise[exercises.size()];
+		Exercise[] eArray = new Exercise[exercises.size()];
 		eArray = exercises.toArray(eArray);
 		return eArray;
 	}

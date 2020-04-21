@@ -48,14 +48,14 @@ public class UserDAO {
         }
     }
 
-    public static User loadUserById(long id) {
+    public User loadUserById(long id) {
         try (Connection con = DbUtil.getConn()) {
             String sql = "SELECT * FROM user WHERE id=?;";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setLong(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        return loadUser(rs);
+                        return loadSingleUser(rs);
                     }
                 }
             }
@@ -81,25 +81,28 @@ public class UserDAO {
         }
     }
 
-    public static User[] loadAllUsers() {
-        return loadUsersBy(true, 0);
+    public User[] loadAllUsers() {
+        return executeQuery("SELECT * FROM user;");
     }
 
-    public static User[] loadAllbyGroupId(int usergroup_id) {
-        return loadUsersBy(false, usergroup_id);
+    public User[] loadAllbyGroupId(int usergroup_id) {
+        return executeQuery("SELECT * FROM user WHERE usergroup_id=?;", usergroup_id);
     }
 
-    private static User[] loadUsersBy(boolean loadAll, long param) {
-        String sql;
-        if (loadAll) sql = "SELECT * FROM user;";
-        else sql = "SELECT * FROM user WHERE usergroup_id=?;";
+    /**
+     * executes SQL Query with optional parameter.
+     * @param sqlQuery - query to execute
+     * @param param - optional parameter
+     * @return user objects array
+     */
+    private User[] executeQuery(String sqlQuery, long...param) {
         List<User> usersByParamArrayList = new ArrayList<>();
         try (Connection con = DbUtil.getConn()) {
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                if (param != 0) ps.setLong(1, param);
+            try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
+                if (param.length != 0) ps.setLong(1, param[0]);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        usersByParamArrayList.add(loadUser(rs));
+                        usersByParamArrayList.add(loadSingleUser(rs));
                     }
                 }
             }
@@ -112,7 +115,13 @@ public class UserDAO {
         return usersByParamArray;
     }
 
-    private static User loadUser(ResultSet rs) throws SQLException {
+    /**
+     * Gets single user object from result set.
+     * @param rs - ResultSet
+     * @return - User object
+     * @throws SQLException - in case of database problems
+     */
+    private User loadSingleUser(ResultSet rs) throws SQLException {
         User loadedUser = new User();
         loadedUser.setId(rs.getLong("id"));
         loadedUser.setName(rs.getString("username"));
