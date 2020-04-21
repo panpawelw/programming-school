@@ -19,7 +19,7 @@ public class UserGroupsAdminPanel extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserGroup[] groupsList = UserGroupDAO.loadAllUserGroups();
+		UserGroup[] groupsList = new UserGroupDAO().loadAllUserGroups();
 		request.setAttribute("groupslist", groupsList);
 		String errorMessage = (String) request.getAttribute("errorMessage");
 		if (errorMessage != null) { // pass on error message to another view if there is any

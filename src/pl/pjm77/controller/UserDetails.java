@@ -25,17 +25,17 @@ public class UserDetails extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int userId = 0;
-        if(idParam!=null & !idParam.equals("")) {
+        if (idParam != null & !idParam.equals("")) {
             try {
                 userId = Integer.parseInt(idParam);
-            }catch(NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Incorrect user Id!");
                 e.printStackTrace();
             }
         }
         User user = new UserDAO().loadUserById(userId);
         request.setAttribute("user", user);
-        UserGroup userGroup = UserGroupDAO.loadUserGroupById(user.getGroup_id());
+        UserGroup userGroup = new UserGroupDAO().loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());
         LastSolution[] usersSolutions = LastSolutionDAO.loadAllSolutionsByUserId(userId);
         request.setAttribute("userssolutions", usersSolutions);

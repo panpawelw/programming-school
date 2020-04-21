@@ -29,7 +29,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add group");
             getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
         }else if(groupId > 0){
-            UserGroup userGroup = UserGroupDAO.loadUserGroupById(groupId);
+            UserGroup userGroup = new UserGroupDAO().loadUserGroupById(groupId);
             request.setAttribute("groupId", groupId);
             request.setAttribute("groupName", userGroup.getName());
             request.setAttribute("button", "Edit group");
@@ -48,7 +48,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             UserGroupDAO userGroupDAO = new UserGroupDAO();
             UserGroup userGroup = new UserGroup();
             if(groupId!=0) {
-                userGroup = UserGroupDAO.loadUserGroupById(groupId);
+                userGroup = new UserGroupDAO().loadUserGroupById(groupId);
                 userGroup.setName(groupName);
             }else {
                 userGroup.setName(groupName);

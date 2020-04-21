@@ -19,7 +19,7 @@ public class UserGroups extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserGroup[] userGroups = UserGroupDAO.loadAllUserGroups();
+        UserGroup[] userGroups = new UserGroupDAO().loadAllUserGroups();
         request.setAttribute("usergroups", userGroups);
         getServletContext().getRequestDispatcher("/jsp/usergroupsview.jsp").forward(request, response);
     }

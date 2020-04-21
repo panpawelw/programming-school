@@ -33,7 +33,7 @@ public class UsersList extends HttpServlet {
         }
         User[] GroupUsersList = new UserDAO().loadAllbyGroupId(userGroupId);
         request.setAttribute("groupuserslist", GroupUsersList);
-        UserGroup userGroup = UserGroupDAO.loadUserGroupById(userGroupId);
+        UserGroup userGroup = new UserGroupDAO().loadUserGroupById(userGroupId);
         request.setAttribute("groupname", userGroup.getName());
         getServletContext().getRequestDispatcher("/jsp/userslistview.jsp").forward(request, response);
     }

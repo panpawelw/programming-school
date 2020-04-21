@@ -40,14 +40,14 @@ public class UserGroupDAO {
         }
     }
 
-    public static UserGroup loadUserGroupById(int id) {
+    public UserGroup loadUserGroupById(int id) {
         try (Connection con = DbUtil.getConn()) {
             String sql = "SELECT * FROM usergroup WHERE id=?;";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setInt(1, id);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        return loadUserGroup(rs);
+                        return loadSingleUserGroup(rs);
                     }
                 }
             }
@@ -59,14 +59,14 @@ public class UserGroupDAO {
         return null;
     }
 
-    public static UserGroup[] loadAllUserGroups() {
+    public UserGroup[] loadAllUserGroups() {
         List<UserGroup> userGroups = new ArrayList<>();
         try (Connection con = DbUtil.getConn()) {
             String sql = "SELECT * FROM usergroup;";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 try (ResultSet rs = ps.executeQuery()) {
                     while(rs.next()) {
-                        userGroups.add(loadUserGroup(rs));
+                        userGroups.add(loadSingleUserGroup(rs));
                     }
                 }
             }
@@ -93,7 +93,13 @@ public class UserGroupDAO {
         }
     }
 
-    private static UserGroup loadUserGroup(ResultSet rs) throws SQLException{
+    /**
+     * Gets single UserGroup object from result set.
+     * @param rs - ResultSet
+     * @return - UserGroup object
+     * @throws SQLException - in case of database problems
+     */
+    private UserGroup loadSingleUserGroup(ResultSet rs) throws SQLException{
         UserGroup loadedUserGroup = new UserGroup();
         loadedUserGroup.setId(rs.getInt("id"));
         loadedUserGroup.setName(rs.getString("name"));
