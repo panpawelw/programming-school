@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-		 pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page isELIgnored="false" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -15,7 +14,7 @@
 	<h1>Users administration panel</h1>
 	<h3>Users list</h3>
 	<p><a href="${pageContext.request.contextPath}/addedituser?id=0">Add user</a></p>
-	<p class="error">${errorMessage}</p>
+	<p class="error">${requestScope.errorMessage}</p>
 	<br>
 	<table class="myTable">
 		<tr>
@@ -24,7 +23,7 @@
 			<th>Group Id</th>
 			<th colspan="2">Actions</th>
 		</tr>
-		<c:forEach items="${userslist}" var="user">
+		<c:forEach items="${requestScope.userslist}" var="user">
 			<tr>
 				<td>${user.name}</td>
 				<td>${user.email}</td>

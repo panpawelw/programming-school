@@ -19,7 +19,7 @@ public class UsersAdminPanel extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User[] usersList = UserDAO.loadAllUsers();
+		User[] usersList = new UserDAO().loadAllUsers();
 		request.setAttribute("userslist", usersList);
 		String errorMessage = (String) request.getAttribute("errorMessage");
 		if (errorMessage != null) { // pass on error message to another view if there is any

@@ -31,7 +31,7 @@ public class UsersList extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        User[] GroupUsersList = UserDAO.loadAllbyGroupId(userGroupId);
+        User[] GroupUsersList = new UserDAO().loadAllbyGroupId(userGroupId);
         request.setAttribute("groupuserslist", GroupUsersList);
         UserGroup userGroup = UserGroupDAO.loadUserGroupById(userGroupId);
         request.setAttribute("groupname", userGroup.getName());

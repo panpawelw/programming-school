@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-		 pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page isELIgnored="false" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -15,7 +14,7 @@
 	<h1>Solutions administration panel</h1>
 	<h3>Solutions list</h3>
 	<p><a href="${pageContext.request.contextPath}/addeditsolution?id=0">Add solution</a></p>
-	<p class="error">${errorMessage}</p>
+	<p class="error">${requestScope.errorMessage}</p>
 	<br>
 	<table class="myTable">
 		<tr>
@@ -26,7 +25,7 @@
 			<th>User Id</th>
 			<th colspan="2">Actions</th>
 		</tr>
-		<c:forEach items="${solutionslist}" var="solution">
+		<c:forEach items="${requestScope.solutionslist}" var="solution">
 			<tr>
 				<td>${solution.created}</td>
 				<td>${solution.updated}</td>
