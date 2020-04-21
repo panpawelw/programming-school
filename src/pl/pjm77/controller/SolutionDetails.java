@@ -34,7 +34,7 @@ public class SolutionDetails extends HttpServlet {
 			}
 		}
 		response.getWriter().append("Solution Id : " + solutionId);
-		Solution solution = SolutionDAO.loadSolutionById(solutionId);
+		Solution solution = new SolutionDAO().loadSolutionById(solutionId);
 		request.setAttribute("solution", solution);
 		User user = new UserDAO().loadUserById(solution.getUser_id());
 		request.setAttribute("user", user);

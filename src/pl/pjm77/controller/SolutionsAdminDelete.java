@@ -25,7 +25,7 @@ public class SolutionsAdminDelete extends HttpServlet {
         long solutionId = ValPar.longVar(idParam, "Incorrect solution Id!");
         if (solutionId >= 0) {
             SolutionDAO solutionDAO = new SolutionDAO();
-            Solution solution = SolutionDAO.loadSolutionById(solutionId);
+            Solution solution = new SolutionDAO().loadSolutionById(solutionId);
             solutionDAO.deleteSolution(solution);
         }
         getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);

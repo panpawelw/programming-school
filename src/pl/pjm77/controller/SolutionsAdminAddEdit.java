@@ -33,7 +33,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 			request.setAttribute("solutionUser_id", null);
 			getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
 		} else if (solutionId > 0) {
-			Solution solution = SolutionDAO.loadSolutionById(solutionId);
+			Solution solution = new SolutionDAO().loadSolutionById(solutionId);
 			request.setAttribute("solutionId", solutionId);
 			request.setAttribute("button", "Edit solution");
 			request.setAttribute("solutionDescription", solution.getDescription());
@@ -58,7 +58,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 			SolutionDAO solutionDAO = new SolutionDAO();
 			Solution solution = new Solution();
 			if (solutionId != 0) {
-				solution = SolutionDAO.loadSolutionById(solutionId);
+				solution = solutionDAO.loadSolutionById(solutionId);
 				solution.setDescription(solutionDescription);
 				solution.setExercise_id(solutionExercise_id);
 				solution.setUser_id(solutionUser_id);

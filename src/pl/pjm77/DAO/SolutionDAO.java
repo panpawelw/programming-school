@@ -49,14 +49,14 @@ public class SolutionDAO {
 		}
 	}
 	
-	static public Solution loadSolutionById(long id) {
+	public Solution loadSolutionById(long id) {
 		try (Connection con = DbUtil.getConn()) {
 			String sql = "SELECT * FROM solution WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setLong(1, id);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						return loadSolution(rs);
+						return loadSingleSolution(rs);
 					}
 				}
 			}
@@ -82,25 +82,28 @@ public class SolutionDAO {
 		}
 	}
 	
-	static public Solution[] loadAllSolutions() {
-		return loadSolutionsBy(true, 0);
+	public Solution[] loadAllSolutions() {
+		return executeQuery("SELECT * FROM solution;");
 	}
 
-	public static Solution[] loadAllByUserId(int user_id) {
-		return loadSolutionsBy(false, user_id);
-	} 
+	public Solution[] loadAllByUserId(int user_id) {
+		return executeQuery("SELECT * FROM solution WHERE user_id=?;", user_id);
+	}
 
-	private static Solution[] loadSolutionsBy(boolean loadAll, long param){
-		String sql;
-		if(loadAll) sql = "SELECT * FROM solution;";
-			else sql = "SELECT * FROM solution WHERE user_id=?;";
+	/**
+	 * executes SQL Query with optional parameter.
+	 * @param sqlQuery - query to execute
+	 * @param param - optional parameter
+	 * @return user objects array
+	 */
+	private Solution[] executeQuery(String sqlQuery, long...param){
 		List<Solution> solutions = new ArrayList<>();
 		try (Connection con = DbUtil.getConn()) {
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				if(param!=0) ps.setLong(1, param);
+			try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
+				if(param.length !=0) ps.setLong(1, param[0]);
 				try (ResultSet rs = ps.executeQuery()) {
 					while(rs.next()) {
-						solutions.add(loadSolution(rs));
+						solutions.add(loadSingleSolution(rs));
 					}
 				}
 			}
@@ -108,12 +111,19 @@ public class SolutionDAO {
 			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		Solution sArray[] = new Solution[solutions.size()];
+		Solution[] sArray = new Solution[solutions.size()];
 		sArray = solutions.toArray(sArray);
 		return sArray;
 	}
 
-	private static Solution loadSolution(ResultSet rs) throws SQLException{
+
+	/**
+	 * Gets single Solution object from result set.
+	 * @param rs - ResultSet
+	 * @return - Solution object
+	 * @throws SQLException - in case of database problems
+	 */
+	private Solution loadSingleSolution(ResultSet rs) throws SQLException{
 		Solution loadedSolution = new Solution();
 		loadedSolution.setId(rs.getLong("id"));
 		loadedSolution.setDescription(rs.getString("description"));

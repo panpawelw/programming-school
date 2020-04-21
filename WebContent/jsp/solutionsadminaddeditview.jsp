@@ -19,7 +19,7 @@
         <label for="user_id">User Id</label>
         <input type="number" name="user_id" id="user_id" min="1" step="1"
                value="${requestScope.solutionUser_id}"/><br>
-        <label for="description">Exercise Id</label><br>
+        <label for="description">Exercise Description</label><br>
         <textarea rows="30" cols="50" name="description"
                   id="description">${requestScope.solutionDescription}</textarea><br>
         <br>
