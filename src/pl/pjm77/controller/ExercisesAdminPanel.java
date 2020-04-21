@@ -27,8 +27,4 @@ public class ExercisesAdminPanel extends HttpServlet {
 		}
 		getServletContext().getRequestDispatcher("/jsp/exercisesadminview.jsp").forward(request,response);
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
 }

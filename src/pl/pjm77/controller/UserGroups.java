@@ -23,8 +23,4 @@ public class UserGroups extends HttpServlet {
         request.setAttribute("usergroups", userGroups);
         getServletContext().getRequestDispatcher("/jsp/usergroupsview.jsp").forward(request, response);
     }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
 }

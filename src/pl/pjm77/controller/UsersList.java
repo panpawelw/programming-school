@@ -37,8 +37,4 @@ public class UsersList extends HttpServlet {
         request.setAttribute("groupname", userGroup.getName());
         getServletContext().getRequestDispatcher("/jsp/userslistview.jsp").forward(request, response);
     }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
 }

@@ -42,8 +42,4 @@ public class SolutionDetails extends HttpServlet {
 		request.setAttribute("exercise", exercise);
 		getServletContext().getRequestDispatcher("/jsp/solutiondetailsview.jsp").forward(request, response);
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
 }

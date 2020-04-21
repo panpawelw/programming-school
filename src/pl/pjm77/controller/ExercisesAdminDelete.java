@@ -30,9 +30,4 @@ public class ExercisesAdminDelete extends HttpServlet {
 		}
 		getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
 }

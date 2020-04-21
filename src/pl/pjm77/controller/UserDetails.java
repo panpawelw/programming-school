@@ -42,8 +42,4 @@ public class UserDetails extends HttpServlet {
         getServletContext().getRequestDispatcher("/jsp/userdetailsview.jsp").forward(request, response);
         response.getWriter().append("" + userId).append(request.getContextPath());
     }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
-    }
 }

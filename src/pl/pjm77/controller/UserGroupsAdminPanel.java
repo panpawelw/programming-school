@@ -27,8 +27,4 @@ public class UserGroupsAdminPanel extends HttpServlet {
 		}
 		getServletContext().getRequestDispatcher("/jsp/usergroupsadminview.jsp").forward(request, response);
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
 }
