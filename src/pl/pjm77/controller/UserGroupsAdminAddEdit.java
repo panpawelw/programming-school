@@ -23,18 +23,18 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int groupId = ValPar.intVar(idParam, "Incorrect group Id!");
-        if(groupId == 0) {
+        if (groupId == 0) {
             request.setAttribute("groupId", groupId);
             request.setAttribute("groupName", null);
             request.setAttribute("button", "Add group");
             getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
-        }else if(groupId > 0){
+        } else if (groupId > 0) {
             UserGroup userGroup = new UserGroupDAO().loadUserGroupById(groupId);
             request.setAttribute("groupId", groupId);
             request.setAttribute("groupName", userGroup.getName());
             request.setAttribute("button", "Edit group");
             getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
-        }else {
+        } else {
             getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
         }
     }
@@ -44,16 +44,16 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
         String idParam = request.getParameter("id");
         String groupName = request.getParameter("name");
         int groupId = ValPar.intVar(idParam, "Incorrect group Id!");
-        if(groupName!=null && !groupName.equals("") && groupId >= 0) {
+        if (groupName != null && !groupName.equals("") && groupId >= 0) {
             UserGroupDAO userGroupDAO = new UserGroupDAO();
             UserGroup userGroup = new UserGroup();
-            if(groupId!=0) {
+            if (groupId != 0) {
                 userGroup = new UserGroupDAO().loadUserGroupById(groupId);
             }
             userGroup.setName(groupName);
             userGroupDAO.saveUserGroupToDB(userGroup);
-        }else{
-            request.setAttribute("errorMessage", "Group name can't be empty!"); // detect empty fields and pass error message
+        } else {
+            request.setAttribute("errorMessage", "Group name can't be empty!");
         }
         getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
     }

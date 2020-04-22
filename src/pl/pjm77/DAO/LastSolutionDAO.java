@@ -9,30 +9,31 @@ import java.util.List;
 
 import pl.pjm77.misc.DbUtil;
 import pl.pjm77.model.LastSolution;
+import pl.pjm77.model.Solution;
 
 public class LastSolutionDAO {
 
-    public static LastSolution[] loadAllSolutions(int number) {
-        return loadSolutionsBy(true, number, 0);
+    public LastSolution[] loadMostRecentSolutions(long number) {
+        return executeQuery("SELECT exercise.title, user.username, IF(solution.updated > " +
+                "solution.created, solution.updated, solution.created), solution.id FROM solution " +
+                "LEFT JOIN exercise ON solution.exercise_id=exercise.id LEFT JOIN user ON " +
+                "solution.user_id=user.id ORDER BY IF(updated > created, updated, created)" +
+                " DESC LIMIT ?;", number);
     }
 
-    public static LastSolution[] loadAllSolutionsByUserId(long user_id) {
-        return loadSolutionsBy(false, 0, user_id);
+    public LastSolution[] loadMostRecentSolutionsByUserId(long user_id) {
+        return executeQuery("SELECT exercise.title, user.username, IF(solution.updated > " +
+                "solution.created, solution.updated, solution.created), solution.id FROM solution " +
+                "LEFT JOIN exercise ON solution.exercise_id=exercise.id LEFT JOIN user ON " +
+                "solution.user_id=user.id  WHERE solution.user_id=? ORDER BY IF(updated > created, " +
+                "updated, created) DESC;", user_id);
     }
 
-    private static LastSolution[] loadSolutionsBy(boolean all, int number, long param) {
+    private LastSolution[] executeQuery(String sqlQuery, long...param) {
         List<LastSolution> solutions = new ArrayList<>();
-        String sql;
-        if(all) sql = "SELECT exercise.title, user.username, IF(solution.updated > solution.created, solution.updated, solution.created),"
-                + " solution.id FROM solution LEFT JOIN exercise ON solution.exercise_id=exercise.id"
-                + " LEFT JOIN user ON solution.user_id=user.id ORDER BY IF(updated > created, updated, created) DESC LIMIT ?;";
-        else sql = "SELECT exercise.title, user.username, IF(solution.updated > solution.created, solution.updated, solution.created),"
-                + " solution.id FROM solution LEFT JOIN exercise ON solution.exercise_id=exercise.id"
-                + " LEFT JOIN user ON solution.user_id=user.id  WHERE solution.user_id=? ORDER BY IF(updated > created, updated, created) DESC;";
         try (Connection con = DbUtil.getConn()) {
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                if (all) ps.setInt(1,number);
-                else ps.setLong(1, param);
+            try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
+                ps.setLong(1, param[0]);
                 try (ResultSet rs = ps.executeQuery()) {
                     while(rs.next()) {
                         LastSolution loadedSolution = new LastSolution();

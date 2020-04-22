@@ -25,7 +25,7 @@ public class UserDetails extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int userId = 0;
-        if (idParam != null & !idParam.equals("")) {
+        if (idParam != null && !idParam.equals("")) {
             try {
                 userId = Integer.parseInt(idParam);
             } catch (NumberFormatException e) {
@@ -37,9 +37,9 @@ public class UserDetails extends HttpServlet {
         request.setAttribute("user", user);
         UserGroup userGroup = new UserGroupDAO().loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());
-        LastSolution[] usersSolutions = LastSolutionDAO.loadAllSolutionsByUserId(userId);
+        LastSolution[] usersSolutions = new LastSolutionDAO().loadMostRecentSolutionsByUserId(userId);
         request.setAttribute("userssolutions", usersSolutions);
         getServletContext().getRequestDispatcher("/jsp/userdetailsview.jsp").forward(request, response);
-        response.getWriter().append("" + userId).append(request.getContextPath());
+        response.getWriter().append("").append(String.valueOf(userId)).append(request.getContextPath());
     }
 }

@@ -22,17 +22,17 @@ public class Home extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String contextParam = getServletContext().getInitParameter("number-solutions");
-        int recentSolutions = 5;
+        long recentSolutions = 5;
         if (contextParam != null & !Objects.equals(contextParam, "")) {
             try {
-                recentSolutions = Integer.parseInt(contextParam);
+                recentSolutions = Long.parseLong(contextParam);
             } catch (NumberFormatException n) {
                 System.out.println("Parameter must be an integer value, using default" +
                         " value of 5 instead!");
             }
         }
         LastSolution[] lastSolutions =
-                LastSolutionDAO.loadAllSolutions(recentSolutions);
+                new LastSolutionDAO().loadMostRecentSolutions(recentSolutions);
         request.setAttribute("lastsolutions", lastSolutions);
 
         getServletContext().getRequestDispatcher("/jsp/index.jsp")

@@ -57,25 +57,20 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 		if (solutionDescription != null && !solutionDescription.equals("") && solutionExercise_id != 0 && solutionUser_id != 0 && solutionId >= 0) {
 			SolutionDAO solutionDAO = new SolutionDAO();
 			Solution solution = new Solution();
+			Date date = new Date();
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
 			if (solutionId != 0) {
 				solution = solutionDAO.loadSolutionById(solutionId);
-				solution.setDescription(solutionDescription);
-				solution.setExercise_id(solutionExercise_id);
-				solution.setUser_id(solutionUser_id);
-				Date date = new Date();
-				java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
 				solution.setUpdated(sqlDate);
 			} else {
-				solution.setDescription(solutionDescription);
-				solution.setExercise_id(solutionExercise_id);
-				solution.setUser_id(solutionUser_id);
-				Date date = new Date();
-				java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
 				solution.setCreated(sqlDate);
 			}
+			solution.setDescription(solutionDescription);
+			solution.setExercise_id(solutionExercise_id);
+			solution.setUser_id(solutionUser_id);
 			solutionDAO.saveSolutionToDB(solution);
 		} else {
-			request.setAttribute("errorMessage", "Solution exercise Id, user Id nor description can't be empty!"); // detect empty fields and pass error message
+			request.setAttribute("errorMessage", "Solution exercise Id, user Id nor description can't be empty!");
 		}
 		getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);
 	}

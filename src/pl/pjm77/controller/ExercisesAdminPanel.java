@@ -22,7 +22,7 @@ public class ExercisesAdminPanel extends HttpServlet {
 		Exercise[] exercisesList = new ExerciseDAO().loadAllExercises();
 		request.setAttribute("exerciseslist", exercisesList);
 		String errorMessage = (String) request.getAttribute("errorMessage");
-		if (errorMessage != null) { // pass on error message to another view if there is any
+		if (errorMessage != null) {
 			request.setAttribute("errorMessage", errorMessage);
 		}
 		getServletContext().getRequestDispatcher("/jsp/exercisesadminview.jsp").forward(request,response);
