@@ -1,7 +1,5 @@
 package pl.pjm77.model;
 
-import mindrot.jbcrypt.BCrypt;
-
 public class User {
 
     private long id;
@@ -15,7 +13,7 @@ public class User {
     public User(String name, String email, String password, int group_id) {
         this.name = name;
         this.email = email;
-        this.setPassword(password);
+        this.password = password;
         this.group_id = group_id;
     }
 
@@ -40,7 +38,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+        this.password = password;
     }
 
     public int getGroup_id() {

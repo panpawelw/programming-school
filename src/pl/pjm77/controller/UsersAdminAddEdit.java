@@ -11,13 +11,22 @@ import javax.servlet.http.HttpServletResponse;
 import pl.pjm77.DAO.UserDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.User;
+import pl.pjm77.passwordEncoder.BCryptPasswordEncoder;
+import pl.pjm77.passwordEncoder.PasswordEncoder;
 
 @WebServlet("/addedituser")
 public class UsersAdminAddEdit extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private PasswordEncoder passwordEncoder;
+
     public UsersAdminAddEdit() {
         super();
+    }
+
+    public void init() {
+        passwordEncoder = new BCryptPasswordEncoder();
+        System.out.println("Password encoder initialized: " + passwordEncoder.getClass());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,7 +62,8 @@ public class UsersAdminAddEdit extends HttpServlet {
         String group_idParam = request.getParameter("group_id");
         long userId = ValidateParameter.checkLong(idParam, "Incorrect user Id!");
         int userGroup_id = ValidateParameter.checkInt(group_idParam, "Incorrect group Id!");
-        if (userName != null && !userName.equals("") && userEmail != null && !userEmail.equals("") && userPassword != null && !userPassword.equals("") && userGroup_id > 0 && userId >= 0) {
+        if (userName != null && !userName.equals("") && userEmail != null && !userEmail.equals("")
+                && userPassword != null && !userPassword.equals("") && userGroup_id > 0 && userId >= 0) {
             UserDAO userDAO = new UserDAO();
             User user = new User();
             if (userId != 0) {
@@ -61,11 +71,13 @@ public class UsersAdminAddEdit extends HttpServlet {
             }
             user.setName(userName);
             user.setEmail(userEmail);
+            userPassword = passwordEncoder.encodePassword(userPassword);
             user.setPassword(userPassword);
             user.setGroup_id(userGroup_id);
             userDAO.saveUserToDB(user);
         } else {
-            request.setAttribute("errorMessage", "User name, email, password nor group can't be empty!");
+            request.setAttribute("errorMessage",
+                    "User name, email, password nor group can't be empty!");
         }
         getServletContext().getRequestDispatcher("/usersadminpanel").forward(request, response);
     }

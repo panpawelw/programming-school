@@ -11,7 +11,7 @@
 <body>
 <div class="content">
 	<h3>Add / edit user</h3>
-	<form action="addedituser" method="post">
+	<form action="addedituser" method="POST">
 		<input type="hidden" name="id" value="${requestScope.userId}"/>
 		<label for="name">User name:</label>
 		<input type="text" name="name" id="name" autofocus value="${requestScope.userName}"/><br>
