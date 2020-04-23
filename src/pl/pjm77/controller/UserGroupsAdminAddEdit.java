@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.UserGroupDAO;
-import pl.pjm77.misc.ValPar;
+import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.UserGroup;
 
 @WebServlet("/addeditgroup")
@@ -22,7 +22,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        int groupId = ValPar.intVar(idParam, "Incorrect group Id!");
+        int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         if (groupId == 0) {
             request.setAttribute("groupId", groupId);
             request.setAttribute("groupName", null);
@@ -43,7 +43,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         String groupName = request.getParameter("name");
-        int groupId = ValPar.intVar(idParam, "Incorrect group Id!");
+        int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         if (groupName != null && !groupName.equals("") && groupId >= 0) {
             UserGroupDAO userGroupDAO = new UserGroupDAO();
             UserGroup userGroup = new UserGroup();

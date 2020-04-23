@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.UserDAO;
-import pl.pjm77.misc.ValPar;
+import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.User;
 
 @WebServlet("/addedituser")
@@ -23,7 +23,7 @@ public class UsersAdminAddEdit extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        int userId = ValPar.intVar(idParam, "Incorrect user Id!");
+        int userId = ValidateParameter.checkInt(idParam, "Incorrect user Id!");
         if (userId == 0) {
             request.setAttribute("userId", 0);
             request.setAttribute("button", "Add user");
@@ -51,8 +51,8 @@ public class UsersAdminAddEdit extends HttpServlet {
         String userEmail = request.getParameter("email");
         String userPassword = request.getParameter("password");
         String group_idParam = request.getParameter("group_id");
-        long userId = ValPar.longVar(idParam, "Incorrect user Id!");
-        int userGroup_id = ValPar.intVar(group_idParam, "Incorrect group Id!");
+        long userId = ValidateParameter.checkLong(idParam, "Incorrect user Id!");
+        int userGroup_id = ValidateParameter.checkInt(group_idParam, "Incorrect group Id!");
         if (userName != null && !userName.equals("") && userEmail != null && !userEmail.equals("") && userPassword != null && !userPassword.equals("") && userGroup_id > 0 && userId >= 0) {
             UserDAO userDAO = new UserDAO();
             User user = new User();

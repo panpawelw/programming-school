@@ -1,16 +1,22 @@
 package pl.pjm77.misc;
 
-/* This class contains two methods to validate number contained in string
+/** This class contains two methods to validate number contained in string
 * parameter. Message parameter is the message displayed in case of error.
 * In case of success number returned is 0 or greater.
 * -2 is returned in case of NumberFormatException and message is displayed
 * -1 is returned when string parameter is null or empty and message is also
 * displayed
-* longVar returns long
-* intVar returns integer */
-public class ValPar {
+*/
 
-    public static long longVar (String param, String message) {
+public class ValidateParameter {
+
+    /** Validates parameter to long
+     *
+     * @param param - parameter in String format
+     * @param message - message to be displayed in case of error
+     * @return parameter value as long
+     */
+    public static long checkLong(String param, String message) {
         long result;
         if (param != null && !param.equals("")) {
             try {
@@ -27,7 +33,13 @@ public class ValPar {
         return result;
     }
 
-    public static int intVar (String param, String message) {
+    /**Validates parameter to integer
+     *
+     * @param param - parameter as String
+     * @param message - message to be displayed in case of error
+     * @return parameter value as integer
+     */
+    public static int checkInt(String param, String message) {
         int result;
         if (param != null && !param.equals("")) {
             try {

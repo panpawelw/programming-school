@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.ExerciseDAO;
-import pl.pjm77.misc.ValPar;
+import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Exercise;
 
 @WebServlet("/deleteexercise")
@@ -22,7 +22,7 @@ public class ExercisesAdminDelete extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        int exerciseId = ValPar.intVar(idParam, "Incorrect exercise Id!");
+        int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
         if (exerciseId >= 0) {
             ExerciseDAO exerciseDAO = new ExerciseDAO();
             Exercise exercise = new ExerciseDAO().loadExerciseById(exerciseId);

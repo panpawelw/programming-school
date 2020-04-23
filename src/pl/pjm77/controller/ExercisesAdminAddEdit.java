@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.ExerciseDAO;
-import pl.pjm77.misc.ValPar;
+import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Exercise;
 
 @WebServlet("/addeditexercise")
@@ -22,7 +22,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        int exerciseId = ValPar.intVar(idParam, "Incorrect exercise Id!");
+        int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
         if (exerciseId == 0) {
             request.setAttribute("exerciseId", 0);
             request.setAttribute("exerciseTitle", null);
@@ -46,7 +46,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
         String idParam = request.getParameter("id");
         String exerciseTitle = request.getParameter("title");
         String exerciseDescription = request.getParameter("description");
-        int exerciseId = ValPar.intVar(idParam, "Incorrect exercise Id!");
+        int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
         if (exerciseTitle != null && !exerciseTitle.equals("") && exerciseDescription != null && !exerciseDescription.equals("") && exerciseId >= 0) {
             ExerciseDAO exerciseDAO = new ExerciseDAO();
             Exercise exercise = new Exercise();

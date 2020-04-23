@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.SolutionDAO;
-import pl.pjm77.misc.ValPar;
+import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Solution;
 
 @WebServlet("/addeditsolution")
@@ -24,7 +24,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String idParam = request.getParameter("id");
-		int solutionId = ValPar.intVar(idParam, "Incorrect solution Id!");
+		int solutionId = ValidateParameter.checkInt(idParam, "Incorrect solution Id!");
 		if (solutionId == 0) {
 			request.setAttribute("solutionId", 0);
 			request.setAttribute("button", "Add solution");
@@ -51,9 +51,9 @@ public class SolutionsAdminAddEdit extends HttpServlet {
 		String solutionDescription = request.getParameter("description");
 		String exercise_idParam = request.getParameter("exercise_id");
 		String user_idParam = request.getParameter("user_id");
-		long solutionId = ValPar.longVar(idParam, "Incorrect solution Id!");
-		int solutionExercise_id = ValPar.intVar(exercise_idParam, "Incorrect exercise Id!");
-		long solutionUser_id = ValPar.longVar(user_idParam, "Incorrect user Id!");
+		long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
+		int solutionExercise_id = ValidateParameter.checkInt(exercise_idParam, "Incorrect exercise Id!");
+		long solutionUser_id = ValidateParameter.checkLong(user_idParam, "Incorrect user Id!");
 		if (solutionDescription != null && !solutionDescription.equals("") && solutionExercise_id != 0 && solutionUser_id != 0 && solutionId >= 0) {
 			SolutionDAO solutionDAO = new SolutionDAO();
 			Solution solution = new Solution();

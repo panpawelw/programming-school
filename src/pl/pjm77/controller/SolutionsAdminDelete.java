@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.SolutionDAO;
-import pl.pjm77.misc.ValPar;
+import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Solution;
 
 @WebServlet("/deletesolution")
@@ -22,7 +22,7 @@ public class SolutionsAdminDelete extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        long solutionId = ValPar.longVar(idParam, "Incorrect solution Id!");
+        long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
         if (solutionId >= 0) {
             SolutionDAO solutionDAO = new SolutionDAO();
             Solution solution = new SolutionDAO().loadSolutionById(solutionId);
