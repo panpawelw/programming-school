@@ -42,7 +42,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        String groupName = request.getParameter("name");
+        String groupName = request.getParameter("group_name");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         if (groupName != null && !groupName.equals("") && groupId >= 0) {
             UserGroupDAO userGroupDAO = new UserGroupDAO();

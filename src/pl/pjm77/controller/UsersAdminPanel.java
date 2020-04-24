@@ -27,4 +27,8 @@ public class UsersAdminPanel extends HttpServlet {
         }
         getServletContext().getRequestDispatcher("/jsp/usersadminview.jsp").forward(request, response);
     }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 }

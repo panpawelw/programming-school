@@ -27,4 +27,8 @@ public class SolutionsAdminPanel extends HttpServlet {
         }
         getServletContext().getRequestDispatcher("/jsp/solutionsadminview.jsp").forward(request, response);
     }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doGet(request, response);
+    }
 }
