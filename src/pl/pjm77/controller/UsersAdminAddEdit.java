@@ -26,7 +26,6 @@ public class UsersAdminAddEdit extends HttpServlet {
 
     public void init() {
         passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println("Password encoder initialized: " + passwordEncoder.getClass());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
