@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.UserGroupDAO;
+import pl.pjm77.DAO.RealUserGroupDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.UserGroup;
 
@@ -29,7 +29,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add group");
             getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
         } else if (groupId > 0) {
-            UserGroup userGroup = new UserGroupDAO().loadUserGroupById(groupId);
+            UserGroup userGroup = new RealUserGroupDAO().loadUserGroupById(groupId);
             request.setAttribute("groupId", groupId);
             request.setAttribute("groupName", userGroup.getName());
             request.setAttribute("button", "Edit group");
@@ -45,13 +45,13 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
         String groupName = request.getParameter("group_name");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         if (groupName != null && !groupName.equals("") && groupId >= 0) {
-            UserGroupDAO userGroupDAO = new UserGroupDAO();
+            RealUserGroupDAO realUserGroupDAO = new RealUserGroupDAO();
             UserGroup userGroup = new UserGroup();
             if (groupId != 0) {
-                userGroup = new UserGroupDAO().loadUserGroupById(groupId);
+                userGroup = new RealUserGroupDAO().loadUserGroupById(groupId);
             }
             userGroup.setName(groupName);
-            userGroupDAO.saveUserGroupToDB(userGroup);
+            realUserGroupDAO.saveUserGroupToDB(userGroup);
         } else {
             request.setAttribute("errorMessage", "Group name can't be empty!");
         }

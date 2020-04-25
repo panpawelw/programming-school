@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.UserGroupDAO;
+import pl.pjm77.DAO.RealUserGroupDAO;
 import pl.pjm77.model.UserGroup;
 
 @WebServlet("/groupsadminpanel")
@@ -19,7 +19,7 @@ public class UserGroupsAdminPanel extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserGroup[] groupsList = new UserGroupDAO().loadAllUserGroups();
+        UserGroup[] groupsList = new RealUserGroupDAO().loadAllUserGroups();
         request.setAttribute("groupslist", groupsList);
         String errorMessage = (String) request.getAttribute("errorMessage");
         if (errorMessage != null) {

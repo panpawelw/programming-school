@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.LastSolutionDAO;
 import pl.pjm77.DAO.RealUserDAO;
-import pl.pjm77.DAO.UserGroupDAO;
+import pl.pjm77.DAO.RealUserGroupDAO;
 import pl.pjm77.model.LastSolution;
 import pl.pjm77.model.User;
 import pl.pjm77.model.UserGroup;
@@ -35,7 +35,7 @@ public class UserDetails extends HttpServlet {
         }
         User user = new RealUserDAO().loadUserById(userId);
         request.setAttribute("user", user);
-        UserGroup userGroup = new UserGroupDAO().loadUserGroupById(user.getGroup_id());
+        UserGroup userGroup = new RealUserGroupDAO().loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());
         LastSolution[] usersSolutions = new LastSolutionDAO().loadMostRecentSolutionsByUserId(userId);
         request.setAttribute("userssolutions", usersSolutions);

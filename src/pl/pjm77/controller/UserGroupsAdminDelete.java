@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.UserGroupDAO;
+import pl.pjm77.DAO.RealUserGroupDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.UserGroup;
 
@@ -24,9 +24,9 @@ public class UserGroupsAdminDelete extends HttpServlet {
         String idParam = request.getParameter("id");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         if (groupId >= 0) {
-            UserGroupDAO userGroupDAO = new UserGroupDAO();
-            UserGroup userGroup = new UserGroupDAO().loadUserGroupById(groupId);
-            userGroupDAO.deleteUserGroup(userGroup);
+            RealUserGroupDAO realUserGroupDAO = new RealUserGroupDAO();
+            UserGroup userGroup = new RealUserGroupDAO().loadUserGroupById(groupId);
+            realUserGroupDAO.deleteUserGroup(userGroup);
         }
         getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
     }

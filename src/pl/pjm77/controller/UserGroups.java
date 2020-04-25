@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.UserGroupDAO;
+import pl.pjm77.DAO.RealUserGroupDAO;
 import pl.pjm77.model.UserGroup;
 
 @WebServlet("/usergroups")
@@ -19,7 +19,7 @@ public class UserGroups extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserGroup[] userGroups = new UserGroupDAO().loadAllUserGroups();
+        UserGroup[] userGroups = new RealUserGroupDAO().loadAllUserGroups();
         request.setAttribute("usergroups", userGroups);
         getServletContext().getRequestDispatcher("/jsp/usergroupsview.jsp").forward(request, response);
     }
