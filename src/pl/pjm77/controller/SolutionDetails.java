@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealExerciseDAO;
-import pl.pjm77.DAO.SolutionDAO;
+import pl.pjm77.DAO.RealSolutionDAO;
 import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.model.Exercise;
 import pl.pjm77.model.Solution;
@@ -34,7 +34,7 @@ public class SolutionDetails extends HttpServlet {
             }
         }
         response.getWriter().append("Solution Id : ").append(String.valueOf(solutionId));
-        Solution solution = new SolutionDAO().loadSolutionById(solutionId);
+        Solution solution = new RealSolutionDAO().loadSolutionById(solutionId);
         request.setAttribute("solution", solution);
         User user = new RealUserDAO().loadUserById(solution.getUser_id());
         request.setAttribute("user", user);

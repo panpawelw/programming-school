@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.SolutionDAO;
+import pl.pjm77.DAO.RealSolutionDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Solution;
 
@@ -24,9 +24,9 @@ public class SolutionsAdminDelete extends HttpServlet {
         String idParam = request.getParameter("id");
         long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
         if (solutionId >= 0) {
-            SolutionDAO solutionDAO = new SolutionDAO();
-            Solution solution = new SolutionDAO().loadSolutionById(solutionId);
-            solutionDAO.deleteSolution(solution);
+            RealSolutionDAO realSolutionDAO = new RealSolutionDAO();
+            Solution solution = new RealSolutionDAO().loadSolutionById(solutionId);
+            realSolutionDAO.deleteSolution(solution);
         }
         getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);
     }

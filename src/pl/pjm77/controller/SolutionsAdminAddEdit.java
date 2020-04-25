@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.SolutionDAO;
+import pl.pjm77.DAO.RealSolutionDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Solution;
 
@@ -33,7 +33,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
             request.setAttribute("solutionUser_id", null);
             getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
         } else if (solutionId > 0) {
-            Solution solution = new SolutionDAO().loadSolutionById(solutionId);
+            Solution solution = new RealSolutionDAO().loadSolutionById(solutionId);
             request.setAttribute("solutionId", solutionId);
             request.setAttribute("button", "Edit solution");
             request.setAttribute("solutionDescription", solution.getDescription());
@@ -55,12 +55,12 @@ public class SolutionsAdminAddEdit extends HttpServlet {
         int solutionExercise_id = ValidateParameter.checkInt(exercise_idParam, "Incorrect exercise Id!");
         long solutionUser_id = ValidateParameter.checkLong(user_idParam, "Incorrect user Id!");
         if (solutionDescription != null && !solutionDescription.equals("") && solutionExercise_id != 0 && solutionUser_id != 0 && solutionId >= 0) {
-            SolutionDAO solutionDAO = new SolutionDAO();
+            RealSolutionDAO realSolutionDAO = new RealSolutionDAO();
             Solution solution = new Solution();
             Date date = new Date();
             java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
             if (solutionId != 0) {
-                solution = solutionDAO.loadSolutionById(solutionId);
+                solution = realSolutionDAO.loadSolutionById(solutionId);
                 solution.setUpdated(sqlDate);
             } else {
                 solution.setCreated(sqlDate);
@@ -68,7 +68,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
             solution.setDescription(solutionDescription);
             solution.setExercise_id(solutionExercise_id);
             solution.setUser_id(solutionUser_id);
-            solutionDAO.saveSolutionToDB(solution);
+            realSolutionDAO.saveSolutionToDB(solution);
         } else {
             request.setAttribute("errorMessage", "Solution exercise Id, user Id nor description can't be empty!");
         }
