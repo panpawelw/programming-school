@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.ExerciseDAO;
+import pl.pjm77.DAO.RealExerciseDAO;
 import pl.pjm77.model.Exercise;
 
 @WebServlet("/exercisesadminpanel")
@@ -19,7 +19,7 @@ public class ExercisesAdminPanel extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Exercise[] exercisesList = new ExerciseDAO().loadAllExercises();
+		Exercise[] exercisesList = new RealExerciseDAO().loadAllExercises();
 		request.setAttribute("exerciseslist", exercisesList);
 		String errorMessage = (String) request.getAttribute("errorMessage");
 		if (errorMessage != null) {

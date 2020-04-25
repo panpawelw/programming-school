@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.ExerciseDAO;
+import pl.pjm77.DAO.RealExerciseDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Exercise;
 
@@ -24,9 +24,9 @@ public class ExercisesAdminDelete extends HttpServlet {
         String idParam = request.getParameter("id");
         int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
         if (exerciseId >= 0) {
-            ExerciseDAO exerciseDAO = new ExerciseDAO();
-            Exercise exercise = new ExerciseDAO().loadExerciseById(exerciseId);
-            exerciseDAO.deleteExercise(exercise);
+            RealExerciseDAO realExerciseDAO = new RealExerciseDAO();
+            Exercise exercise = new RealExerciseDAO().loadExerciseById(exerciseId);
+            realExerciseDAO.deleteExercise(exercise);
         }
         getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
     }

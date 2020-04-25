@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.ExerciseDAO;
+import pl.pjm77.DAO.RealExerciseDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Exercise;
 
@@ -30,7 +30,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add exercise");
             getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp").forward(request, response);
         } else if (exerciseId > 0) {
-            Exercise exercise = new ExerciseDAO().loadExerciseById(exerciseId);
+            Exercise exercise = new RealExerciseDAO().loadExerciseById(exerciseId);
             request.setAttribute("exerciseId", exerciseId);
             request.setAttribute("exerciseTitle", exercise.getTitle());
             request.setAttribute("exerciseDescription", exercise.getDescription());
@@ -48,14 +48,14 @@ public class ExercisesAdminAddEdit extends HttpServlet {
         String exerciseDescription = request.getParameter("description");
         int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
         if (exerciseTitle != null && !exerciseTitle.equals("") && exerciseDescription != null && !exerciseDescription.equals("") && exerciseId >= 0) {
-            ExerciseDAO exerciseDAO = new ExerciseDAO();
+            RealExerciseDAO realExerciseDAO = new RealExerciseDAO();
             Exercise exercise = new Exercise();
             if (exerciseId != 0) {
-                exercise = new ExerciseDAO().loadExerciseById(exerciseId);
+                exercise = new RealExerciseDAO().loadExerciseById(exerciseId);
             }
             exercise.setTitle(exerciseTitle);
             exercise.setDescription(exerciseDescription);
-            exerciseDAO.saveExerciseToDB(exercise);
+            realExerciseDAO.saveExerciseToDB(exercise);
         } else {
             request.setAttribute("errorMessage", "Exercise title nor description can't be empty!");
         }

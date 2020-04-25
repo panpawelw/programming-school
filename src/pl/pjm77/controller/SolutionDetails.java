@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.ExerciseDAO;
+import pl.pjm77.DAO.RealExerciseDAO;
 import pl.pjm77.DAO.SolutionDAO;
 import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.model.Exercise;
@@ -38,7 +38,7 @@ public class SolutionDetails extends HttpServlet {
         request.setAttribute("solution", solution);
         User user = new RealUserDAO().loadUserById(solution.getUser_id());
         request.setAttribute("user", user);
-        Exercise exercise = new ExerciseDAO().loadExerciseById(solution.getExercise_id());
+        Exercise exercise = new RealExerciseDAO().loadExerciseById(solution.getExercise_id());
         request.setAttribute("exercise", exercise);
         getServletContext().getRequestDispatcher("/jsp/solutiondetailsview.jsp").forward(request, response);
     }
