@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.UserDAO;
+import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.User;
 import pl.pjm77.passwordEncoder.BCryptPasswordEncoder;
@@ -40,7 +40,7 @@ public class UsersAdminAddEdit extends HttpServlet {
             request.setAttribute("userGroup_id", null);
             getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp").forward(request, response);
         } else if (userId > 0) {
-            User user = new UserDAO().loadUserById(userId);
+            User user = new RealUserDAO().loadUserById(userId);
             request.setAttribute("userId", userId);
             request.setAttribute("button", "Edit user");
             request.setAttribute("userName", user.getName());
@@ -63,17 +63,17 @@ public class UsersAdminAddEdit extends HttpServlet {
         int userGroup_id = ValidateParameter.checkInt(group_idParam, "Incorrect group Id!");
         if (userName != null && !userName.equals("") && userEmail != null && !userEmail.equals("")
                 && userPassword != null && !userPassword.equals("") && userGroup_id > 0 && userId >= 0) {
-            UserDAO userDAO = new UserDAO();
+            RealUserDAO realUserDAO = new RealUserDAO();
             User user = new User();
             if (userId != 0) {
-                user = userDAO.loadUserById(userId);
+                user = realUserDAO.loadUserById(userId);
             }
             user.setName(userName);
             user.setEmail(userEmail);
             userPassword = passwordEncoder.encodePassword(userPassword);
             user.setPassword(userPassword);
             user.setGroup_id(userGroup_id);
-            userDAO.saveUserToDB(user);
+            realUserDAO.saveUserToDB(user);
         } else {
             request.setAttribute("errorMessage",
                     "User name, email, password nor group can't be empty!");

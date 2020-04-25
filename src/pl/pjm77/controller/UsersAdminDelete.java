@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.UserDAO;
+import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.User;
 
@@ -24,9 +24,9 @@ public class UsersAdminDelete extends HttpServlet {
         String idParam = request.getParameter("id");
         long userId = ValidateParameter.checkLong(idParam, "Incorrect user Id!");
         if (userId >= 0) {
-            UserDAO userDAO = new UserDAO();
-            User user = new UserDAO().loadUserById(userId);
-            userDAO.deleteUser(user);
+            RealUserDAO realUserDAO = new RealUserDAO();
+            User user = new RealUserDAO().loadUserById(userId);
+            realUserDAO.deleteUser(user);
         }
         getServletContext().getRequestDispatcher("/usersadminpanel").forward(request, response);
     }

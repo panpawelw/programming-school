@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.UserDAO;
+import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.DAO.UserGroupDAO;
 import pl.pjm77.model.User;
 import pl.pjm77.model.UserGroup;
@@ -31,7 +31,7 @@ public class UsersList extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        User[] GroupUsersList = new UserDAO().loadAllbyGroupId(userGroupId);
+        User[] GroupUsersList = new RealUserDAO().loadAllUsersByGroupId(userGroupId);
         request.setAttribute("groupuserslist", GroupUsersList);
         UserGroup userGroup = new UserGroupDAO().loadUserGroupById(userGroupId);
         request.setAttribute("groupname", userGroup.getName());
