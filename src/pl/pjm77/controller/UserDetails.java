@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.LastSolutionDAO;
+import pl.pjm77.DAO.RealLastSolutionDAO;
 import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.DAO.RealUserGroupDAO;
 import pl.pjm77.model.LastSolution;
@@ -37,7 +37,7 @@ public class UserDetails extends HttpServlet {
         request.setAttribute("user", user);
         UserGroup userGroup = new RealUserGroupDAO().loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());
-        LastSolution[] usersSolutions = new LastSolutionDAO().loadMostRecentSolutionsByUserId(userId);
+        LastSolution[] usersSolutions = new RealLastSolutionDAO().loadMostRecentSolutionsByUserId(userId);
         request.setAttribute("userssolutions", usersSolutions);
         getServletContext().getRequestDispatcher("/jsp/userdetailsview.jsp").forward(request, response);
         response.getWriter().append("").append(String.valueOf(userId)).append(request.getContextPath());
