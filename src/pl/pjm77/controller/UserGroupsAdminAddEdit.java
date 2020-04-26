@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealUserGroupDAO;
+import pl.pjm77.DAO.UserGroupDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.UserGroup;
 
@@ -15,8 +16,14 @@ import pl.pjm77.model.UserGroup;
 public class UserGroupsAdminAddEdit extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private UserGroupDAO userGroupDAO;
+
     public UserGroupsAdminAddEdit() {
         super();
+    }
+
+    public void init() {
+        userGroupDAO = new RealUserGroupDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,7 +36,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add group");
             getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
         } else if (groupId > 0) {
-            UserGroup userGroup = new RealUserGroupDAO().loadUserGroupById(groupId);
+            UserGroup userGroup = userGroupDAO.loadUserGroupById(groupId);
             request.setAttribute("groupId", groupId);
             request.setAttribute("groupName", userGroup.getName());
             request.setAttribute("button", "Edit group");
@@ -45,13 +52,12 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
         String groupName = request.getParameter("group_name");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         if (groupName != null && !groupName.equals("") && groupId >= 0) {
-            RealUserGroupDAO realUserGroupDAO = new RealUserGroupDAO();
             UserGroup userGroup = new UserGroup();
             if (groupId != 0) {
-                userGroup = new RealUserGroupDAO().loadUserGroupById(groupId);
+                userGroup = userGroupDAO.loadUserGroupById(groupId);
             }
             userGroup.setName(groupName);
-            realUserGroupDAO.saveUserGroupToDB(userGroup);
+            userGroupDAO.saveUserGroupToDB(userGroup);
         } else {
             request.setAttribute("errorMessage", "Group name can't be empty!");
         }

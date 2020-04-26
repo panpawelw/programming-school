@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealSolutionDAO;
+import pl.pjm77.DAO.SolutionDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Solution;
 
@@ -17,8 +18,14 @@ import pl.pjm77.model.Solution;
 public class SolutionsAdminAddEdit extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private SolutionDAO solutionDAO;
+
     public SolutionsAdminAddEdit() {
         super();
+    }
+
+    public void init() {
+        solutionDAO = new RealSolutionDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -55,12 +62,11 @@ public class SolutionsAdminAddEdit extends HttpServlet {
         int solutionExercise_id = ValidateParameter.checkInt(exercise_idParam, "Incorrect exercise Id!");
         long solutionUser_id = ValidateParameter.checkLong(user_idParam, "Incorrect user Id!");
         if (solutionDescription != null && !solutionDescription.equals("") && solutionExercise_id != 0 && solutionUser_id != 0 && solutionId >= 0) {
-            RealSolutionDAO realSolutionDAO = new RealSolutionDAO();
             Solution solution = new Solution();
             Date date = new Date();
             java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
             if (solutionId != 0) {
-                solution = realSolutionDAO.loadSolutionById(solutionId);
+                solution = solutionDAO.loadSolutionById(solutionId);
                 solution.setUpdated(sqlDate);
             } else {
                 solution.setCreated(sqlDate);
@@ -68,7 +74,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
             solution.setDescription(solutionDescription);
             solution.setExercise_id(solutionExercise_id);
             solution.setUser_id(solutionUser_id);
-            realSolutionDAO.saveSolutionToDB(solution);
+            solutionDAO.saveSolutionToDB(solution);
         } else {
             request.setAttribute("errorMessage", "Solution exercise Id, user Id nor description can't be empty!");
         }

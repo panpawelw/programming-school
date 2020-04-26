@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pl.pjm77.DAO.LastSolutionDAO;
 import pl.pjm77.DAO.RealLastSolutionDAO;
 import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.DAO.RealUserGroupDAO;
@@ -18,8 +19,14 @@ import pl.pjm77.model.UserGroup;
 public class UserDetails extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private LastSolutionDAO lastSolutionDAO;
+
     public UserDetails() {
         super();
+    }
+
+    public void init() {
+        lastSolutionDAO = new RealLastSolutionDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,7 +44,7 @@ public class UserDetails extends HttpServlet {
         request.setAttribute("user", user);
         UserGroup userGroup = new RealUserGroupDAO().loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());
-        LastSolution[] usersSolutions = new RealLastSolutionDAO().loadMostRecentSolutionsByUserId(userId);
+        LastSolution[] usersSolutions = lastSolutionDAO.loadMostRecentSolutionsByUserId(userId);
         request.setAttribute("userssolutions", usersSolutions);
         getServletContext().getRequestDispatcher("/jsp/userdetailsview.jsp").forward(request, response);
         response.getWriter().append("").append(String.valueOf(userId)).append(request.getContextPath());

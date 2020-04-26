@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealUserDAO;
+import pl.pjm77.DAO.UserDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.User;
 import pl.pjm77.passwordEncoder.BCryptPasswordEncoder;
@@ -18,6 +19,7 @@ import pl.pjm77.passwordEncoder.PasswordEncoder;
 public class UsersAdminAddEdit extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private UserDAO userDAO;
     private PasswordEncoder passwordEncoder;
 
     public UsersAdminAddEdit() {
@@ -26,6 +28,7 @@ public class UsersAdminAddEdit extends HttpServlet {
 
     public void init() {
         passwordEncoder = new BCryptPasswordEncoder();
+        userDAO = new RealUserDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -40,7 +43,7 @@ public class UsersAdminAddEdit extends HttpServlet {
             request.setAttribute("userGroup_id", null);
             getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp").forward(request, response);
         } else if (userId > 0) {
-            User user = new RealUserDAO().loadUserById(userId);
+            User user = userDAO.loadUserById(userId);
             request.setAttribute("userId", userId);
             request.setAttribute("button", "Edit user");
             request.setAttribute("userName", user.getName());

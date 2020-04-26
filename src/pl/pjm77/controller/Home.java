@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pl.pjm77.DAO.LastSolutionDAO;
 import pl.pjm77.DAO.RealLastSolutionDAO;
 import pl.pjm77.model.LastSolution;
 
@@ -15,8 +16,14 @@ import pl.pjm77.model.LastSolution;
 public class Home extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private LastSolutionDAO lastSolutionDAO;
+
     public Home() {
         super();
+    }
+
+    public void init() {
+        lastSolutionDAO = new RealLastSolutionDAO();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,8 +38,7 @@ public class Home extends HttpServlet {
                         " value of 5 instead!");
             }
         }
-        LastSolution[] lastSolutions =
-                new RealLastSolutionDAO().loadMostRecentSolutions(recentSolutions);
+        LastSolution[] lastSolutions = lastSolutionDAO.loadMostRecentSolutions(recentSolutions);
         request.setAttribute("lastsolutions", lastSolutions);
 
         getServletContext().getRequestDispatcher("/jsp/index.jsp")

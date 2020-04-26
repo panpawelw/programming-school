@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pl.pjm77.DAO.ExerciseDAO;
 import pl.pjm77.DAO.RealExerciseDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Exercise;
@@ -15,18 +16,21 @@ import pl.pjm77.model.Exercise;
 public class ExercisesAdminDelete extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private ExerciseDAO exerciseDAO;
+
     public ExercisesAdminDelete() {
         super();
     }
+
+    public void init() { exerciseDAO = new RealExerciseDAO(); }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
         if (exerciseId >= 0) {
-            RealExerciseDAO realExerciseDAO = new RealExerciseDAO();
-            Exercise exercise = new RealExerciseDAO().loadExerciseById(exerciseId);
-            realExerciseDAO.deleteExercise(exercise);
+            Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
+            exerciseDAO.deleteExercise(exercise);
         }
         getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
     }

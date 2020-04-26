@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import pl.pjm77.DAO.ExerciseDAO;
 import pl.pjm77.DAO.RealExerciseDAO;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Exercise;
@@ -15,9 +16,13 @@ import pl.pjm77.model.Exercise;
 public class ExercisesAdminAddEdit extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private ExerciseDAO exerciseDAO;
+
     public ExercisesAdminAddEdit() {
         super();
     }
+
+    public void init() { exerciseDAO = new RealExerciseDAO(); }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -30,7 +35,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add exercise");
             getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp").forward(request, response);
         } else if (exerciseId > 0) {
-            Exercise exercise = new RealExerciseDAO().loadExerciseById(exerciseId);
+            Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
             request.setAttribute("exerciseId", exerciseId);
             request.setAttribute("exerciseTitle", exercise.getTitle());
             request.setAttribute("exerciseDescription", exercise.getDescription());
@@ -51,7 +56,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             RealExerciseDAO realExerciseDAO = new RealExerciseDAO();
             Exercise exercise = new Exercise();
             if (exerciseId != 0) {
-                exercise = new RealExerciseDAO().loadExerciseById(exerciseId);
+                exercise = exerciseDAO.loadExerciseById(exerciseId);
             }
             exercise.setTitle(exerciseTitle);
             exercise.setDescription(exerciseDescription);
