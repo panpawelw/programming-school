@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.LastSolutionDAO;
 import pl.pjm77.DAO.RealLastSolutionDAO;
+import pl.pjm77.misc.RealDataSource;
 import pl.pjm77.model.LastSolution;
 
 @WebServlet(value = "/")
@@ -23,7 +24,7 @@ public class Home extends HttpServlet {
     }
 
     public void init() {
-        lastSolutionDAO = new RealLastSolutionDAO();
+        lastSolutionDAO = new RealLastSolutionDAO(RealDataSource.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -28,7 +28,7 @@ public class UserDetails extends HttpServlet {
     public void init() {
         userDAO = new RealUserDAO(RealDataSource.initDB());
         userGroupDAO = new RealUserGroupDAO(RealDataSource.initDB());
-        lastSolutionDAO = new RealLastSolutionDAO();
+        lastSolutionDAO = new RealLastSolutionDAO(RealDataSource.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -10,7 +10,15 @@ import java.util.List;
 import pl.pjm77.misc.DbUtil;
 import pl.pjm77.model.LastSolution;
 
+import javax.sql.DataSource;
+
 public class RealLastSolutionDAO implements LastSolutionDAO {
+
+    private final DataSource dataSource;
+
+    public RealLastSolutionDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     public LastSolution[] loadMostRecentSolutions(long number) {
         return executeQuery("SELECT exercise.title, user.username, IF(solution.updated > " +
@@ -30,7 +38,7 @@ public class RealLastSolutionDAO implements LastSolutionDAO {
 
     private LastSolution[] executeQuery(String sqlQuery, long...param) {
         List<LastSolution> solutions = new ArrayList<>();
-        try (Connection con = DbUtil.getConn()) {
+        try (Connection con = dataSource.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
                 ps.setLong(1, param[0]);
                 try (ResultSet rs = ps.executeQuery()) {
