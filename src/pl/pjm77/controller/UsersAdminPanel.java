@@ -8,18 +8,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealUserDAO;
+import pl.pjm77.DAO.UserDAO;
+import pl.pjm77.misc.RealDataSource;
 import pl.pjm77.model.User;
 
 @WebServlet("/usersadminpanel")
 public class UsersAdminPanel extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private UserDAO userDAO;
+
     public UsersAdminPanel() {
         super();
     }
 
+    public void init() {
+        userDAO = new RealUserDAO(RealDataSource.initDB());
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User[] usersList = new RealUserDAO().loadAllUsers();
+        User[] usersList = userDAO.loadAllUsers();
         request.setAttribute("userslist", usersList);
         String errorMessage = (String) request.getAttribute("errorMessage");
         if (errorMessage != null) {

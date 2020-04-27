@@ -7,10 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import pl.pjm77.DAO.LastSolutionDAO;
-import pl.pjm77.DAO.RealLastSolutionDAO;
-import pl.pjm77.DAO.RealUserDAO;
-import pl.pjm77.DAO.RealUserGroupDAO;
+import pl.pjm77.DAO.*;
+import pl.pjm77.misc.RealDataSource;
 import pl.pjm77.model.LastSolution;
 import pl.pjm77.model.User;
 import pl.pjm77.model.UserGroup;
@@ -19,6 +17,7 @@ import pl.pjm77.model.UserGroup;
 public class UserDetails extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private UserDAO userDAO;
     private LastSolutionDAO lastSolutionDAO;
 
     public UserDetails() {
@@ -26,6 +25,7 @@ public class UserDetails extends HttpServlet {
     }
 
     public void init() {
+        userDAO = new RealUserDAO(RealDataSource.initDB());
         lastSolutionDAO = new RealLastSolutionDAO();
     }
 
@@ -40,7 +40,7 @@ public class UserDetails extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        User user = new RealUserDAO().loadUserById(userId);
+        User user = userDAO.loadUserById(userId);
         request.setAttribute("user", user);
         UserGroup userGroup = new RealUserGroupDAO().loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());

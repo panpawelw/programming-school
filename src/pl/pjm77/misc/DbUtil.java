@@ -10,17 +10,19 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public class DbUtil {
-    private static DataSource ds;
+
+    private DataSource ds;
 
     public static Connection getConn() throws SQLException {
         // get local JDBC database connection
-        return getLocalConnection();
+        return new DbUtil().getLocalConnection();
 
         // or get AWS database connection
-//        return getRDSConnection();
+//        return new DbUtil.getRDSConnection();
     }
 
-    private static Connection getLocalConnection() throws SQLException {
+
+    private Connection getLocalConnection() throws SQLException {
         if (ds == null) {
             try {
                 Context ctx = new InitialContext();
@@ -33,7 +35,7 @@ public class DbUtil {
         return ds.getConnection();
     }
 
-    private static Connection getRDSConnection() throws SQLException {
+    private Connection getRDSConnection() throws SQLException {
 
         // Read RDS connection information from the environment
         String dbName = System.getProperty("RDS_DB_NAME");
@@ -55,8 +57,6 @@ public class DbUtil {
         }
 
         // Get connection
-        Connection conn;
-        conn = DriverManager.getConnection(jdbcUrl);
-        return conn;
+        return DriverManager.getConnection(jdbcUrl);
     }
 }

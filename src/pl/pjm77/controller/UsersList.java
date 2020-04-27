@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.DAO.RealUserGroupDAO;
+import pl.pjm77.DAO.UserDAO;
+import pl.pjm77.misc.RealDataSource;
 import pl.pjm77.model.User;
 import pl.pjm77.model.UserGroup;
 
@@ -16,8 +18,14 @@ import pl.pjm77.model.UserGroup;
 public class UsersList extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private UserDAO userDAO;
+
     public UsersList() {
         super();
+    }
+
+    public void init() {
+        userDAO = new RealUserDAO(RealDataSource.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,7 +39,7 @@ public class UsersList extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        User[] GroupUsersList = new RealUserDAO().loadAllUsersByGroupId(userGroupId);
+        User[] GroupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
         request.setAttribute("groupuserslist", GroupUsersList);
         UserGroup userGroup = new RealUserGroupDAO().loadUserGroupById(userGroupId);
         request.setAttribute("groupname", userGroup.getName());

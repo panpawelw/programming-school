@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.DAO.UserDAO;
+import pl.pjm77.misc.RealDataSource;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.User;
 import pl.pjm77.passwordEncoder.BCryptPasswordEncoder;
@@ -28,7 +29,7 @@ public class UsersAdminAddEdit extends HttpServlet {
 
     public void init() {
         passwordEncoder = new BCryptPasswordEncoder();
-        userDAO = new RealUserDAO();
+        userDAO = new RealUserDAO(RealDataSource.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -66,17 +67,16 @@ public class UsersAdminAddEdit extends HttpServlet {
         int userGroup_id = ValidateParameter.checkInt(group_idParam, "Incorrect group Id!");
         if (userName != null && !userName.equals("") && userEmail != null && !userEmail.equals("")
                 && userPassword != null && !userPassword.equals("") && userGroup_id > 0 && userId >= 0) {
-            RealUserDAO realUserDAO = new RealUserDAO();
             User user = new User();
             if (userId != 0) {
-                user = realUserDAO.loadUserById(userId);
+                user = userDAO.loadUserById(userId);
             }
             user.setName(userName);
             user.setEmail(userEmail);
             userPassword = passwordEncoder.encodePassword(userPassword);
             user.setPassword(userPassword);
             user.setGroup_id(userGroup_id);
-            realUserDAO.saveUserToDB(user);
+            userDAO.saveUserToDB(user);
         } else {
             request.setAttribute("errorMessage",
                     "User name, email, password nor group can't be empty!");

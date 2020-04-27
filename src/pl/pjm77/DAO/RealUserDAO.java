@@ -7,13 +7,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.pjm77.misc.DbUtil;
 import pl.pjm77.model.User;
+
+import javax.sql.DataSource;
 
 public class RealUserDAO implements UserDAO {
 
+    private final DataSource dataSource;
+
+    public RealUserDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public void saveUserToDB(User user) {
-        try (Connection con = DbUtil.getConn()) {
+        try (Connection con = dataSource.getConnection()) {
             if (user.getId() == 0) {
                 String sql = "INSERT INTO user(username, email, password, usergroup_id) VALUES " +
 						"(?, ?, ?, ?);";
@@ -49,7 +56,7 @@ public class RealUserDAO implements UserDAO {
     }
 
     public User loadUserById(long id) {
-        try (Connection con = DbUtil.getConn()) {
+        try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT * FROM user WHERE id=?;";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setLong(1, id);
@@ -68,7 +75,7 @@ public class RealUserDAO implements UserDAO {
     }
 
     public void deleteUser(User user) {
-        try (Connection con = DbUtil.getConn()) {
+        try (Connection con = dataSource.getConnection()) {
             String sql = "DELETE FROM user WHERE id=?";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setLong(1, user.getId());
@@ -97,7 +104,7 @@ public class RealUserDAO implements UserDAO {
      */
     private User[] executeQuery(String sqlQuery, long...param) {
         List<User> usersByParamArrayList = new ArrayList<>();
-        try (Connection con = DbUtil.getConn()) {
+        try (Connection con = dataSource.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
                 if (param.length != 0) ps.setLong(1, param[0]);
                 try (ResultSet rs = ps.executeQuery()) {
