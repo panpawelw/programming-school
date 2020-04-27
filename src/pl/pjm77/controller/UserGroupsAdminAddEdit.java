@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealUserGroupDAO;
 import pl.pjm77.DAO.UserGroupDAO;
+import pl.pjm77.misc.RealDataSource;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.UserGroup;
 
@@ -23,7 +24,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
     }
 
     public void init() {
-        userGroupDAO = new RealUserGroupDAO();
+        userGroupDAO = new RealUserGroupDAO(RealDataSource.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

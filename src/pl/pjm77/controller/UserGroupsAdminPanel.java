@@ -8,18 +8,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealUserGroupDAO;
+import pl.pjm77.DAO.UserGroupDAO;
+import pl.pjm77.misc.RealDataSource;
 import pl.pjm77.model.UserGroup;
 
 @WebServlet("/groupsadminpanel")
 public class UserGroupsAdminPanel extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private UserGroupDAO userGroupDAO;
+
     public UserGroupsAdminPanel() {
         super();
     }
 
+    public void init() {
+        userGroupDAO = new RealUserGroupDAO(RealDataSource.initDB());
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserGroup[] groupsList = new RealUserGroupDAO().loadAllUserGroups();
+        UserGroup[] groupsList = userGroupDAO.loadAllUserGroups();
         request.setAttribute("groupslist", groupsList);
         String errorMessage = (String) request.getAttribute("errorMessage");
         if (errorMessage != null) {

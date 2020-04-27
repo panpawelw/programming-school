@@ -10,10 +10,18 @@ import java.util.List;
 import pl.pjm77.misc.DbUtil;
 import pl.pjm77.model.UserGroup;
 
+import javax.sql.DataSource;
+
 public class RealUserGroupDAO implements UserGroupDAO {
 
+    private final DataSource dataSource;
+
+    public RealUserGroupDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public void saveUserGroupToDB(UserGroup userGroup) {
-        try (Connection con = DbUtil.getConn()) {
+        try (Connection con = dataSource.getConnection()) {
             if (userGroup.getId() == 0) {
                 String sql = "INSERT INTO usergroup (name) VALUES (?)";
                 String[] generatedColumns = { " ID " };
@@ -41,7 +49,7 @@ public class RealUserGroupDAO implements UserGroupDAO {
     }
 
     public UserGroup loadUserGroupById(int id) {
-        try (Connection con = DbUtil.getConn()) {
+        try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT * FROM usergroup WHERE id=?;";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setInt(1, id);
@@ -61,7 +69,7 @@ public class RealUserGroupDAO implements UserGroupDAO {
 
     public UserGroup[] loadAllUserGroups() {
         List<UserGroup> userGroups = new ArrayList<>();
-        try (Connection con = DbUtil.getConn()) {
+        try (Connection con = dataSource.getConnection()) {
             String sql = "SELECT * FROM usergroup;";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 try (ResultSet rs = ps.executeQuery()) {
@@ -80,7 +88,7 @@ public class RealUserGroupDAO implements UserGroupDAO {
     }
 
     public void deleteUserGroup(UserGroup userGroup) {
-        try (Connection con = DbUtil.getConn()) {
+        try (Connection con = dataSource.getConnection()) {
             String sql = "DELETE FROM usergroup WHERE id=?";
             try (PreparedStatement ps = con.prepareStatement(sql)) {
                 ps.setInt(1, userGroup.getId());

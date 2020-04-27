@@ -18,6 +18,7 @@ public class UserDetails extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private UserDAO userDAO;
+    private UserGroupDAO userGroupDAO;
     private LastSolutionDAO lastSolutionDAO;
 
     public UserDetails() {
@@ -26,6 +27,7 @@ public class UserDetails extends HttpServlet {
 
     public void init() {
         userDAO = new RealUserDAO(RealDataSource.initDB());
+        userGroupDAO = new RealUserGroupDAO(RealDataSource.initDB());
         lastSolutionDAO = new RealLastSolutionDAO();
     }
 
@@ -42,7 +44,7 @@ public class UserDetails extends HttpServlet {
         }
         User user = userDAO.loadUserById(userId);
         request.setAttribute("user", user);
-        UserGroup userGroup = new RealUserGroupDAO().loadUserGroupById(user.getGroup_id());
+        UserGroup userGroup = userGroupDAO.loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());
         LastSolution[] usersSolutions = lastSolutionDAO.loadMostRecentSolutionsByUserId(userId);
         request.setAttribute("userssolutions", usersSolutions);
