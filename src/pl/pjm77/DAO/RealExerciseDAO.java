@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.pjm77.misc.DbUtil;
 import pl.pjm77.model.Exercise;
 
 import javax.sql.DataSource;

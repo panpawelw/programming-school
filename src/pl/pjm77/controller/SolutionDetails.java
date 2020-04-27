@@ -19,6 +19,7 @@ public class SolutionDetails extends HttpServlet {
 
     private UserDAO userDAO;
     private ExerciseDAO exerciseDAO;
+    private SolutionDAO solutionDAO;
 
     public SolutionDetails() {
         super();
@@ -27,6 +28,7 @@ public class SolutionDetails extends HttpServlet {
     public void init() {
         userDAO = new RealUserDAO(RealDataSource.initDB());
         exerciseDAO = new RealExerciseDAO(RealDataSource.initDB());
+        solutionDAO = new RealSolutionDAO(RealDataSource.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,7 +43,7 @@ public class SolutionDetails extends HttpServlet {
             }
         }
         response.getWriter().append("Solution Id : ").append(String.valueOf(solutionId));
-        Solution solution = new RealSolutionDAO().loadSolutionById(solutionId);
+        Solution solution = solutionDAO.loadSolutionById(solutionId);
         request.setAttribute("solution", solution);
         User user = userDAO.loadUserById(solution.getUser_id());
         request.setAttribute("user", user);

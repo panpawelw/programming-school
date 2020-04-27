@@ -8,13 +8,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import pl.pjm77.misc.DbUtil;
 import pl.pjm77.model.Solution;
 
+import javax.sql.DataSource;
+
 public class RealSolutionDAO implements SolutionDAO {
+	
+	private final DataSource dataSource;
+	
+	public RealSolutionDAO(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 
 	public void saveSolutionToDB(Solution solution) {
-		try (Connection con = DbUtil.getConn()) {
+		try (Connection con = dataSource.getConnection()) {
 			if (solution.getId() == 0) {
 				String sql = "INSERT INTO solution(created, updated, description, exercise_id, user_id) VALUES (?, ?, ?, ?, ?);";
 				String[] generatedColumns = { " ID " };
@@ -50,7 +57,7 @@ public class RealSolutionDAO implements SolutionDAO {
 	}
 	
 	public Solution loadSolutionById(long id) {
-		try (Connection con = DbUtil.getConn()) {
+		try (Connection con = dataSource.getConnection()) {
 			String sql = "SELECT * FROM solution WHERE id=?;";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setLong(1, id);
@@ -69,7 +76,7 @@ public class RealSolutionDAO implements SolutionDAO {
 	}
 
 	public void deleteSolution(Solution solution) {
-		try (Connection con = DbUtil.getConn()) {
+		try (Connection con = dataSource.getConnection()) {
 			String sql = "DELETE FROM solution WHERE id=?";
 			try (PreparedStatement ps = con.prepareStatement(sql)) {
 				ps.setLong(1, solution.getId());
@@ -98,7 +105,7 @@ public class RealSolutionDAO implements SolutionDAO {
 	 */
 	private Solution[] executeQuery(String sqlQuery, long...param){
 		List<Solution> solutions = new ArrayList<>();
-		try (Connection con = DbUtil.getConn()) {
+		try (Connection con = dataSource.getConnection()) {
 			try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
 				if(param.length !=0) ps.setLong(1, param[0]);
 				try (ResultSet rs = ps.executeQuery()) {

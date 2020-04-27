@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealSolutionDAO;
 import pl.pjm77.DAO.SolutionDAO;
+import pl.pjm77.misc.RealDataSource;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Solution;
 
@@ -25,7 +26,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
     }
 
     public void init() {
-        solutionDAO = new RealSolutionDAO();
+        solutionDAO = new RealSolutionDAO(RealDataSource.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -40,7 +41,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
             request.setAttribute("solutionUser_id", null);
             getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
         } else if (solutionId > 0) {
-            Solution solution = new RealSolutionDAO().loadSolutionById(solutionId);
+            Solution solution = solutionDAO.loadSolutionById(solutionId);
             request.setAttribute("solutionId", solutionId);
             request.setAttribute("button", "Edit solution");
             request.setAttribute("solutionDescription", solution.getDescription());

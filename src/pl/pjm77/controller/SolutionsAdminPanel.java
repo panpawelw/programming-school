@@ -8,18 +8,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealSolutionDAO;
+import pl.pjm77.DAO.SolutionDAO;
+import pl.pjm77.misc.RealDataSource;
 import pl.pjm77.model.Solution;
 
 @WebServlet("/solutionsadminpanel")
 public class SolutionsAdminPanel extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private SolutionDAO solutionDAO;
+
     public SolutionsAdminPanel() {
         super();
     }
 
+    public void init() {
+        solutionDAO = new RealSolutionDAO(RealDataSource.initDB());
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Solution[] solutionsList = new RealSolutionDAO().loadAllSolutions();
+        Solution[] solutionsList = solutionDAO.loadAllSolutions();
         request.setAttribute("solutionslist", solutionsList);
         String errorMessage = (String) request.getAttribute("errorMessage");
         if (errorMessage != null) {
