@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.ExerciseDAO;
 import pl.pjm77.DAO.RealExerciseDAO;
+import pl.pjm77.misc.RealDataSource;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Exercise;
 
@@ -22,7 +23,9 @@ public class ExercisesAdminAddEdit extends HttpServlet {
         super();
     }
 
-    public void init() { exerciseDAO = new RealExerciseDAO(); }
+    public void init() {
+        exerciseDAO = new RealExerciseDAO(RealDataSource.initDB());
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -33,16 +36,19 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             request.setAttribute("exerciseTitle", null);
             request.setAttribute("exerciseDescription", null);
             request.setAttribute("button", "Add exercise");
-            getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
+                    .forward(request, response);
         } else if (exerciseId > 0) {
             Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
             request.setAttribute("exerciseId", exerciseId);
             request.setAttribute("exerciseTitle", exercise.getTitle());
             request.setAttribute("exerciseDescription", exercise.getDescription());
             request.setAttribute("button", "Edit exercise");
-            getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
+                    .forward(request, response);
         } else {
-            getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
+            getServletContext().getRequestDispatcher("/exercisesadminpanel")
+                    .forward(request, response);
         }
     }
 
@@ -52,15 +58,15 @@ public class ExercisesAdminAddEdit extends HttpServlet {
         String exerciseTitle = request.getParameter("title");
         String exerciseDescription = request.getParameter("description");
         int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
-        if (exerciseTitle != null && !exerciseTitle.equals("") && exerciseDescription != null && !exerciseDescription.equals("") && exerciseId >= 0) {
-            RealExerciseDAO realExerciseDAO = new RealExerciseDAO();
+        if (exerciseTitle != null && !exerciseTitle.equals("") && exerciseDescription != null
+                && !exerciseDescription.equals("") && exerciseId >= 0) {
             Exercise exercise = new Exercise();
             if (exerciseId != 0) {
                 exercise = exerciseDAO.loadExerciseById(exerciseId);
             }
             exercise.setTitle(exerciseTitle);
             exercise.setDescription(exerciseDescription);
-            realExerciseDAO.saveExerciseToDB(exercise);
+            exerciseDAO.saveExerciseToDB(exercise);
         } else {
             request.setAttribute("errorMessage", "Exercise title nor description can't be empty!");
         }
