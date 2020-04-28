@@ -1,35 +1,36 @@
 import com.mockobjects.sql.MockResultSetMetaData;
 import com.mockobjects.sql.MockSingleRowResultSet;
 import org.junit.Test;
+import pl.pjm77.DAO.ExerciseDAO;
+import pl.pjm77.DAO.RealExerciseDAO;
+import pl.pjm77.model.Exercise;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
-import javax.sql.*;
-import java.sql.*;
-
-import pl.pjm77.DAO.RealUserGroupDAO;
-import pl.pjm77.DAO.UserGroupDAO;
-import pl.pjm77.model.UserGroup;
-
-public class RealUserGroupDAOTests {
+public class RealExerciseDAOTests {
 
     @Test
-    public void testLoadUserById() throws Exception {
+    public void testLoadExerciseById() throws Exception {
 
         DataSource dataSource = createMock(DataSource.class);
         Connection connection = createMock(Connection.class);
         expect(dataSource.getConnection()).andReturn(connection);
-        String sqlQuery = "SELECT * FROM usergroup WHERE id=?;";
+        String sqlQuery = "SELECT * FROM exercise WHERE id=?;";
         PreparedStatement statement = createMock(PreparedStatement.class);
         expect(connection.prepareStatement(sqlQuery)).andReturn(statement);
         statement.setInt(1, 1);
 
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
         String[] columnsLowercase =
-                new String[] {"id", "name"};
+                new String[] {"id", "title", "description"};
         String[] columnsUppercase = new String[] {"ID",
-                "NAME"};
+                "NAME", "DESCRIPTION"};
         String[] columnClassesNames = new String[] {
                 int.class.getName(), String.class.getName()};
 
@@ -41,7 +42,7 @@ public class RealUserGroupDAOTests {
         resultSet.setupMetaData(resultSetMetaData);
 
         resultSet.addExpectedNamedValues(columnsLowercase,
-                new Object[] {1, "Java"});
+                new Object[] {1, "Test title", "Test description"});
         expect(statement.executeQuery()).andReturn(resultSet);
 
         resultSet.setExpectedCloseCalls(1);
@@ -49,12 +50,14 @@ public class RealUserGroupDAOTests {
         connection.close();
 
         replay(dataSource, connection, statement);
-        UserGroupDAO userGroupDAO = new RealUserGroupDAO(dataSource);
-        UserGroup userGroup = userGroupDAO.loadUserGroupById(1);
-        UserGroup expectedUserGroup = new UserGroup("Java");
-        expectedUserGroup.setId(1);
-        assertEquals(expectedUserGroup.toString(), userGroup.toString());
+        ExerciseDAO exerciseDAO = new RealExerciseDAO(dataSource);
+        Exercise exercise = exerciseDAO.loadExerciseById(1);
+        Exercise expectedExercise =
+                new Exercise("Test title", "Test description");
+        expectedExercise.setId(1);
+        assertEquals(expectedExercise.toString(), exercise.toString());
         verify(dataSource, connection, statement);
         resultSet.verify();
     }
+
 }
