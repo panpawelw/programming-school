@@ -38,7 +38,7 @@ public class RealExerciseDAOTests {
         resultSetMetaData.setupAddColumnNames(columnsUppercase);
         resultSetMetaData.setupAddColumnClassNames(
                 columnClassesNames);
-        resultSetMetaData.setupGetColumnCount(2);
+        resultSetMetaData.setupGetColumnCount(3);
         resultSet.setupMetaData(resultSetMetaData);
 
         resultSet.addExpectedNamedValues(columnsLowercase,

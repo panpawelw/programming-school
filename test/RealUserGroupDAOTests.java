@@ -41,7 +41,7 @@ public class RealUserGroupDAOTests {
         resultSet.setupMetaData(resultSetMetaData);
 
         resultSet.addExpectedNamedValues(columnsLowercase,
-                new Object[] {1, "Java"});
+                new Object[] {1, "Test name"});
         expect(statement.executeQuery()).andReturn(resultSet);
 
         resultSet.setExpectedCloseCalls(1);
@@ -51,7 +51,7 @@ public class RealUserGroupDAOTests {
         replay(dataSource, connection, statement);
         UserGroupDAO userGroupDAO = new RealUserGroupDAO(dataSource);
         UserGroup userGroup = userGroupDAO.loadUserGroupById(1);
-        UserGroup expectedUserGroup = new UserGroup("Java");
+        UserGroup expectedUserGroup = new UserGroup("Test name");
         expectedUserGroup.setId(1);
         assertEquals(expectedUserGroup.toString(), userGroup.toString());
         verify(dataSource, connection, statement);

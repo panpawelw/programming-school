@@ -39,7 +39,7 @@ public class RealUserDAOTest {
         resultSetMetaData.setupAddColumnNames(columnsUppercase);
         resultSetMetaData.setupAddColumnClassNames(
                 columnClassesNames);
-        resultSetMetaData.setupGetColumnCount(2);
+        resultSetMetaData.setupGetColumnCount(5);
         resultSet.setupMetaData(resultSetMetaData);
 
         resultSet.addExpectedNamedValues(columnsLowercase,
