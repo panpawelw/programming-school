@@ -2,6 +2,7 @@ package pl.pjm77.misc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.naming.Context;
@@ -58,5 +59,23 @@ public class DbUtil {
 
         // Get connection
         return DriverManager.getConnection(jdbcUrl);
+    }
+
+    /**
+     * Prepares a statement.
+     *
+     * @param con - Database connection
+     * @param sql - SQL query
+     * @param id - optional id parameter
+     * @return - PreparedStatement object
+     * @throws SQLException - in case of database problems
+     */
+    public static PreparedStatement createStatement(Connection con, String sql, int... id)
+            throws SQLException {
+        PreparedStatement ps = con.prepareStatement(sql);
+        if (id.length > 0) {
+            ps.setInt(1, id[0]);
+        }
+        return ps;
     }
 }

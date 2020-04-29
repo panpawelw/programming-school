@@ -11,6 +11,8 @@ import pl.pjm77.model.UserGroup;
 
 import javax.sql.DataSource;
 
+import static pl.pjm77.misc.DbUtil.createStatement;
+
 public class RealUserGroupDAO implements UserGroupDAO {
 
     private final DataSource dataSource;
@@ -23,7 +25,7 @@ public class RealUserGroupDAO implements UserGroupDAO {
         try (Connection con = dataSource.getConnection()) {
             if (userGroup.getId() == 0) {
                 String sql = "INSERT INTO usergroup (name) VALUES (?)";
-                String[] generatedColumns = { " ID " };
+                String[] generatedColumns = {" ID "};
                 try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
                     ps.setString(1, userGroup.getName());
                     ps.executeUpdate();
@@ -42,43 +44,32 @@ public class RealUserGroupDAO implements UserGroupDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
     }
 
     public UserGroup loadUserGroupById(int id) {
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "SELECT * FROM usergroup WHERE id=?;";
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setInt(1, id);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        return loadSingleUserGroup(rs);
-                    }
-                }
+        try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+                "SELECT * FROM usergroup WHERE id=?;", id);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return loadSingleUserGroup(rs);
             }
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
-        System.out.println("No such user group!");
         return null;
     }
 
     public UserGroup[] loadAllUserGroups() {
         List<UserGroup> userGroups = new ArrayList<>();
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "SELECT * FROM usergroup;";
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                try (ResultSet rs = ps.executeQuery()) {
-                    while(rs.next()) {
+        try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+                "SELECT * FROM usergroup;");
+             ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
                         userGroups.add(loadSingleUserGroup(rs));
                     }
-                }
-            }
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
         UserGroup[] gArray = new UserGroup[userGroups.size()];
@@ -87,26 +78,23 @@ public class RealUserGroupDAO implements UserGroupDAO {
     }
 
     public void deleteUserGroup(UserGroup userGroup) {
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "DELETE FROM usergroup WHERE id=?";
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setInt(1, userGroup.getId());
-                ps.executeUpdate();
-                userGroup.setId(0);
-            }
+        try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+                "DELETE * FROM usergroup WHERE id=?;", userGroup.getId())) {
+            ps.executeUpdate();
+            userGroup.setId(0);
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
     }
 
     /**
      * Gets single UserGroup object from result set.
+     *
      * @param rs - ResultSet
      * @return - UserGroup object
      * @throws SQLException - in case of database problems
      */
-    private UserGroup loadSingleUserGroup(ResultSet rs) throws SQLException{
+    private UserGroup loadSingleUserGroup(ResultSet rs) throws SQLException {
         UserGroup loadedUserGroup = new UserGroup();
         loadedUserGroup.setId(rs.getInt("id"));
         loadedUserGroup.setName(rs.getString("name"));
