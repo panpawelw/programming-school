@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealUserGroupDAO;
 import pl.pjm77.DAO.UserGroupDAO;
-import pl.pjm77.misc.DbUtil;
+import pl.pjm77.misc.DbUtils;
 import pl.pjm77.model.UserGroup;
 
 @WebServlet("/groupsadminpanel")
@@ -23,7 +23,7 @@ public class UserGroupsAdminPanel extends HttpServlet {
     }
 
     public void init() {
-        userGroupDAO = new RealUserGroupDAO(DbUtil.initDB());
+        userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

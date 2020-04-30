@@ -12,6 +12,8 @@ import pl.pjm77.model.Solution;
 
 import javax.sql.DataSource;
 
+import static pl.pjm77.misc.DbUtils.prepStatement;
+
 public class RealSolutionDAO implements SolutionDAO {
 
     private final DataSource dataSource;
@@ -21,37 +23,28 @@ public class RealSolutionDAO implements SolutionDAO {
     }
 
     public void saveSolutionToDB(Solution solution) {
-        try (Connection con = dataSource.getConnection()) {
+        try {
             if (solution.getId() == 0) {
-                String sql = "INSERT INTO solution(created, updated, description, exercise_id, user_id) VALUES (?, ?, ?, ?, ?);";
-                String[] generatedColumns = { " ID " };
-                Date date = new Date();
-                java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
-                try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
-                    ps.setTimestamp(1, sqlDate);
-                    ps.setTimestamp(2, null);
-                    ps.setString(3, solution.getDescription());
-                    ps.setInt(4, solution.getExercise_id());
-                    ps.setLong(5, solution.getUser_id());
+                String[] columnNames = {" ID "};
+                java.sql.Timestamp created = new java.sql.Timestamp(new Date().getTime());
+                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                        "INSERT INTO solutiom(created, updated, description, exercise_id," +
+                                " user_id) VALUES (?, ?, ?, ?, ?);", columnNames, created,
+                        null, solution.getDescription(), solution.getExercise_id(),
+                        solution.getUser_id()); ResultSet rs = ps.getGeneratedKeys()) {
                     ps.executeUpdate();
-                    try (ResultSet rs = ps.getGeneratedKeys()) {
-                        if (rs.next()) {
-                            solution.setId(rs.getLong(1));
-                        }
-                    }
-                }
-            } else {
-                String sql = "UPDATE solution SET updated=Now(), description=?, exercise_id=?, user_id=? WHERE id = ?;";
-                try (PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setString(1, solution.getDescription());
-                    ps.setInt(2, solution.getExercise_id());
-                    ps.setLong(3, solution.getUser_id());
-                    ps.setLong(4, solution.getId());
+                    if (rs.next()) {
+                        solution.setId(rs.getLong(1));
+                    }}
+                } else {
+                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                        "UPDATE solutiom SET updated=Now(), description=?, exercise_id=?, " +
+                                "user_id=? WHERE id = ?;", solution.getDescription(),
+                        solution.getExercise_id(), solution.getUser_id(), solution.getId())) {
                     ps.executeUpdate();
                 }
             }
-        } catch (SQLException e) {
-            System.out.println("Database error!");
+        }catch (SQLException e) {
             e.printStackTrace();
         }
     }

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealSolutionDAO;
 import pl.pjm77.DAO.SolutionDAO;
-import pl.pjm77.misc.DbUtil;
+import pl.pjm77.misc.DbUtils;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Solution;
 
@@ -26,7 +26,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
     }
 
     public void init() {
-        solutionDAO = new RealSolutionDAO(DbUtil.initDB());
+        solutionDAO = new RealSolutionDAO(DbUtils.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.ExerciseDAO;
 import pl.pjm77.DAO.RealExerciseDAO;
-import pl.pjm77.misc.DbUtil;
+import pl.pjm77.misc.DbUtils;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.Exercise;
 
@@ -24,7 +24,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
     }
 
     public void init() {
-        exerciseDAO = new RealExerciseDAO(DbUtil.initDB());
+        exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

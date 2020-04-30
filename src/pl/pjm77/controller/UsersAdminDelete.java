@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.DAO.UserDAO;
-import pl.pjm77.misc.DbUtil;
+import pl.pjm77.misc.DbUtils;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.User;
 
@@ -24,7 +24,7 @@ public class UsersAdminDelete extends HttpServlet {
     }
 
     public void init() {
-        userDAO = new RealUserDAO(DbUtil.initDB());
+        userDAO = new RealUserDAO(DbUtils.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

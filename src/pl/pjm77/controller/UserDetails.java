@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.*;
-import pl.pjm77.misc.DbUtil;
+import pl.pjm77.misc.DbUtils;
 import pl.pjm77.model.LastSolution;
 import pl.pjm77.model.User;
 import pl.pjm77.model.UserGroup;
@@ -26,9 +26,9 @@ public class UserDetails extends HttpServlet {
     }
 
     public void init() {
-        userDAO = new RealUserDAO(DbUtil.initDB());
-        userGroupDAO = new RealUserGroupDAO(DbUtil.initDB());
-        lastSolutionDAO = new RealLastSolutionDAO(DbUtil.initDB());
+        userDAO = new RealUserDAO(DbUtils.initDB());
+        userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
+        lastSolutionDAO = new RealLastSolutionDAO(DbUtils.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

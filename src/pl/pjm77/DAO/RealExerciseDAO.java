@@ -11,7 +11,7 @@ import pl.pjm77.model.Exercise;
 
 import javax.sql.DataSource;
 
-import static pl.pjm77.misc.DbUtil.createStatement;
+import static pl.pjm77.misc.DbUtils.prepStatement;
 
 public class RealExerciseDAO implements ExerciseDAO {
 	
@@ -52,7 +52,7 @@ public class RealExerciseDAO implements ExerciseDAO {
 	}
 	
 	public Exercise loadExerciseById(int id) {
-		try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+		try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
 				"SELECT * FROM exercise WHERE id=?;", id);
 			 ResultSet rs = ps.executeQuery()) {
 			if (rs.next()) {
@@ -66,7 +66,7 @@ public class RealExerciseDAO implements ExerciseDAO {
 	
 	public Exercise[] loadAllExercises() {
 		List<Exercise> exercises = new ArrayList<>();
-		try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+		try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
 				"SELECT * FROM exercise;");
 			 ResultSet rs = ps.executeQuery()) {
 			while (rs.next()) {
@@ -81,7 +81,7 @@ public class RealExerciseDAO implements ExerciseDAO {
 	}
 	
 	public void deleteExercise(Exercise exercise) {
-		try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+		try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
 				"DELETE * FROM exercise WHERE id=?;", exercise.getId())) {
 			ps.executeUpdate();
 			exercise.setId(0);

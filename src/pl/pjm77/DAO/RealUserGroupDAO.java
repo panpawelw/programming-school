@@ -11,7 +11,7 @@ import pl.pjm77.model.UserGroup;
 
 import javax.sql.DataSource;
 
-import static pl.pjm77.misc.DbUtil.createStatement;
+import static pl.pjm77.misc.DbUtils.prepStatement;
 
 public class RealUserGroupDAO implements UserGroupDAO {
 
@@ -49,7 +49,7 @@ public class RealUserGroupDAO implements UserGroupDAO {
     }
 
     public UserGroup loadUserGroupById(int id) {
-        try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
                 "SELECT * FROM usergroup WHERE id=?;", id);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
@@ -63,7 +63,7 @@ public class RealUserGroupDAO implements UserGroupDAO {
 
     public UserGroup[] loadAllUserGroups() {
         List<UserGroup> userGroups = new ArrayList<>();
-        try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
                 "SELECT * FROM usergroup;");
              ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -78,7 +78,7 @@ public class RealUserGroupDAO implements UserGroupDAO {
     }
 
     public void deleteUserGroup(UserGroup userGroup) {
-        try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
                 "DELETE * FROM usergroup WHERE id=?;", userGroup.getId())) {
             ps.executeUpdate();
             userGroup.setId(0);
