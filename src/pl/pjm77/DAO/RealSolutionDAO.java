@@ -1,6 +1,5 @@
 package pl.pjm77.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -74,24 +73,23 @@ public class RealSolutionDAO implements SolutionDAO {
     }
 
     public Solution[] loadAllSolutions() {
-        List<Solution> solutions = new ArrayList<>();
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                "SELECT * FROM solution;"); ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                solutions.add(loadSingleSolution(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        Solution[] sArray = new Solution[solutions.size()];
-        sArray = solutions.toArray(sArray);
-        return sArray;
+        return executeQuery("SELECT * FROM solution;");
     }
 
     public Solution[] loadAllSolutionsByUserId(long id) {
+        return executeQuery("SELECT * FROM solution WHERE user_id=?;", id);
+    }
+
+    /**
+     * executes SQL Query with optional parameter.
+     *
+     * @param sqlQuery - query to execute
+     * @param param    - optional parameter
+     * @return array of user objects
+     */
+    private Solution[] executeQuery(String sqlQuery, Object...param) {
         List<Solution> solutions = new ArrayList<>();
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                "SELECT * FROM solution WHERE user_id=?;", id);
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(), sqlQuery, param);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 solutions.add(loadSingleSolution(rs));
@@ -103,34 +101,6 @@ public class RealSolutionDAO implements SolutionDAO {
         sArray = solutions.toArray(sArray);
         return sArray;
     }
-
-//    /**
-//     * executes SQL Query with optional parameter.
-//     *
-//     * @param sqlQuery - query to execute
-//     * @param param    - optional parameter
-//     * @return user objects array
-//     */
-//    private Solution[] executeQuery(String sqlQuery, long... param) {
-//        List<Solution> solutions = new ArrayList<>();
-//        try (Connection con = dataSource.getConnection()) {
-//            try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
-//                if (param.length != 0) ps.setLong(1, param[0]);
-//                try (ResultSet rs = ps.executeQuery()) {
-//                    while (rs.next()) {
-//                        solutions.add(loadSingleSolution(rs));
-//                    }
-//                }
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("Database error!");
-//            e.printStackTrace();
-//        }
-//        Solution[] sArray = new Solution[solutions.size()];
-//        sArray = solutions.toArray(sArray);
-//        return sArray;
-//    }
-
 
     /**
      * Gets single Solution object from result set.
