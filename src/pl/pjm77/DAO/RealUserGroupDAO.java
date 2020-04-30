@@ -1,6 +1,5 @@
 package pl.pjm77.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,24 +21,21 @@ public class RealUserGroupDAO implements UserGroupDAO {
     }
 
     public void saveUserGroupToDB(UserGroup userGroup) {
-        try (Connection con = dataSource.getConnection()) {
+        try {
             if (userGroup.getId() == 0) {
-                String sql = "INSERT INTO usergroup (name) VALUES (?)";
-                String[] generatedColumns = {" ID "};
-                try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
-                    ps.setString(1, userGroup.getName());
+                String[] columnNames = {" ID "};
+                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),"INSERT " +
+                        "INTO usergroup (name) VALUES (?)", userGroup.getName(), columnNames);
+                     ResultSet rs = ps.getGeneratedKeys()) {
                     ps.executeUpdate();
-                    try (ResultSet rs = ps.getGeneratedKeys()) {
-                        if (rs.next()) {
-                            userGroup.setId(rs.getInt(1));
-                        }
+                    if (rs.next()) {
+                        userGroup.setId(rs.getInt(1));
                     }
                 }
             } else {
-                String sql = "UPDATE usergroup SET name=? WHERE id=?;";
-                try (PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setString(1, userGroup.getName());
-                    ps.setInt(2, userGroup.getId());
+                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                        "UPDATE usergroup SET name=? WHERE id=?;", userGroup.getName(),
+                        userGroup.getId())) {
                     ps.executeUpdate();
                 }
             }
@@ -66,9 +62,9 @@ public class RealUserGroupDAO implements UserGroupDAO {
         try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
                 "SELECT * FROM usergroup;");
              ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        userGroups.add(loadSingleUserGroup(rs));
-                    }
+            while (rs.next()) {
+                userGroups.add(loadSingleUserGroup(rs));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

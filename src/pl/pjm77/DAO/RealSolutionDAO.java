@@ -27,7 +27,7 @@ public class RealSolutionDAO implements SolutionDAO {
                 String[] columnNames = {" ID "};
                 java.sql.Timestamp created = new java.sql.Timestamp(new Date().getTime());
                 try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                        "INSERT INTO solutiom(created, updated, description, exercise_id," +
+                        "INSERT INTO solution(created, updated, description, exercise_id," +
                                 " user_id) VALUES (?, ?, ?, ?, ?);", columnNames, created,
                         null, solution.getDescription(), solution.getExercise_id(),
                         solution.getUser_id()); ResultSet rs = ps.getGeneratedKeys()) {
@@ -38,7 +38,7 @@ public class RealSolutionDAO implements SolutionDAO {
                 }
             } else {
                 try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                        "UPDATE solutiom SET updated=Now(), description=?, exercise_id=?, " +
+                        "UPDATE solution SET updated=Now(), description=?, exercise_id=?, " +
                                 "user_id=? WHERE id = ?;", solution.getDescription(),
                         solution.getExercise_id(), solution.getUser_id(), solution.getId())) {
                     ps.executeUpdate();
