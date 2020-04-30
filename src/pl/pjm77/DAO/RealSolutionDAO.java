@@ -35,8 +35,9 @@ public class RealSolutionDAO implements SolutionDAO {
                     ps.executeUpdate();
                     if (rs.next()) {
                         solution.setId(rs.getLong(1));
-                    }}
-                } else {
+                    }
+                }
+            } else {
                 try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
                         "UPDATE solutiom SET updated=Now(), description=?, exercise_id=?, " +
                                 "user_id=? WHERE id = ?;", solution.getDescription(),
@@ -44,78 +45,91 @@ public class RealSolutionDAO implements SolutionDAO {
                     ps.executeUpdate();
                 }
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public Solution loadSolutionById(long id) {
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "SELECT * FROM solution WHERE id=?;";
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setLong(1, id);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        return loadSingleSolution(rs);
-                    }
-                }
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                "SELECT * FROM solution WHERE id=?;", id);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return loadSingleSolution(rs);
             }
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
-        System.out.println("No such solution!");
         return null;
     }
 
     public void deleteSolution(Solution solution) {
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "DELETE FROM solution WHERE id=?";
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setLong(1, solution.getId());
-                ps.executeUpdate();
-                solution.setId(0);
-            }
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                "DELETE * FROM solution WHERE id=?;", solution.getId())) {
+            ps.executeUpdate();
+            solution.setId(0);
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
     }
 
     public Solution[] loadAllSolutions() {
-        return executeQuery("SELECT * FROM solution;");
-    }
-
-    public Solution[] loadAllSolutionsByUserId(long id) {
-        return executeQuery("SELECT * FROM solution WHERE user_id=?;", id);
-    }
-
-    /**
-     * executes SQL Query with optional parameter.
-     *
-     * @param sqlQuery - query to execute
-     * @param param    - optional parameter
-     * @return user objects array
-     */
-    private Solution[] executeQuery(String sqlQuery, long... param) {
         List<Solution> solutions = new ArrayList<>();
-        try (Connection con = dataSource.getConnection()) {
-            try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
-                if (param.length != 0) ps.setLong(1, param[0]);
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        solutions.add(loadSingleSolution(rs));
-                    }
-                }
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                "SELECT * FROM solution;"); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                solutions.add(loadSingleSolution(rs));
             }
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
         Solution[] sArray = new Solution[solutions.size()];
         sArray = solutions.toArray(sArray);
         return sArray;
     }
+
+    public Solution[] loadAllSolutionsByUserId(long id) {
+        List<Solution> solutions = new ArrayList<>();
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                "SELECT * FROM solution WHERE user_id=?;", id);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                solutions.add(loadSingleSolution(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Solution[] sArray = new Solution[solutions.size()];
+        sArray = solutions.toArray(sArray);
+        return sArray;
+    }
+
+//    /**
+//     * executes SQL Query with optional parameter.
+//     *
+//     * @param sqlQuery - query to execute
+//     * @param param    - optional parameter
+//     * @return user objects array
+//     */
+//    private Solution[] executeQuery(String sqlQuery, long... param) {
+//        List<Solution> solutions = new ArrayList<>();
+//        try (Connection con = dataSource.getConnection()) {
+//            try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
+//                if (param.length != 0) ps.setLong(1, param[0]);
+//                try (ResultSet rs = ps.executeQuery()) {
+//                    while (rs.next()) {
+//                        solutions.add(loadSingleSolution(rs));
+//                    }
+//                }
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("Database error!");
+//            e.printStackTrace();
+//        }
+//        Solution[] sArray = new Solution[solutions.size()];
+//        sArray = solutions.toArray(sArray);
+//        return sArray;
+//    }
 
 
     /**
