@@ -11,6 +11,8 @@ import pl.pjm77.model.Exercise;
 
 import javax.sql.DataSource;
 
+import static pl.pjm77.misc.DbUtil.createStatement;
+
 public class RealExerciseDAO implements ExerciseDAO {
 	
 	private final DataSource dataSource;
@@ -50,54 +52,40 @@ public class RealExerciseDAO implements ExerciseDAO {
 	}
 	
 	public Exercise loadExerciseById(int id) {
-		try (Connection con = dataSource.getConnection()) {
-			String sql = "SELECT * FROM exercise WHERE id=?;";
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				ps.setInt(1, id);
-				try (ResultSet rs = ps.executeQuery()) {
-					if (rs.next()) {
-						return loadSingleExercise(rs);
-					}
-				}
+		try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+				"SELECT * FROM exercise WHERE id=?;", id);
+			 ResultSet rs = ps.executeQuery()) {
+			if (rs.next()) {
+				return loadSingleExercise(rs);
 			}
 		} catch (SQLException e) {
-			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		System.out.println("No such exercise!");
 		return null;
 	}
 	
 	public Exercise[] loadAllExercises() {
 		List<Exercise> exercises = new ArrayList<>();
-		try (Connection con = dataSource.getConnection()) {
-			String sql = "SELECT * FROM exercise;";
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				try (ResultSet rs = ps.executeQuery()) {
-					while(rs.next()) {
-						exercises.add(loadSingleExercise(rs));
-					}
-				}
+		try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+				"SELECT * FROM exercise;");
+			 ResultSet rs = ps.executeQuery()) {
+			while (rs.next()) {
+				exercises.add(loadSingleExercise(rs));
 			}
 		} catch (SQLException e) {
-			System.out.println("Database error!");
 			e.printStackTrace();
 		}
-		Exercise[] eArray = new Exercise[exercises.size()];
-		eArray = exercises.toArray(eArray);
-		return eArray;
+		Exercise[] gArray = new Exercise[exercises.size()];
+		gArray = exercises.toArray(gArray);
+		return gArray;
 	}
 	
 	public void deleteExercise(Exercise exercise) {
-		try (Connection con = dataSource.getConnection()) {
-			String sql = "DELETE FROM exercise WHERE id=?";
-			try (PreparedStatement ps = con.prepareStatement(sql)) {
-				ps.setInt(1, exercise.getId());
-				ps.executeUpdate();
-				exercise.setId(0);
-			}
+		try (PreparedStatement ps = createStatement(dataSource.getConnection(),
+				"DELETE * FROM exercise WHERE id=?;", exercise.getId())) {
+			ps.executeUpdate();
+			exercise.setId(0);
 		} catch (SQLException e) {
-			System.out.println("Database error!");
 			e.printStackTrace();
 		}
 	}

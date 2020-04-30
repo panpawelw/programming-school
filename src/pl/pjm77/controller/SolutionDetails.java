@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.*;
-import pl.pjm77.misc.RealDataSource;
+import pl.pjm77.misc.DbUtil;
 import pl.pjm77.model.Exercise;
 import pl.pjm77.model.Solution;
 import pl.pjm77.model.User;
@@ -26,9 +26,9 @@ public class SolutionDetails extends HttpServlet {
     }
 
     public void init() {
-        userDAO = new RealUserDAO(RealDataSource.initDB());
-        exerciseDAO = new RealExerciseDAO(RealDataSource.initDB());
-        solutionDAO = new RealSolutionDAO(RealDataSource.initDB());
+        userDAO = new RealUserDAO(DbUtil.initDB());
+        exerciseDAO = new RealExerciseDAO(DbUtil.initDB());
+        solutionDAO = new RealSolutionDAO(DbUtil.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

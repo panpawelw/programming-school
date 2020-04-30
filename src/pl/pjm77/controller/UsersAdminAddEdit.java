@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import pl.pjm77.DAO.RealUserDAO;
 import pl.pjm77.DAO.UserDAO;
-import pl.pjm77.misc.RealDataSource;
+import pl.pjm77.misc.DbUtil;
 import pl.pjm77.misc.ValidateParameter;
 import pl.pjm77.model.User;
 import pl.pjm77.passwordEncoder.BCryptPasswordEncoder;
@@ -29,7 +29,7 @@ public class UsersAdminAddEdit extends HttpServlet {
 
     public void init() {
         passwordEncoder = new BCryptPasswordEncoder();
-        userDAO = new RealUserDAO(RealDataSource.initDB());
+        userDAO = new RealUserDAO(DbUtil.initDB());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
