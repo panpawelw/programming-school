@@ -1,6 +1,5 @@
 package pl.pjm77.DAO;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,6 +10,8 @@ import pl.pjm77.model.User;
 
 import javax.sql.DataSource;
 
+import static pl.pjm77.misc.DbUtils.prepStatement;
+
 public class RealUserDAO implements UserDAO {
 
     private final DataSource dataSource;
@@ -20,70 +21,51 @@ public class RealUserDAO implements UserDAO {
     }
 
     public void saveUserToDB(User user) {
-        try (Connection con = dataSource.getConnection()) {
+        try {
             if (user.getId() == 0) {
-                String sql = "INSERT INTO user(username, email, password, usergroup_id) VALUES " +
-						"(?, ?, ?, ?);";
-                String[] generatedColumns = {" ID "};
-                try (PreparedStatement ps = con.prepareStatement(sql, generatedColumns)) {
-                    ps.setString(1, user.getName());
-                    ps.setString(2, user.getEmail());
-                    ps.setString(3, user.getPassword());
-                    ps.setInt(4, user.getGroup_id());
+                String[] columnNames = {" ID "};
+                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                        "INSERT INTO user(username, email, password, usergroup_id) " +
+                                "VALUES (?, ?, ?, ?);", columnNames, user.getName(),
+                        user.getEmail(), user.getPassword(), user.getGroup_id());
+                     ResultSet rs = ps.getGeneratedKeys()) {
                     ps.executeUpdate();
-                    try (ResultSet rs = ps.getGeneratedKeys()) {
-                        if (rs.next()) {
-                            user.setId(rs.getLong(1));
-                        }
+                    if (rs.next()) {
+                        user.setId(rs.getLong(1));
                     }
                 }
             } else {
-                String sql = "UPDATE user SET username=?, email=?, password=?, usergroup_id=? " +
-						"WHERE id = ?;";
-                try (PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setString(1, user.getName());
-                    ps.setString(2, user.getEmail());
-                    ps.setString(3, user.getPassword());
-                    ps.setInt(4, user.getGroup_id());
-                    ps.setLong(5, user.getId());
+                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                        "UPDATE user SET username=?, email=?, password=?, usergroup_id=? " +
+                                "WHERE id = ?;", user.getName(), user.getEmail(),
+                        user.getPassword(), user.getGroup_id(), user.getId())) {
                     ps.executeUpdate();
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
     }
 
     public User loadUserById(long id) {
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "SELECT * FROM user WHERE id=?;";
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setLong(1, id);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        return loadSingleUser(rs);
-                    }
-                }
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                "SELECT * FROM user WHERE id=?;", id);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return loadSingleUser(rs);
             }
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
-        System.out.println("No such user!");
         return null;
     }
 
     public void deleteUser(User user) {
-        try (Connection con = dataSource.getConnection()) {
-            String sql = "DELETE FROM user WHERE id=?";
-            try (PreparedStatement ps = con.prepareStatement(sql)) {
-                ps.setLong(1, user.getId());
-                ps.executeUpdate();
-                user.setId(0);
-            }
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                "DELETE FROM user WHERE id=?", user.getId())) {
+            ps.executeUpdate();
+            user.setId(0);
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
     }
@@ -102,24 +84,19 @@ public class RealUserDAO implements UserDAO {
      * @param param - optional parameter
      * @return user objects array
      */
-    private User[] executeQuery(String sqlQuery, long...param) {
-        List<User> usersByParamArrayList = new ArrayList<>();
-        try (Connection con = dataSource.getConnection()) {
-            try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
-                if (param.length != 0) ps.setLong(1, param[0]);
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        usersByParamArrayList.add(loadSingleUser(rs));
-                    }
-                }
+    private User[] executeQuery(String sqlQuery, Object...param) {
+        List<User> users = new ArrayList<>();
+        try (PreparedStatement ps = prepStatement(dataSource.getConnection(), sqlQuery, param);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                users.add(loadSingleUser(rs));
             }
         } catch (SQLException e) {
-            System.out.println("Database error!");
             e.printStackTrace();
         }
-        User[] usersByParamArray = new User[usersByParamArrayList.size()];
-        usersByParamArray = usersByParamArrayList.toArray(usersByParamArray);
-        return usersByParamArray;
+        User[] uArray = new User[users.size()];
+        uArray = users.toArray(uArray);
+        return uArray;
     }
 
     /**
