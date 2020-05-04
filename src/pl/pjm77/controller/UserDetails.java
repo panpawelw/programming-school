@@ -1,6 +1,7 @@
 package pl.pjm77.controller;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,9 +47,11 @@ public class UserDetails extends HttpServlet {
         request.setAttribute("user", user);
         UserGroup userGroup = userGroupDAO.loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());
-        LastSolution[] usersSolutions = lastSolutionDAO.loadMostRecentSolutionsByUserId(userId);
+        List<LastSolution> usersSolutions = lastSolutionDAO.loadMostRecentSolutionsByUserId(userId);
         request.setAttribute("userssolutions", usersSolutions);
-        getServletContext().getRequestDispatcher("/jsp/userdetailsview.jsp").forward(request, response);
-        response.getWriter().append("").append(String.valueOf(userId)).append(request.getContextPath());
+        getServletContext()
+                .getRequestDispatcher("/jsp/userdetailsview.jsp").forward(request, response);
+        response.getWriter().append("")
+                .append(String.valueOf(userId)).append(request.getContextPath());
     }
 }

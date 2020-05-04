@@ -72,11 +72,11 @@ public class RealSolutionDAO implements SolutionDAO {
         }
     }
 
-    public Solution[] loadAllSolutions() {
+    public List<Solution> loadAllSolutions() {
         return executeQuery("SELECT * FROM solution;");
     }
 
-    public Solution[] loadAllSolutionsByUserId(long id) {
+    public List<Solution> loadAllSolutionsByUserId(long id) {
         return executeQuery("SELECT * FROM solution WHERE user_id=?;", id);
     }
 
@@ -87,7 +87,7 @@ public class RealSolutionDAO implements SolutionDAO {
      * @param param    - optional parameter
      * @return array of user objects
      */
-    private Solution[] executeQuery(String sqlQuery, Object...param) {
+    private List<Solution> executeQuery(String sqlQuery, Object...param) {
         List<Solution> solutions = new ArrayList<>();
         try (PreparedStatement ps = prepStatement(dataSource.getConnection(), sqlQuery, param);
              ResultSet rs = ps.executeQuery()) {
@@ -97,9 +97,7 @@ public class RealSolutionDAO implements SolutionDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Solution[] sArray = new Solution[solutions.size()];
-        sArray = solutions.toArray(sArray);
-        return sArray;
+        return solutions;
     }
 
     /**

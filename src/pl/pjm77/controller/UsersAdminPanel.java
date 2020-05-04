@@ -1,6 +1,7 @@
 package pl.pjm77.controller;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +28,7 @@ public class UsersAdminPanel extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User[] usersList = userDAO.loadAllUsers();
+        List<User> usersList = userDAO.loadAllUsers();
         request.setAttribute("userslist", usersList);
         String errorMessage = (String) request.getAttribute("errorMessage");
         if (errorMessage != null) {

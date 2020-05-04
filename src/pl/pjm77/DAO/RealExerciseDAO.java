@@ -58,7 +58,7 @@ public class RealExerciseDAO implements ExerciseDAO {
         return null;
     }
 
-    public Exercise[] loadAllExercises() {
+    public List<Exercise> loadAllExercises() {
         List<Exercise> exercises = new ArrayList<>();
         try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
                 "SELECT * FROM exercise;");
@@ -69,9 +69,7 @@ public class RealExerciseDAO implements ExerciseDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Exercise[] gArray = new Exercise[exercises.size()];
-        gArray = exercises.toArray(gArray);
-        return gArray;
+        return exercises;
     }
 
     public void deleteExercise(Exercise exercise) {

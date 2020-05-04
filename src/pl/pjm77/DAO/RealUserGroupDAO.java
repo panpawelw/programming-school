@@ -57,7 +57,7 @@ public class RealUserGroupDAO implements UserGroupDAO {
         return null;
     }
 
-    public UserGroup[] loadAllUserGroups() {
+    public List<UserGroup> loadAllUserGroups() {
         List<UserGroup> userGroups = new ArrayList<>();
         try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
                 "SELECT * FROM usergroup;");
@@ -68,9 +68,7 @@ public class RealUserGroupDAO implements UserGroupDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        UserGroup[] gArray = new UserGroup[userGroups.size()];
-        gArray = userGroups.toArray(gArray);
-        return gArray;
+        return userGroups;
     }
 
     public void deleteUserGroup(UserGroup userGroup) {

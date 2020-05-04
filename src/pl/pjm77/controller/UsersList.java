@@ -1,6 +1,7 @@
 package pl.pjm77.controller;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +43,7 @@ public class UsersList extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        User[] GroupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
+        List<User> GroupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
         request.setAttribute("groupuserslist", GroupUsersList);
         UserGroup userGroup = userGroupDAO.loadUserGroupById(userGroupId);
         request.setAttribute("groupname", userGroup.getName());

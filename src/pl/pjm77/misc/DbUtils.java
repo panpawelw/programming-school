@@ -48,21 +48,18 @@ public class DbUtils {
                 ps = con.prepareStatement(sql, (String[]) args[0]);
                 paramIndex++;
             }
-            // Only happens when saveSolutionToDB has to set a null Timestamp as "updated" field
+            // Edge case when saveSolutionToDB has to set a null Timestamp as "updated" field
             if (args[paramIndex] == null) {
                 ps.setTimestamp(paramIndex + 1, null);
             } else {
                 String argClass = args[paramIndex].getClass().toString();
                 switch (argClass) {
                     case "class java.lang.Integer":
-                        ps.setInt(paramIndex + 1, (Integer) args[paramIndex]);
-                        break;
+                        ps.setInt(paramIndex + 1, (Integer) args[paramIndex]); break;
                     case "class java.lang.Long":
-                        ps.setLong(paramIndex + 1, (Long) args[paramIndex]);
-                        break;
+                        ps.setLong(paramIndex + 1, (Long) args[paramIndex]); break;
                     case "class java.lang.String":
-                        ps.setString(paramIndex + 1, (String) args[paramIndex]);
-                        break;
+                        ps.setString(paramIndex + 1, (String) args[paramIndex]); break;
                     case "class java.sql.Timestamp":
                         ps.setTimestamp(paramIndex + 1, (Timestamp) args[paramIndex]);
                 }

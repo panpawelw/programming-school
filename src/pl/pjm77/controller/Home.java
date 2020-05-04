@@ -1,6 +1,7 @@
 package pl.pjm77.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,7 +40,7 @@ public class Home extends HttpServlet {
                         " value of 5 instead!");
             }
         }
-        LastSolution[] lastSolutions = lastSolutionDAO.loadMostRecentSolutions(recentSolutions);
+        List<LastSolution> lastSolutions = lastSolutionDAO.loadMostRecentSolutions(recentSolutions);
         request.setAttribute("lastsolutions", lastSolutions);
 
         getServletContext().getRequestDispatcher("/jsp/index.jsp")

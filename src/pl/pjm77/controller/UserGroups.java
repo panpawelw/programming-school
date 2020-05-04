@@ -1,6 +1,7 @@
 package pl.pjm77.controller;
 
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +28,7 @@ public class UserGroups extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserGroup[] userGroups = userGroupDAO.loadAllUserGroups();
+        List<UserGroup> userGroups = userGroupDAO.loadAllUserGroups();
         request.setAttribute("usergroups", userGroups);
         getServletContext().getRequestDispatcher("/jsp/usergroupsview.jsp").forward(request, response);
     }

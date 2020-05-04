@@ -2,11 +2,13 @@ package pl.pjm77.DAO;
 
 import pl.pjm77.model.Exercise;
 
+import java.util.List;
+
 public interface ExerciseDAO {
 
     void saveExerciseToDB(Exercise exercise);
     Exercise loadExerciseById(int id);
     void deleteExercise(Exercise exercise);
-    Exercise[] loadAllExercises();
+    List<Exercise> loadAllExercises();
 
 }

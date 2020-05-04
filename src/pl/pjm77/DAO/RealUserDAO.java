@@ -70,11 +70,11 @@ public class RealUserDAO implements UserDAO {
         }
     }
 
-    public User[] loadAllUsers() {
+    public List<User> loadAllUsers() {
         return executeQuery("SELECT * FROM user;");
     }
 
-    public User[] loadAllUsersByGroupId(int usergroup_id) {
+    public List<User> loadAllUsersByGroupId(int usergroup_id) {
         return executeQuery("SELECT * FROM user WHERE usergroup_id=?;", usergroup_id);
     }
 
@@ -84,7 +84,7 @@ public class RealUserDAO implements UserDAO {
      * @param param - optional parameter
      * @return user objects array
      */
-    private User[] executeQuery(String sqlQuery, Object...param) {
+    private List<User> executeQuery(String sqlQuery, Object...param) {
         List<User> users = new ArrayList<>();
         try (PreparedStatement ps = prepStatement(dataSource.getConnection(), sqlQuery, param);
              ResultSet rs = ps.executeQuery()) {
@@ -94,14 +94,12 @@ public class RealUserDAO implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        User[] uArray = new User[users.size()];
-        uArray = users.toArray(uArray);
-        return uArray;
+        return users;
     }
 
     /**
      * Gets single User object from result set.
-     * @param rs - ResultSet
+     * @param rs - ResultSet object
      * @return - User object
      * @throws SQLException - in case of database problems
      */

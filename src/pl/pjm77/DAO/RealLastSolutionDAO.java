@@ -19,7 +19,7 @@ public class RealLastSolutionDAO implements LastSolutionDAO {
         this.dataSource = dataSource;
     }
 
-    public LastSolution[] loadMostRecentSolutions(long number) {
+    public List<LastSolution> loadMostRecentSolutions(long number) {
         return executeQuery("SELECT exercise.title, user.username, IF(solution.updated > " +
                 "solution.created, solution.updated, solution.created), solution.id FROM solution " +
                 "LEFT JOIN exercise ON solution.exercise_id=exercise.id LEFT JOIN user ON " +
@@ -27,7 +27,7 @@ public class RealLastSolutionDAO implements LastSolutionDAO {
                 " DESC LIMIT ?;", number);
     }
 
-    public LastSolution[] loadMostRecentSolutionsByUserId(long id) {
+    public List<LastSolution> loadMostRecentSolutionsByUserId(long id) {
         return executeQuery("SELECT exercise.title, user.username, IF(solution.updated > " +
                 "solution.created, solution.updated, solution.created), solution.id FROM solution " +
                 "LEFT JOIN exercise ON solution.exercise_id=exercise.id LEFT JOIN user ON " +
@@ -35,7 +35,7 @@ public class RealLastSolutionDAO implements LastSolutionDAO {
                 "updated, created) DESC;", id);
     }
 
-    private LastSolution[] executeQuery(String sqlQuery, long...param) {
+    private List<LastSolution> executeQuery(String sqlQuery, long...param) {
         List<LastSolution> solutions = new ArrayList<>();
         try (Connection con = dataSource.getConnection()) {
             try (PreparedStatement ps = con.prepareStatement(sqlQuery)) {
@@ -55,8 +55,6 @@ public class RealLastSolutionDAO implements LastSolutionDAO {
             System.out.println("Database error!");
             e.printStackTrace();
         }
-        LastSolution[] sArray = new LastSolution[solutions.size()];
-        sArray = solutions.toArray(sArray);
-        return sArray;
+        return solutions;
     }
 }
