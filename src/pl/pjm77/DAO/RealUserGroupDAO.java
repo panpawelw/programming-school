@@ -1,5 +1,6 @@
 package pl.pjm77.DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,8 +25,10 @@ public class RealUserGroupDAO implements UserGroupDAO {
         try {
             if (userGroup.getId() == 0) {
                 String[] columnNames = {" ID "};
-                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),"INSERT " +
-                        "INTO usergroup (name) VALUES (?)", userGroup.getName(), columnNames);
+                try (Connection con = dataSource.getConnection();
+                     PreparedStatement ps = prepStatement(con,
+                             "INSERT INTO usergroup (name) VALUES (?)",
+                             userGroup.getName(), columnNames);
                      ResultSet rs = ps.getGeneratedKeys()) {
                     ps.executeUpdate();
                     if (rs.next()) {
@@ -33,9 +36,10 @@ public class RealUserGroupDAO implements UserGroupDAO {
                     }
                 }
             } else {
-                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                        "UPDATE usergroup SET name=? WHERE id=?;", userGroup.getName(),
-                        userGroup.getId())) {
+                try (Connection con = dataSource.getConnection();
+                     PreparedStatement ps = prepStatement(con,
+                             "UPDATE usergroup SET name=? WHERE id=?;",
+                             userGroup.getName(), userGroup.getId())) {
                     ps.executeUpdate();
                 }
             }
@@ -45,8 +49,9 @@ public class RealUserGroupDAO implements UserGroupDAO {
     }
 
     public UserGroup loadUserGroupById(int id) {
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                "SELECT * FROM usergroup WHERE id=?;", id);
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = prepStatement(con,
+                     "SELECT * FROM usergroup WHERE id=?;", id);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return loadSingleUserGroup(rs);
@@ -59,8 +64,9 @@ public class RealUserGroupDAO implements UserGroupDAO {
 
     public List<UserGroup> loadAllUserGroups() {
         List<UserGroup> userGroups = new ArrayList<>();
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                "SELECT * FROM usergroup;");
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = prepStatement(con,
+                     "SELECT * FROM usergroup;");
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 userGroups.add(loadSingleUserGroup(rs));
@@ -72,8 +78,10 @@ public class RealUserGroupDAO implements UserGroupDAO {
     }
 
     public void deleteUserGroup(UserGroup userGroup) {
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                "DELETE * FROM usergroup WHERE id=?;", userGroup.getId())) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = prepStatement(con,
+                     "DELETE * FROM usergroup WHERE id=?;",
+                     userGroup.getId())) {
             ps.executeUpdate();
             userGroup.setId(0);
         } catch (SQLException e) {
