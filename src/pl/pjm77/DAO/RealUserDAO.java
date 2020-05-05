@@ -1,5 +1,6 @@
 package pl.pjm77.DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +25,8 @@ public class RealUserDAO implements UserDAO {
         try {
             if (user.getId() == 0) {
                 String[] columnNames = {" ID "};
-                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                try (Connection con = dataSource.getConnection();
+                     PreparedStatement ps = prepStatement(con,
                         "INSERT INTO user(username, email, password, usergroup_id) " +
                                 "VALUES (?, ?, ?, ?);", columnNames, user.getName(),
                         user.getEmail(), user.getPassword(), user.getGroup_id());
@@ -35,7 +37,8 @@ public class RealUserDAO implements UserDAO {
                     }
                 }
             } else {
-                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
+                try (Connection con = dataSource.getConnection();
+                     PreparedStatement ps = prepStatement(con,
                         "UPDATE user SET username=?, email=?, password=?, usergroup_id=? " +
                                 "WHERE id = ?;", user.getName(), user.getEmail(),
                         user.getPassword(), user.getGroup_id(), user.getId())) {
@@ -48,8 +51,8 @@ public class RealUserDAO implements UserDAO {
     }
 
     public User loadUserById(long id) {
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                "SELECT * FROM user WHERE id=?;", id);
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = prepStatement(con,"SELECT * FROM user WHERE id=?;", id);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return loadSingleUser(rs);
@@ -61,8 +64,9 @@ public class RealUserDAO implements UserDAO {
     }
 
     public void deleteUser(User user) {
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                "DELETE FROM user WHERE id=?", user.getId())) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = prepStatement(con, "DELETE FROM user WHERE id=?",
+                     user.getId())) {
             ps.executeUpdate();
             user.setId(0);
         } catch (SQLException e) {
@@ -82,11 +86,12 @@ public class RealUserDAO implements UserDAO {
      * executes SQL Query with optional parameter.
      * @param sqlQuery - query to execute
      * @param param - optional parameter
-     * @return user objects array
+     * @return list of User objects
      */
     private List<User> executeQuery(String sqlQuery, Object...param) {
         List<User> users = new ArrayList<>();
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(), sqlQuery, param);
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = prepStatement(con, sqlQuery, param);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 users.add(loadSingleUser(rs));
