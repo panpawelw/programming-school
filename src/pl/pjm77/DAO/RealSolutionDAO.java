@@ -1,5 +1,6 @@
 package pl.pjm77.DAO;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,21 +27,23 @@ public class RealSolutionDAO implements SolutionDAO {
             if (solution.getId() == 0) {
                 String[] columnNames = {" ID "};
                 java.sql.Timestamp created = new java.sql.Timestamp(new Date().getTime());
-                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                        "INSERT INTO solution(created, updated, description, exercise_id," +
-                                " user_id) VALUES (?, ?, ?, ?, ?);", columnNames, created,
-                        null, solution.getDescription(), solution.getExercise_id(),
-                        solution.getUser_id()); ResultSet rs = ps.getGeneratedKeys()) {
+                try (Connection con = dataSource.getConnection();
+                     PreparedStatement ps = prepStatement(con, "INSERT INTO solution" +
+                                     "(created, updated, description, exercise_id, user_id) " +
+                                     "VALUES (?, ?, ?, ?, ?);", columnNames, created,
+                             null, solution.getDescription(), solution.getExercise_id(),
+                             solution.getUser_id()); ResultSet rs = ps.getGeneratedKeys()) {
                     ps.executeUpdate();
                     if (rs.next()) {
                         solution.setId(rs.getLong(1));
                     }
                 }
             } else {
-                try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                        "UPDATE solution SET updated=Now(), description=?, exercise_id=?, " +
-                                "user_id=? WHERE id = ?;", solution.getDescription(),
-                        solution.getExercise_id(), solution.getUser_id(), solution.getId())) {
+                try (Connection con = dataSource.getConnection();
+                     PreparedStatement ps = prepStatement(con,"UPDATE solution SET updated=" +
+                                     "Now(), description=?, exercise_id=?, user_id=? WHERE id = ?;",
+                             solution.getDescription(), solution.getExercise_id(),
+                             solution.getUser_id(), solution.getId())) {
                     ps.executeUpdate();
                 }
             }
@@ -50,8 +53,8 @@ public class RealSolutionDAO implements SolutionDAO {
     }
 
     public Solution loadSolutionById(long id) {
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                "SELECT * FROM solution WHERE id=?;", id);
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = prepStatement(con,"SELECT * FROM solution WHERE id=?;", id);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 return loadSingleSolution(rs);
@@ -63,8 +66,9 @@ public class RealSolutionDAO implements SolutionDAO {
     }
 
     public void deleteSolution(Solution solution) {
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(),
-                "DELETE * FROM solution WHERE id=?;", solution.getId())) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = prepStatement(con,"DELETE * FROM solution WHERE id=?;",
+                     solution.getId())) {
             ps.executeUpdate();
             solution.setId(0);
         } catch (SQLException e) {
@@ -85,11 +89,12 @@ public class RealSolutionDAO implements SolutionDAO {
      *
      * @param sqlQuery - query to execute
      * @param param    - optional parameter
-     * @return array of user objects
+     * @return list of Solution objects
      */
     private List<Solution> executeQuery(String sqlQuery, Object...param) {
         List<Solution> solutions = new ArrayList<>();
-        try (PreparedStatement ps = prepStatement(dataSource.getConnection(), sqlQuery, param);
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = prepStatement(con, sqlQuery, param);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 solutions.add(loadSingleSolution(rs));
