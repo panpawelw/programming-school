@@ -8,5 +8,4 @@ public interface LastSolutionDAO {
 
     List<LastSolution> loadMostRecentSolutions(long number);
     List<LastSolution> loadMostRecentSolutionsByUserId(long id);
-
 }

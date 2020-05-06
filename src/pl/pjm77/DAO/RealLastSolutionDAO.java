@@ -15,26 +15,26 @@ import static pl.pjm77.misc.DbUtils.prepStatement;
 
 public class RealLastSolutionDAO implements LastSolutionDAO {
 
-    private final DataSource dataSource;
+    private final DataSource ds;
 
-    public RealLastSolutionDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public RealLastSolutionDAO(DataSource ds) {
+        this.ds = ds;
     }
 
     public List<LastSolution> loadMostRecentSolutions(long number) {
         return executeQuery("SELECT exercise.title, user.username, IF(solution.updated > " +
-                "solution.created, solution.updated, solution.created), solution.id FROM solution " +
-                "LEFT JOIN exercise ON solution.exercise_id=exercise.id LEFT JOIN user ON " +
-                "solution.user_id=user.id ORDER BY IF(updated > created, updated, created)" +
-                " DESC LIMIT ?;", number);
+          "solution.created, solution.updated, solution.created), solution.id FROM solution " +
+          "LEFT JOIN exercise ON solution.exercise_id=exercise.id LEFT JOIN user ON " +
+          "solution.user_id=user.id ORDER BY IF(updated > created, updated, created)" +
+          " DESC LIMIT ?;", number);
     }
 
     public List<LastSolution> loadMostRecentSolutionsByUserId(long id) {
         return executeQuery("SELECT exercise.title, user.username, IF(solution.updated > " +
-                "solution.created, solution.updated, solution.created), solution.id FROM solution " +
-                "LEFT JOIN exercise ON solution.exercise_id=exercise.id LEFT JOIN user ON " +
-                "solution.user_id=user.id  WHERE solution.user_id=? ORDER BY IF(updated > created, " +
-                "updated, created) DESC;", id);
+          "solution.created, solution.updated, solution.created), solution.id FROM solution " +
+          "LEFT JOIN exercise ON solution.exercise_id=exercise.id LEFT JOIN user ON " +
+          "solution.user_id=user.id  WHERE solution.user_id=? ORDER BY IF(updated > created, " +
+          "updated, created) DESC;", id);
     }
 
     /**
@@ -44,11 +44,11 @@ public class RealLastSolutionDAO implements LastSolutionDAO {
      * @param param    - optional parameter
      * @return array of LastSolution objects
      */
-    private List<LastSolution> executeQuery(String sqlQuery, Object...param) {
+    private List<LastSolution> executeQuery(String sqlQuery, Object... param) {
         List<LastSolution> lastSolutions = new ArrayList<>();
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = prepStatement(con, sqlQuery, param);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = ds.getConnection(); PreparedStatement ps =
+          prepStatement(con, sqlQuery, param); ResultSet rs = ps.executeQuery())
+        {
             while (rs.next()) {
                 LastSolution loadedSolution = new LastSolution();
                 loadedSolution.setTitle(rs.getString(1));

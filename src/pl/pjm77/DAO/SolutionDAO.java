@@ -11,5 +11,4 @@ public interface SolutionDAO {
     void deleteSolution(Solution solution);
     List<Solution> loadAllSolutions();
     List<Solution> loadAllSolutionsByUserId(long id);
-
 }

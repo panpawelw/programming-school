@@ -10,5 +10,4 @@ public interface UserGroupDAO {
     UserGroup loadUserGroupById(int id);
     List<UserGroup> loadAllUserGroups();
     void deleteUserGroup(UserGroup userGroup);
-
 }

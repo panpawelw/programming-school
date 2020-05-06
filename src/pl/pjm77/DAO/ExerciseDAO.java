@@ -10,5 +10,4 @@ public interface ExerciseDAO {
     Exercise loadExerciseById(int id);
     void deleteExercise(Exercise exercise);
     List<Exercise> loadAllExercises();
-
 }

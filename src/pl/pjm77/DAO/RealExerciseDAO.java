@@ -15,31 +15,30 @@ import static pl.pjm77.misc.DbUtils.prepStatement;
 
 public class RealExerciseDAO implements ExerciseDAO {
 
-    private final DataSource dataSource;
+    private final DataSource ds;
 
-    public RealExerciseDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public RealExerciseDAO(DataSource ds) {
+        this.ds = ds;
     }
 
     public void saveExerciseToDB(Exercise exercise) {
         try {
             if (exercise.getId() == 0) {
                 String[] columnNames = {" ID "};
-                try (Connection con = dataSource.getConnection();
-                     PreparedStatement ps = prepStatement(con,
-                             "INSERT INTO exercise (title, description) VALUES (?, ?);",
-                             columnNames, exercise.getTitle(), exercise.getDescription());
-                     ResultSet rs = ps.getGeneratedKeys()) {
+                try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
+                  "INSERT INTO exercise (title, description) VALUES (?, ?);", columnNames,
+                  exercise.getTitle(), exercise.getDescription()); ResultSet rs = ps.getGeneratedKeys())
+                {
                     ps.executeUpdate();
                     if (rs.next()) {
                         exercise.setId(rs.getInt(1));
                     }
                 }
             } else {
-                try (Connection con = dataSource.getConnection();
-                     PreparedStatement ps = prepStatement(con,
-                             "UPDATE exercise SET title=?, description=? WHERE id=?;",
-                             exercise.getTitle(), exercise.getDescription(), exercise.getId())) {
+                try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
+                  "UPDATE exercise SET title=?, description=? WHERE id=?;",
+                  exercise.getTitle(), exercise.getDescription(), exercise.getId()))
+                {
                     ps.executeUpdate();
                 }
             }
@@ -49,9 +48,9 @@ public class RealExerciseDAO implements ExerciseDAO {
     }
 
     public Exercise loadExerciseById(int id) {
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = prepStatement(con, "SELECT * FROM exercise WHERE id=?;", id);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
+          "SELECT * FROM exercise WHERE id=?;", id); ResultSet rs = ps.executeQuery())
+        {
             if (rs.next()) {
                 return loadSingleExercise(rs);
             }
@@ -63,9 +62,9 @@ public class RealExerciseDAO implements ExerciseDAO {
 
     public List<Exercise> loadAllExercises() {
         List<Exercise> exercises = new ArrayList<>();
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = prepStatement(con, "SELECT * FROM exercise;");
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
+          "SELECT * FROM exercise;"); ResultSet rs = ps.executeQuery())
+        {
             while (rs.next()) {
                 exercises.add(loadSingleExercise(rs));
             }
@@ -76,9 +75,9 @@ public class RealExerciseDAO implements ExerciseDAO {
     }
 
     public void deleteExercise(Exercise exercise) {
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = prepStatement(con,
-                     "DELETE * FROM exercise WHERE id=?;", exercise.getId())) {
+        try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
+          "DELETE * FROM exercise WHERE id=?;", exercise.getId()))
+        {
             ps.executeUpdate();
             exercise.setId(0);
         } catch (SQLException e) {

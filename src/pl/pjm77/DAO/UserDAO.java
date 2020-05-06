@@ -11,5 +11,4 @@ public interface UserDAO {
     void deleteUser(User user);
     List<User> loadAllUsers();
     List<User> loadAllUsersByGroupId(int usergroup_id);
-
 }
