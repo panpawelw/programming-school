@@ -1,3 +1,4 @@
+import com.mockobjects.sql.MockMultiRowResultSet;
 import com.mockobjects.sql.MockResultSetMetaData;
 import com.mockobjects.sql.MockSingleRowResultSet;
 import org.junit.Test;
@@ -7,6 +8,8 @@ import static org.junit.Assert.assertEquals;
 
 import javax.sql.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import pl.pjm77.DAO.RealUserGroupDAO;
 import pl.pjm77.DAO.UserGroupDAO;
@@ -15,7 +18,7 @@ import pl.pjm77.model.UserGroup;
 public class RealUserGroupDAOTests {
 
     @Test
-    public void testLoadUserById() throws Exception {
+    public void testLoadUserGroupById() throws Exception {
 
         DataSource dataSource = createMock(DataSource.class);
         Connection connection = createMock(Connection.class);
@@ -27,21 +30,19 @@ public class RealUserGroupDAOTests {
 
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
         String[] columnsLowercase =
-                new String[] {"id", "name"};
-        String[] columnsUppercase = new String[] {"ID",
-                "NAME"};
-        String[] columnClassesNames = new String[] {
-                int.class.getName(), String.class.getName()};
-
+          new String[]{"id", "name"};
+        String[] columnsUppercase = new String[]{"ID",
+          "NAME"};
+        String[] columnClassesNames = new String[]{
+          int.class.getName(), String.class.getName()};
         MockResultSetMetaData resultSetMetaData = new MockResultSetMetaData();
         resultSetMetaData.setupAddColumnNames(columnsUppercase);
         resultSetMetaData.setupAddColumnClassNames(
-                columnClassesNames);
+          columnClassesNames);
         resultSetMetaData.setupGetColumnCount(2);
         resultSet.setupMetaData(resultSetMetaData);
-
         resultSet.addExpectedNamedValues(columnsLowercase,
-                new Object[] {1, "Test name"});
+          new Object[]{1, "Test name"});
         expect(statement.executeQuery()).andReturn(resultSet);
 
         resultSet.setExpectedCloseCalls(1);
@@ -49,12 +50,62 @@ public class RealUserGroupDAOTests {
         connection.close();
 
         replay(dataSource, connection, statement);
+
         UserGroupDAO userGroupDAO = new RealUserGroupDAO(dataSource);
-        UserGroup userGroup = userGroupDAO.loadUserGroupById(1);
+        UserGroup result = userGroupDAO.loadUserGroupById(1);
         UserGroup expectedUserGroup = new UserGroup("Test name");
         expectedUserGroup.setId(1);
-        assertEquals(expectedUserGroup.toString(), userGroup.toString());
+
+        assertEquals(expectedUserGroup.toString(), result.toString());
         verify(dataSource, connection, statement);
         resultSet.verify();
+    }
+
+    @Test
+    public void testLoadAllUserGroups() throws Exception {
+        DataSource dataSource = createMock(DataSource.class);
+        Connection connection = createMock(Connection.class);
+        expect(dataSource.getConnection()).andReturn(connection);
+        String sql = "SELECT * FROM usergroup;";
+        PreparedStatement statement = createMock(PreparedStatement.class);
+        expect(connection.prepareStatement(sql)).andReturn(statement);
+
+        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
+        String[] columns = new String[]{"id", "name"};
+        resultSet.setupColumnNames(columns);
+        List<UserGroup> expectedUserGroups = createAllUserGroups();
+        resultSet.setupRows(listTo2dArray(expectedUserGroups));
+        expect(statement.executeQuery()).andReturn(resultSet);
+
+        resultSet.setExpectedCloseCalls(1);
+        statement.close();
+        connection.close();
+
+        replay(dataSource, connection, statement);
+
+        UserGroupDAO userGroupDAO = new RealUserGroupDAO(dataSource);
+        List<UserGroup> result = userGroupDAO.loadAllUserGroups();
+        assertEquals(expectedUserGroups.toString(), result.toString());
+        verify(dataSource, connection, statement);
+        resultSet.verify();
+    }
+
+    private List<UserGroup> createAllUserGroups() {
+        List<UserGroup> expectedUserGroups = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            UserGroup userGroup = new UserGroup("Test user group " + i);
+            userGroup.setId(i);
+            expectedUserGroups.add(userGroup);
+        }
+        return expectedUserGroups;
+    }
+
+    private Object[][] listTo2dArray(List<UserGroup> userGroups) {
+        Object[][] array = new Object[(userGroups.size())][2];
+        for (int i = 0; i < array.length; i++) {
+            UserGroup userGroup = userGroups.get(i);
+            array[i] = new Object[] { userGroup.getId(), userGroup.getName() };
+        }
+        return array;
     }
 }
