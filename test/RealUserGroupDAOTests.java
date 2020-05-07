@@ -1,6 +1,7 @@
 import com.mockobjects.sql.MockMultiRowResultSet;
 import com.mockobjects.sql.MockResultSetMetaData;
 import com.mockobjects.sql.MockSingleRowResultSet;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.easymock.EasyMock.*;
@@ -17,32 +18,35 @@ import pl.pjm77.model.UserGroup;
 
 public class RealUserGroupDAOTests {
 
+    private DataSource dataSource;
+    private Connection connection;
+    private PreparedStatement statement;
+
+    @Before
+    public void setup() throws Exception {
+        dataSource = createMock(DataSource.class);
+        connection = createMock(Connection.class);
+        expect(dataSource.getConnection()).andReturn(connection);
+        statement = createMock(PreparedStatement.class);
+    }
+
     @Test
     public void testLoadUserGroupById() throws Exception {
 
-        DataSource dataSource = createMock(DataSource.class);
-        Connection connection = createMock(Connection.class);
-        expect(dataSource.getConnection()).andReturn(connection);
         String sqlQuery = "SELECT * FROM usergroup WHERE id=?;";
-        PreparedStatement statement = createMock(PreparedStatement.class);
         expect(connection.prepareStatement(sqlQuery)).andReturn(statement);
         statement.setInt(1, 1);
 
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
-        String[] columnsLowercase =
-          new String[]{"id", "name"};
-        String[] columnsUppercase = new String[]{"ID",
-          "NAME"};
-        String[] columnClassesNames = new String[]{
-          int.class.getName(), String.class.getName()};
+        String[] columnsLowercase = new String[]{"id", "name"};
+        String[] columnsUppercase = new String[]{"ID", "NAME"};
+        String[] columnClassesNames = new String[]{ int.class.getName(), String.class.getName() };
         MockResultSetMetaData resultSetMetaData = new MockResultSetMetaData();
         resultSetMetaData.setupAddColumnNames(columnsUppercase);
-        resultSetMetaData.setupAddColumnClassNames(
-          columnClassesNames);
+        resultSetMetaData.setupAddColumnClassNames(columnClassesNames);
         resultSetMetaData.setupGetColumnCount(2);
         resultSet.setupMetaData(resultSetMetaData);
-        resultSet.addExpectedNamedValues(columnsLowercase,
-          new Object[]{1, "Test name"});
+        resultSet.addExpectedNamedValues(columnsLowercase, new Object[]{1, "Test name"});
         expect(statement.executeQuery()).andReturn(resultSet);
 
         resultSet.setExpectedCloseCalls(1);
@@ -63,11 +67,7 @@ public class RealUserGroupDAOTests {
 
     @Test
     public void testLoadAllUserGroups() throws Exception {
-        DataSource dataSource = createMock(DataSource.class);
-        Connection connection = createMock(Connection.class);
-        expect(dataSource.getConnection()).andReturn(connection);
         String sql = "SELECT * FROM usergroup;";
-        PreparedStatement statement = createMock(PreparedStatement.class);
         expect(connection.prepareStatement(sql)).andReturn(statement);
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
