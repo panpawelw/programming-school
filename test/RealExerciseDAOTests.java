@@ -1,5 +1,7 @@
+import com.mockobjects.sql.MockMultiRowResultSet;
 import com.mockobjects.sql.MockResultSetMetaData;
 import com.mockobjects.sql.MockSingleRowResultSet;
+import org.junit.Before;
 import org.junit.Test;
 import pl.pjm77.DAO.ExerciseDAO;
 import pl.pjm77.DAO.RealExerciseDAO;
@@ -8,6 +10,8 @@ import pl.pjm77.model.Exercise;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.easymock.EasyMock.*;
 import static org.easymock.EasyMock.verify;
@@ -15,34 +19,38 @@ import static org.junit.Assert.assertEquals;
 
 public class RealExerciseDAOTests {
 
+    private DataSource dataSource;
+    private Connection connection;
+    private PreparedStatement statement;
+
+    @Before
+    public void setup() throws Exception {
+        dataSource = createMock(DataSource.class);
+        connection = createMock(Connection.class);
+        expect(dataSource.getConnection()).andReturn(connection);
+        statement = createMock(PreparedStatement.class);
+    }
+
     @Test
     public void testLoadExerciseById() throws Exception {
 
-        DataSource dataSource = createMock(DataSource.class);
-        Connection connection = createMock(Connection.class);
-        expect(dataSource.getConnection()).andReturn(connection);
         String sqlQuery = "SELECT * FROM exercise WHERE id=?;";
-        PreparedStatement statement = createMock(PreparedStatement.class);
         expect(connection.prepareStatement(sqlQuery)).andReturn(statement);
         statement.setInt(1, 1);
 
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
-        String[] columnsLowercase =
-                new String[] {"id", "title", "description"};
-        String[] columnsUppercase = new String[] {"ID",
-                "NAME", "DESCRIPTION"};
-        String[] columnClassesNames = new String[] {
-                int.class.getName(), String.class.getName()};
+        String[] columnsLowercase = new String[] {"id", "title", "description"};
+        String[] columnsUppercase = new String[] {"ID", "TITLE", "DESCRIPTION"};
+        String[] columnClassesNames = new String[] {int.class.getName(), String.class.getName()};
 
         MockResultSetMetaData resultSetMetaData = new MockResultSetMetaData();
         resultSetMetaData.setupAddColumnNames(columnsUppercase);
-        resultSetMetaData.setupAddColumnClassNames(
-                columnClassesNames);
+        resultSetMetaData.setupAddColumnClassNames(columnClassesNames);
         resultSetMetaData.setupGetColumnCount(3);
         resultSet.setupMetaData(resultSetMetaData);
 
         resultSet.addExpectedNamedValues(columnsLowercase,
-                new Object[] {1, "Test title", "Test description"});
+          new Object[] {1, "Test title", "Test description"});
         expect(statement.executeQuery()).andReturn(resultSet);
 
         resultSet.setExpectedCloseCalls(1);
@@ -52,11 +60,55 @@ public class RealExerciseDAOTests {
         replay(dataSource, connection, statement);
         ExerciseDAO exerciseDAO = new RealExerciseDAO(dataSource);
         Exercise exercise = exerciseDAO.loadExerciseById(1);
-        Exercise expectedExercise =
-                new Exercise("Test title", "Test description");
+        Exercise expectedExercise = new Exercise("Test title", "Test description");
         expectedExercise.setId(1);
         assertEquals(expectedExercise.toString(), exercise.toString());
         verify(dataSource, connection, statement);
         resultSet.verify();
+    }
+
+    @Test
+    public void testLoadAllExercises() throws Exception {
+        String sql = "SELECT * FROM exercise;";
+        expect(connection.prepareStatement(sql)).andReturn(statement);
+
+        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
+        String[] columns = new String[]{"id", "title", "description"};
+        resultSet.setupColumnNames(columns);
+        List<Exercise> expectedExercises = createAllExercises();
+        resultSet.setupRows(exerciselistTo2dArray(expectedExercises));
+        expect(statement.executeQuery()).andReturn(resultSet);
+
+        resultSet.setExpectedCloseCalls(1);
+        statement.close();
+        connection.close();
+
+        replay(dataSource, connection, statement);
+
+        ExerciseDAO exerciseDAO = new RealExerciseDAO(dataSource);
+        List<Exercise> result = exerciseDAO.loadAllExercises();
+        assertEquals(expectedExercises.toString(), result.toString());
+        verify(dataSource, connection, statement);
+        resultSet.verify();
+    }
+
+    private List<Exercise> createAllExercises() {
+        List<Exercise> expectedExercises = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            Exercise exercise = new Exercise("Test exercise title " + i,
+              "Test exercise description " + i);
+            exercise.setId(i);
+            expectedExercises.add(exercise);
+        }
+        return expectedExercises;
+    }
+
+    private Object[][] exerciselistTo2dArray(List<Exercise> exercises) {
+        Object[][] array = new Object[(exercises.size())][3];
+        for (int i = 0; i < array.length; i++) {
+            Exercise exercise = exercises.get(i);
+            array[i] = new Object[] {exercise.getId(), exercise.getTitle(), exercise.getDescription()};
+        }
+        return array;
     }
 }

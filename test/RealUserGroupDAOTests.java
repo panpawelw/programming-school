@@ -40,7 +40,7 @@ public class RealUserGroupDAOTests {
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
         String[] columnsLowercase = new String[]{"id", "name"};
         String[] columnsUppercase = new String[]{"ID", "NAME"};
-        String[] columnClassesNames = new String[]{ int.class.getName(), String.class.getName() };
+        String[] columnClassesNames = new String[]{int.class.getName(), String.class.getName()};
         MockResultSetMetaData resultSetMetaData = new MockResultSetMetaData();
         resultSetMetaData.setupAddColumnNames(columnsUppercase);
         resultSetMetaData.setupAddColumnClassNames(columnClassesNames);
@@ -74,7 +74,7 @@ public class RealUserGroupDAOTests {
         String[] columns = new String[]{"id", "name"};
         resultSet.setupColumnNames(columns);
         List<UserGroup> expectedUserGroups = createAllUserGroups();
-        resultSet.setupRows(listTo2dArray(expectedUserGroups));
+        resultSet.setupRows(userGrouplistTo2dArray(expectedUserGroups));
         expect(statement.executeQuery()).andReturn(resultSet);
 
         resultSet.setExpectedCloseCalls(1);
@@ -100,11 +100,11 @@ public class RealUserGroupDAOTests {
         return expectedUserGroups;
     }
 
-    private Object[][] listTo2dArray(List<UserGroup> userGroups) {
+    private Object[][] userGrouplistTo2dArray(List<UserGroup> userGroups) {
         Object[][] array = new Object[(userGroups.size())][2];
         for (int i = 0; i < array.length; i++) {
             UserGroup userGroup = userGroups.get(i);
-            array[i] = new Object[] { userGroup.getId(), userGroup.getName() };
+            array[i] = new Object[] {userGroup.getId(), userGroup.getName()};
         }
         return array;
     }
