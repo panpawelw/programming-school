@@ -22,6 +22,7 @@ public class RealExerciseDAOTests {
     private DataSource dataSource;
     private Connection connection;
     private PreparedStatement statement;
+    String[] columns = new String[]{"id", "title", "description"};
 
     @Before
     public void setup() throws Exception {
@@ -39,7 +40,6 @@ public class RealExerciseDAOTests {
         statement.setInt(1, 1);
 
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
-        String[] columnsLowercase = new String[] {"id", "title", "description"};
         String[] columnsUppercase = new String[] {"ID", "TITLE", "DESCRIPTION"};
         String[] columnClassesNames = new String[] {int.class.getName(), String.class.getName()};
 
@@ -49,8 +49,7 @@ public class RealExerciseDAOTests {
         resultSetMetaData.setupGetColumnCount(3);
         resultSet.setupMetaData(resultSetMetaData);
 
-        resultSet.addExpectedNamedValues(columnsLowercase,
-          new Object[] {1, "Test title", "Test description"});
+        resultSet.addExpectedNamedValues(columns, new Object[] {1, "Test title", "Test description"});
         expect(statement.executeQuery()).andReturn(resultSet);
 
         resultSet.setExpectedCloseCalls(1);
@@ -73,7 +72,6 @@ public class RealExerciseDAOTests {
         expect(connection.prepareStatement(sql)).andReturn(statement);
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
-        String[] columns = new String[]{"id", "title", "description"};
         resultSet.setupColumnNames(columns);
         List<Exercise> expectedExercises = createAllExercises();
         resultSet.setupRows(exerciselistTo2dArray(expectedExercises));

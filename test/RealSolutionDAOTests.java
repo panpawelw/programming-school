@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.Timestamp.*;
 import static org.easymock.EasyMock.*;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
@@ -23,6 +24,7 @@ public class RealSolutionDAOTests {
     private DataSource dataSource;
     private Connection connection;
     private PreparedStatement statement;
+    String[] columns = new String[]{"id", "created", "updated", "description", "exercise_id", "user_id"};
 
     @Before
     public void setup() throws Exception {
@@ -39,8 +41,6 @@ public class RealSolutionDAOTests {
         statement.setLong(1, 1);
 
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
-        String[] columnsLowercase =
-          new String[]{"id", "created", "updated", "description", "exercise_id", "user_id"};
         String[] columnsUppercase =
           new String[]{"ID", "CREATED", "UPDATED", "DESCRIPTION", "EXERCISE_ID", "USER_ID"};
         String[] columnClassesNames = new String[]{long.class.getName(), Timestamp.class.getName(),
@@ -52,9 +52,8 @@ public class RealSolutionDAOTests {
         resultSetMetaData.setupGetColumnCount(6);
         resultSet.setupMetaData(resultSetMetaData);
 
-        resultSet.addExpectedNamedValues(columnsLowercase,
-          new Object[]{1L, java.sql.Timestamp.valueOf("2020-04-20 23:24:10.0"),
-            java.sql.Timestamp.valueOf("2020-04-20 23:25:23.0"), "test description", 1, 1L});
+        resultSet.addExpectedNamedValues(columns, new Object[]{1L, valueOf("2020-04-20 23:24:10.0"),
+          valueOf("2020-04-20 23:25:23.0"), "test description", 1, 1L});
         expect(statement.executeQuery()).andReturn(resultSet);
 
         resultSet.setExpectedCloseCalls(1);
@@ -64,9 +63,8 @@ public class RealSolutionDAOTests {
         replay(dataSource, connection, statement);
         SolutionDAO solutionDAO = new RealSolutionDAO(dataSource);
         Solution solution = solutionDAO.loadSolutionById(1);
-        Solution expectedSolution = new Solution(java.sql.Timestamp.valueOf("2020-04-20 23:24:10.0"),
-          java.sql.Timestamp.valueOf("2020-04-20 23:25:23.0"),"test description",
-          1, 1L);
+        Solution expectedSolution = new Solution(valueOf("2020-04-20 23:24:10.0"),
+          valueOf("2020-04-20 23:25:23.0"), "test description",1, 1L);
         expectedSolution.setId(1L);
         assertEquals(expectedSolution.toString(), solution.toString());
         verify(dataSource, connection, statement);
@@ -79,8 +77,6 @@ public class RealSolutionDAOTests {
         expect(connection.prepareStatement(sql)).andReturn(statement);
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
-        String[] columns =
-          new String[]{"id", "created", "updated", "description", "exercise_id", "user_id"};
         resultSet.setupColumnNames(columns);
         List<Solution> expectedSolutions = createAllSolutions();
         resultSet.setupRows(solutionlistTo2dArray(expectedSolutions));
@@ -102,9 +98,8 @@ public class RealSolutionDAOTests {
     private List<Solution> createAllSolutions() {
         List<Solution> expectedSolutions = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
-            Solution solution = new Solution(java.sql.Timestamp.valueOf("2020-04-20 23:24:15." + i),
-              java.sql.Timestamp.valueOf("2020-04-20 23:25:23.0" + i),"Test description " +i,
-              i, i);
+            Solution solution = new Solution(valueOf("2020-04-20 23:24:15." + i),
+              valueOf("2020-04-20 23:25:23.0" + i), "Test description " + i, i, i);
             solution.setId(i);
             expectedSolutions.add(solution);
         }

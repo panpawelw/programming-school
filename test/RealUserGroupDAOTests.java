@@ -21,6 +21,7 @@ public class RealUserGroupDAOTests {
     private DataSource dataSource;
     private Connection connection;
     private PreparedStatement statement;
+    String[] columns = new String[]{"id", "name"};
 
     @Before
     public void setup() throws Exception {
@@ -38,7 +39,6 @@ public class RealUserGroupDAOTests {
         statement.setInt(1, 1);
 
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
-        String[] columnsLowercase = new String[]{"id", "name"};
         String[] columnsUppercase = new String[]{"ID", "NAME"};
         String[] columnClassesNames = new String[]{int.class.getName(), String.class.getName()};
         MockResultSetMetaData resultSetMetaData = new MockResultSetMetaData();
@@ -46,7 +46,7 @@ public class RealUserGroupDAOTests {
         resultSetMetaData.setupAddColumnClassNames(columnClassesNames);
         resultSetMetaData.setupGetColumnCount(2);
         resultSet.setupMetaData(resultSetMetaData);
-        resultSet.addExpectedNamedValues(columnsLowercase, new Object[]{1, "Test name"});
+        resultSet.addExpectedNamedValues(columns, new Object[]{1, "Test name"});
         expect(statement.executeQuery()).andReturn(resultSet);
 
         resultSet.setExpectedCloseCalls(1);
@@ -71,7 +71,6 @@ public class RealUserGroupDAOTests {
         expect(connection.prepareStatement(sql)).andReturn(statement);
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
-        String[] columns = new String[]{"id", "name"};
         resultSet.setupColumnNames(columns);
         List<UserGroup> expectedUserGroups = createAllUserGroups();
         resultSet.setupRows(userGrouplistTo2dArray(expectedUserGroups));
