@@ -78,7 +78,7 @@ public class RealSolutionDAOTests {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
-        List<Solution> expectedSolutions = createAllSolutions();
+        List<Solution> expectedSolutions = createManySolutions();
         resultSet.setupRows(solutionlistTo2dArray(expectedSolutions));
         expect(statement.executeQuery()).andReturn(resultSet);
 
@@ -95,7 +95,7 @@ public class RealSolutionDAOTests {
         resultSet.verify();
     }
 
-    private List<Solution> createAllSolutions() {
+    private List<Solution> createManySolutions() {
         List<Solution> expectedSolutions = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
             Solution solution = new Solution(valueOf("2020-04-20 23:24:15." + i),

@@ -72,7 +72,7 @@ public class RealUserGroupDAOTests {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
-        List<UserGroup> expectedUserGroups = createAllUserGroups();
+        List<UserGroup> expectedUserGroups = createManyUserGroups();
         resultSet.setupRows(userGrouplistTo2dArray(expectedUserGroups));
         expect(statement.executeQuery()).andReturn(resultSet);
 
@@ -89,7 +89,7 @@ public class RealUserGroupDAOTests {
         resultSet.verify();
     }
 
-    private List<UserGroup> createAllUserGroups() {
+    private List<UserGroup> createManyUserGroups() {
         List<UserGroup> expectedUserGroups = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
             UserGroup userGroup = new UserGroup("Test user group " + i);

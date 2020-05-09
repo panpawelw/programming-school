@@ -73,7 +73,7 @@ public class RealExerciseDAOTests {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
-        List<Exercise> expectedExercises = createAllExercises();
+        List<Exercise> expectedExercises = createManyExercises();
         resultSet.setupRows(exerciselistTo2dArray(expectedExercises));
         expect(statement.executeQuery()).andReturn(resultSet);
 
@@ -90,7 +90,7 @@ public class RealExerciseDAOTests {
         resultSet.verify();
     }
 
-    private List<Exercise> createAllExercises() {
+    private List<Exercise> createManyExercises() {
         List<Exercise> expectedExercises = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
             Exercise exercise = new Exercise("Test exercise title " + i,

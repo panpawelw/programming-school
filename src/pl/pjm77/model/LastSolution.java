@@ -41,4 +41,10 @@ public class LastSolution {
     public void setId(long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "LastSolution{id=" + this.id + ", title='" + this.title + ", name='" + this.name +
+          ", modified=" + this.modified + '}';
+    }
 }
