@@ -61,7 +61,33 @@ public class RealLastSolutionDAOTests {
 
     @Test
     public void testLoadMostRecentSolutionsByUserId() throws Exception {
+        String sqlQuery = "SELECT exercise.title, user.username, IF(solution.updated > " +
+          "solution.created, solution.updated, solution.created), solution.id FROM solution " +
+          "LEFT JOIN exercise ON solution.exercise_id=exercise.id LEFT JOIN user ON " +
+          "solution.user_id=user.id  WHERE solution.user_id=? ORDER BY IF(updated > created, " +
+          "updated, created) DESC;";
+        expect(connection.prepareStatement(sqlQuery)).andReturn(statement);
+        statement.setLong(1, 2);
 
+        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
+        resultSet.setupColumnNames(columns);
+        List<LastSolution> expectedLastSolutions = createManyLastSolutionsByUserId(2);
+        resultSet.setupRows(lastSolutionlistTo2dArray(expectedLastSolutions));
+        expect(statement.executeQuery()).andReturn(resultSet);
+
+        resultSet.setExpectedCloseCalls(1);
+        statement.close();
+        connection.close();
+
+        replay(dataSource, connection, statement);
+
+        LastSolutionDAO lastSolutionDAO = new RealLastSolutionDAO(dataSource);
+        List<LastSolution> result = lastSolutionDAO.loadMostRecentSolutionsByUserId(2);
+        assertEquals(expectedLastSolutions.toString(), result.toString());
+        System.out.println(expectedLastSolutions.toString());
+        System.out.println(result.toString());
+        verify(dataSource, connection, statement);
+        resultSet.verify();
     }
 
     private List<LastSolution> createManyLastSolutions() {
@@ -70,6 +96,17 @@ public class RealLastSolutionDAOTests {
             LastSolution lastSolution = new LastSolution("Test title " + i,
               "Test name " + i, valueOf("2020-04-20 23:25:23.0" + i));
             lastSolution.setId(i);
+            expectedLastSolutions.add(lastSolution);
+        }
+        return expectedLastSolutions;
+    }
+
+    private List<LastSolution> createManyLastSolutionsByUserId(long id) {
+        List<LastSolution> expectedLastSolutions = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            LastSolution lastSolution = new LastSolution("Test title " + i,
+              "Test name " + i, valueOf("2020-04-20 23:25:23.0" + i));
+            lastSolution.setId(id);
             expectedLastSolutions.add(lastSolution);
         }
         return expectedLastSolutions;
