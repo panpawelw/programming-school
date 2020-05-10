@@ -100,7 +100,7 @@ public class RealUserDAOTest {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
-        List<User> expectedUsers = createManyUsersWithGroupId(3);
+        List<User> expectedUsers = createManyUsersWithSameGroupId(3);
         resultSet.setupRows(userlistTo2dArray(expectedUsers));
         expect(statement.executeQuery()).andReturn(resultSet);
 
@@ -128,7 +128,7 @@ public class RealUserDAOTest {
         return expectedUsers;
     }
 
-    private List<User> createManyUsersWithGroupId(int groupId) {
+    private List<User> createManyUsersWithSameGroupId(int groupId) {
         List<User> expectedUsers = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
             User user = new User("Test user " + i,

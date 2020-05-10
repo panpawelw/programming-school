@@ -95,11 +95,47 @@ public class RealSolutionDAOTests {
         resultSet.verify();
     }
 
+    @Test
+    public void testLoadAllSolutionsByUserId() throws Exception {
+        String sql = "SELECT * FROM solution WHERE user_id=?;";
+        expect(connection.prepareStatement(sql)).andReturn(statement);
+        statement.setLong(1,2);
+
+        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
+        resultSet.setupColumnNames(columns);
+        List<Solution> expectedSolutions = createManySolutionsWithSameUserId(2);
+        resultSet.setupRows(solutionlistTo2dArray(expectedSolutions));
+        expect(statement.executeQuery()).andReturn(resultSet);
+
+        resultSet.setExpectedCloseCalls(1);
+        statement.close();
+        connection.close();
+
+        replay(dataSource, connection, statement);
+
+        SolutionDAO solutionDAO = new RealSolutionDAO(dataSource);
+        List<Solution> result = solutionDAO.loadAllSolutionsByUserId(2);
+        assertEquals(expectedSolutions.toString(), result.toString());
+        verify(dataSource, connection, statement);
+        resultSet.verify();
+    }
+
     private List<Solution> createManySolutions() {
         List<Solution> expectedSolutions = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
             Solution solution = new Solution(valueOf("2020-04-20 23:24:15." + i),
               valueOf("2020-04-20 23:25:23.0" + i), "Test description " + i, i, i);
+            solution.setId(i);
+            expectedSolutions.add(solution);
+        }
+        return expectedSolutions;
+    }
+
+    private List<Solution> createManySolutionsWithSameUserId(long userId) {
+        List<Solution> expectedSolutions = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            Solution solution = new Solution(valueOf("2020-04-20 23:24:15." + i),
+              valueOf("2020-04-20 23:25:23.0" + i), "Test description " + i, i, userId);
             solution.setId(i);
             expectedSolutions.add(solution);
         }
