@@ -92,11 +92,47 @@ public class RealUserDAOTest {
         resultSet.verify();
     }
 
+    @Test
+    public void testLoadAllUsersByGroupId() throws Exception {
+        String sql = "SELECT * FROM user WHERE usergroup_id=?;";
+        expect(connection.prepareStatement(sql)).andReturn(statement);
+        statement.setInt(1, 3);
+
+        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
+        resultSet.setupColumnNames(columns);
+        List<User> expectedUsers = createManyUsersWithGroupId(3);
+        resultSet.setupRows(userlistTo2dArray(expectedUsers));
+        expect(statement.executeQuery()).andReturn(resultSet);
+
+        resultSet.setExpectedCloseCalls(1);
+        statement.close();
+        connection.close();
+
+        replay(dataSource, connection, statement);
+
+        UserDAO userDAO = new RealUserDAO(dataSource);
+        List<User> result = userDAO.loadAllUsersByGroupId(3);
+        assertEquals(expectedUsers.toString(), result.toString());
+        verify(dataSource, connection, statement);
+        resultSet.verify();
+    }
+
     private List<User> createManyUsers() {
         List<User> expectedUsers = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
             User user = new User("Test user " + i,
               "Test email " + i, "Test password " + i, i);
+            user.setId(i);
+            expectedUsers.add(user);
+        }
+        return expectedUsers;
+    }
+
+    private List<User> createManyUsersWithGroupId(int groupId) {
+        List<User> expectedUsers = new ArrayList<>();
+        for (int i = 1; i < 6; i++) {
+            User user = new User("Test user " + i,
+              "Test email " + i, "Test password " + i, groupId);
             user.setId(i);
             expectedUsers.add(user);
         }

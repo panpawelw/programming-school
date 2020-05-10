@@ -84,8 +84,6 @@ public class RealLastSolutionDAOTests {
         LastSolutionDAO lastSolutionDAO = new RealLastSolutionDAO(dataSource);
         List<LastSolution> result = lastSolutionDAO.loadMostRecentSolutionsByUserId(2);
         assertEquals(expectedLastSolutions.toString(), result.toString());
-        System.out.println(expectedLastSolutions.toString());
-        System.out.println(result.toString());
         verify(dataSource, connection, statement);
         resultSet.verify();
     }
