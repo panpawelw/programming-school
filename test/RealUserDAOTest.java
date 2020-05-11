@@ -33,6 +33,13 @@ public class RealUserDAOTest {
     }
 
     @Test
+    public void testSaveUserToDB() throws Exception {
+        User user = new User("Test name", "Test email", "Test password", 3);
+        UserDAO userDAO = new RealUserDAO(dataSource);
+        userDAO.saveUserToDB(user);
+    }
+
+    @Test
     public void testLoadUserById() throws Exception {
         String sqlQuery = "SELECT * FROM user WHERE id=?;";
         expect(connection.prepareStatement(sqlQuery)).andReturn(statement);
@@ -58,6 +65,7 @@ public class RealUserDAOTest {
         connection.close();
 
         replay(dataSource, connection, statement);
+
         UserDAO userDAO = new RealUserDAO(dataSource);
         User user = userDAO.loadUserById(1);
         User expectedUser =
