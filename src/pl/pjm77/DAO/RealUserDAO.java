@@ -24,7 +24,7 @@ public class RealUserDAO implements UserDAO {
     public void saveUserToDB(User user) {
         try {
             if (user.getId() == 0) {
-                String[] columnNames = {" ID "};
+                String[] columnNames = {"ID"};
                 try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
                   "INSERT INTO user(username, email, password, usergroup_id) VALUES (?, ?, ?, ?);",
                   columnNames, user.getName(), user.getEmail(), user.getPassword(),

@@ -10,7 +10,6 @@ import java.sql.Timestamp;
 
 public class DbUtils {
 
-
     /**
      * Prepares a data source.
      *
@@ -40,14 +39,16 @@ public class DbUtils {
      */
     public static PreparedStatement prepStatement(Connection con, String sql, Object... args)
             throws SQLException {
-        PreparedStatement ps = con.prepareStatement(sql);
         int paramIndex = 0;
+        PreparedStatement ps;
+        // If a string array with column names is the first parameter
+        if (args[0].getClass().toString().equals("class [Ljava.lang.String;")) {
+            ps = con.prepareStatement(sql, (String[]) args[0]);
+            paramIndex++;
+        } else {
+            ps = con.prepareStatement(sql);
+        }
         while (paramIndex < args.length) {
-            // If a string array with column names is the first parameter
-            if (args[0].getClass().toString().equals("class [Ljava.lang.String;")) {
-                ps = con.prepareStatement(sql, (String[]) args[0]);
-                paramIndex++;
-            }
             // Edge case when saveSolutionToDB has to set a null Timestamp as "updated" field
             if (args[paramIndex] == null) {
                 ps.setTimestamp(paramIndex + 1, null);
