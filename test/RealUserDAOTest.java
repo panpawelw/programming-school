@@ -100,7 +100,7 @@ public class RealUserDAOTest {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
-        List<User> expectedUsers = createManyUsers();
+        List<User> expectedUsers = createMultipleUsers();
         resultSet.setupRows(userlistTo2dArray(expectedUsers));
         expect(statement.executeQuery()).andReturn(resultSet);
 
@@ -124,7 +124,7 @@ public class RealUserDAOTest {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
-        List<User> expectedUsers = createManyUsersWithSameGroupId(3);
+        List<User> expectedUsers = createMultipleUsers(3);
         resultSet.setupRows(userlistTo2dArray(expectedUsers));
         expect(statement.executeQuery()).andReturn(resultSet);
 
@@ -140,22 +140,19 @@ public class RealUserDAOTest {
         resultSet.verify();
     }
 
-    private List<User> createManyUsers() {
+    /**
+     * Creates a list of test users, optionally with identical group ID
+     * @param args - optional group ID (int)
+     * @return - list of users
+     */
+    private List<User> createMultipleUsers(int...args) {
         List<User> expectedUsers = new ArrayList<>();
+        int group_id = 1;
+        if (args.length != 0) group_id = args[0];
         for (int i = 1; i < 6; i++) {
+            if(args.length == 0) group_id = i;
             User user = new User("Test user " + i,
-              "Test email " + i, "Test password " + i, i);
-            user.setId(i);
-            expectedUsers.add(user);
-        }
-        return expectedUsers;
-    }
-
-    private List<User> createManyUsersWithSameGroupId(int groupId) {
-        List<User> expectedUsers = new ArrayList<>();
-        for (int i = 1; i < 6; i++) {
-            User user = new User("Test user " + i,
-              "Test email " + i, "Test password " + i, groupId);
+              "Test email " + i, "Test password " + i, group_id);
             user.setId(i);
             expectedUsers.add(user);
         }
