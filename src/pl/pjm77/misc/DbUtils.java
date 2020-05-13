@@ -41,8 +41,7 @@ public class DbUtils {
             throws SQLException {
         int paramIndex = 0;
         PreparedStatement ps;
-        // If a string array with column names is the first parameter
-        if (args[0].getClass().toString().equals("class [Ljava.lang.String;")) {
+        if (args.length != 0 && args[0].getClass().toString().equals("class [Ljava.lang.String;")) {
             ps = con.prepareStatement(sql, (String[]) args[0]);
             paramIndex++;
         } else {
