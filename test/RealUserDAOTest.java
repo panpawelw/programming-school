@@ -1,5 +1,4 @@
 import com.mockobjects.sql.MockMultiRowResultSet;
-import com.mockobjects.sql.MockResultSetMetaData;
 import com.mockobjects.sql.MockSingleRowResultSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +21,7 @@ public class RealUserDAOTest {
     private DataSource dataSource;
     private Connection connection;
     private PreparedStatement statement;
+    private UserDAO userDAO;
     String[] columns = new String[]{"id", "username", "email", "password", "usergroup_id"};
 
     @Before
@@ -30,13 +30,41 @@ public class RealUserDAOTest {
         connection = createMock(Connection.class);
         expect(dataSource.getConnection()).andReturn(connection);
         statement = createMock(PreparedStatement.class);
+        userDAO = new RealUserDAO(dataSource);
     }
 
     @Test
-    public void testSaveUserToDB() throws Exception {
+    public void testCreateNewUser() throws Exception {
+        final long EXPECTED_ID = 3L;
+        int rowCount = 0;
+        String sqlQuery = "INSERT INTO user(username, email, password, usergroup_id) " +
+          "VALUES (?, ?, ?, ?);";
         User user = new User("Test name", "Test email", "Test password", 3);
-        UserDAO userDAO = new RealUserDAO(dataSource);
+        expect(connection.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(statement);
+
+        statement.setString(2, user.getName());
+        statement.setString(3, user.getEmail());
+        statement.setString(4, user.getPassword());
+        statement.setInt(5, user.getGroup_id());
+        expect(statement.executeUpdate()).andReturn(rowCount);
+
+        MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
+        resultSet.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
+        expect(statement.getGeneratedKeys()).andReturn(resultSet);
+
+        resultSet.setExpectedCloseCalls(1);
+        statement.close();
+        connection.close();
+
+        replay(dataSource, connection, statement);
         userDAO.saveUserToDB(user);
+        assertEquals(user.getId(), EXPECTED_ID);
+        resultSet.verify();
+    }
+
+    @Test
+    public void testUpdateExistingUser() throws Exception {
+
     }
 
     @Test
@@ -46,16 +74,6 @@ public class RealUserDAOTest {
         statement.setLong(1, 1);
 
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
-        String[] columnsUppercase = new String[]{"ID", "USERNAME", "EMAIL", "PASSWORD", "USERGROUP_ID"};
-        String[] columnClassesNames = new String[]{long.class.getName(), String.class.getName(),
-          String.class.getName(), String.class.getName(), int.class.getName()};
-
-        MockResultSetMetaData resultSetMetaData = new MockResultSetMetaData();
-        resultSetMetaData.setupAddColumnNames(columnsUppercase);
-        resultSetMetaData.setupAddColumnClassNames(columnClassesNames);
-        resultSetMetaData.setupGetColumnCount(5);
-        resultSet.setupMetaData(resultSetMetaData);
-
         resultSet.addExpectedNamedValues(columns,
           new Object[]{1L, "Test name", "Test email", "Test password", 1});
         expect(statement.executeQuery()).andReturn(resultSet);
@@ -66,7 +84,6 @@ public class RealUserDAOTest {
 
         replay(dataSource, connection, statement);
 
-        UserDAO userDAO = new RealUserDAO(dataSource);
         User user = userDAO.loadUserById(1);
         User expectedUser =
           new User("Test name", "Test email", "Test password", 1);
@@ -93,7 +110,6 @@ public class RealUserDAOTest {
 
         replay(dataSource, connection, statement);
 
-        UserDAO userDAO = new RealUserDAO(dataSource);
         List<User> result = userDAO.loadAllUsers();
         assertEquals(expectedUsers.toString(), result.toString());
         verify(dataSource, connection, statement);
@@ -118,7 +134,6 @@ public class RealUserDAOTest {
 
         replay(dataSource, connection, statement);
 
-        UserDAO userDAO = new RealUserDAO(dataSource);
         List<User> result = userDAO.loadAllUsersByGroupId(3);
         assertEquals(expectedUsers.toString(), result.toString());
         verify(dataSource, connection, statement);
