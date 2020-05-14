@@ -1,6 +1,5 @@
 import com.mockobjects.sql.MockMultiRowResultSet;
 import com.mockobjects.sql.MockSingleRowResultSet;
-import misc.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import pl.pjm77.DAO.RealUserDAO;
@@ -13,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static misc.TestUtils.*;
 import static org.easymock.EasyMock.*;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
@@ -49,12 +49,11 @@ public class RealUserDAOTest {
         statement.setInt(5, user.getGroup_id());
         expect(statement.executeUpdate()).andReturn(rowCount);
 
-        MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
+        MockSingleRowResultSet resultSet = prepareSingleRowResultSetMock();
         resultSet.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
         expect(statement.getGeneratedKeys()).andReturn(resultSet);
-        resultSet.setExpectedCloseCalls(1);
 
-        TestUtils.closeAllAndReplay(dataSource, connection, statement);
+        closeAllAndReplay(dataSource, connection, statement);
 
         userDAO.saveUserToDB(user);
         assertEquals(user.getId(), EXPECTED_ID);
@@ -73,13 +72,12 @@ public class RealUserDAOTest {
         expect(connection.prepareStatement(sqlQuery)).andReturn(statement);
         statement.setLong(1, 1);
 
-        MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
+        MockSingleRowResultSet resultSet = prepareSingleRowResultSetMock();
         resultSet.addExpectedNamedValues(columns,
           new Object[]{1L, "Test name", "Test email", "Test password", 1});
         expect(statement.executeQuery()).andReturn(resultSet);
-        resultSet.setExpectedCloseCalls(1);
 
-        TestUtils.closeAllAndReplay(dataSource, connection, statement);
+        closeAllAndReplay(dataSource, connection, statement);
 
         User user = userDAO.loadUserById(1);
         User expectedUser =
@@ -95,14 +93,11 @@ public class RealUserDAOTest {
         String sql = "SELECT * FROM user;";
         expect(connection.prepareStatement(sql)).andReturn(statement);
 
-        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
-        resultSet.setupColumnNames(columns);
         List<User> expectedUsers = createMultipleUsers();
-        resultSet.setupRows(userlistTo2dArray(expectedUsers));
-        expect(statement.executeQuery()).andReturn(resultSet);
-        resultSet.setExpectedCloseCalls(1);
+        MockMultiRowResultSet resultSet =
+          prepareMultiRowResultSetMock(userlistTo2dArray(expectedUsers), columns, statement);
 
-        TestUtils.closeAllAndReplay(dataSource, connection, statement);
+        closeAllAndReplay(dataSource, connection, statement);
 
         List<User> result = userDAO.loadAllUsers();
         assertEquals(expectedUsers.toString(), result.toString());
@@ -116,14 +111,11 @@ public class RealUserDAOTest {
         expect(connection.prepareStatement(sql)).andReturn(statement);
         statement.setInt(1, 3);
 
-        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
-        resultSet.setupColumnNames(columns);
         List<User> expectedUsers = createMultipleUsers(3);
-        resultSet.setupRows(userlistTo2dArray(expectedUsers));
-        expect(statement.executeQuery()).andReturn(resultSet);
-        resultSet.setExpectedCloseCalls(1);
+        MockMultiRowResultSet resultSet =
+          prepareMultiRowResultSetMock(userlistTo2dArray(expectedUsers), columns, statement);
 
-        TestUtils.closeAllAndReplay(dataSource, connection, statement);
+        closeAllAndReplay(dataSource, connection, statement);
 
         List<User> result = userDAO.loadAllUsersByGroupId(3);
         assertEquals(expectedUsers.toString(), result.toString());
@@ -150,6 +142,11 @@ public class RealUserDAOTest {
         return expectedUsers;
     }
 
+    /**
+     * Converts a list of test users into a two dimensional array
+     * @param users - list of users
+     * @return - 2D array of users
+     */
     private Object[][] userlistTo2dArray(List<User> users) {
         Object[][] array = new Object[(users.size())][5];
         for (int i = 0; i < array.length; i++) {
