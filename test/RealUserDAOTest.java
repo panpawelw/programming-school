@@ -1,5 +1,6 @@
 import com.mockobjects.sql.MockMultiRowResultSet;
 import com.mockobjects.sql.MockSingleRowResultSet;
+import misc.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import pl.pjm77.DAO.RealUserDAO;
@@ -51,14 +52,13 @@ public class RealUserDAOTest {
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
         resultSet.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
         expect(statement.getGeneratedKeys()).andReturn(resultSet);
-
         resultSet.setExpectedCloseCalls(1);
-        statement.close();
-        connection.close();
 
-        replay(dataSource, connection, statement);
+        TestUtils.closeAllAndReplay(dataSource, connection, statement);
+
         userDAO.saveUserToDB(user);
         assertEquals(user.getId(), EXPECTED_ID);
+        verify(dataSource, connection, statement);
         resultSet.verify();
     }
 
@@ -77,12 +77,9 @@ public class RealUserDAOTest {
         resultSet.addExpectedNamedValues(columns,
           new Object[]{1L, "Test name", "Test email", "Test password", 1});
         expect(statement.executeQuery()).andReturn(resultSet);
-
         resultSet.setExpectedCloseCalls(1);
-        statement.close();
-        connection.close();
 
-        replay(dataSource, connection, statement);
+        TestUtils.closeAllAndReplay(dataSource, connection, statement);
 
         User user = userDAO.loadUserById(1);
         User expectedUser =
@@ -103,12 +100,9 @@ public class RealUserDAOTest {
         List<User> expectedUsers = createMultipleUsers();
         resultSet.setupRows(userlistTo2dArray(expectedUsers));
         expect(statement.executeQuery()).andReturn(resultSet);
-
         resultSet.setExpectedCloseCalls(1);
-        statement.close();
-        connection.close();
 
-        replay(dataSource, connection, statement);
+        TestUtils.closeAllAndReplay(dataSource, connection, statement);
 
         List<User> result = userDAO.loadAllUsers();
         assertEquals(expectedUsers.toString(), result.toString());
@@ -127,12 +121,9 @@ public class RealUserDAOTest {
         List<User> expectedUsers = createMultipleUsers(3);
         resultSet.setupRows(userlistTo2dArray(expectedUsers));
         expect(statement.executeQuery()).andReturn(resultSet);
-
         resultSet.setExpectedCloseCalls(1);
-        statement.close();
-        connection.close();
 
-        replay(dataSource, connection, statement);
+        TestUtils.closeAllAndReplay(dataSource, connection, statement);
 
         List<User> result = userDAO.loadAllUsersByGroupId(3);
         assertEquals(expectedUsers.toString(), result.toString());
