@@ -1,11 +1,10 @@
 import com.mockobjects.sql.MockMultiRowResultSet;
-import com.mockobjects.sql.MockResultSetMetaData;
 import com.mockobjects.sql.MockSingleRowResultSet;
 import org.junit.Before;
 import org.junit.Test;
 
+import static misc.TestUtils.*;
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
 
 import javax.sql.*;
 import java.sql.*;
@@ -18,78 +17,58 @@ import pl.pjm77.model.UserGroup;
 
 public class RealUserGroupDAOTests {
 
-    private DataSource dataSource;
-    private Connection connection;
-    private PreparedStatement statement;
+    private DataSource ds;
+    private Connection con;
+    private PreparedStatement stmt;
+    private UserGroupDAO userGroupDAO;
     String[] columns = new String[]{"id", "name"};
 
     @Before
     public void setup() throws Exception {
-        dataSource = createMock(DataSource.class);
-        connection = createMock(Connection.class);
-        expect(dataSource.getConnection()).andReturn(connection);
-        statement = createMock(PreparedStatement.class);
+        ds = createMock(DataSource.class);
+        con = createMock(Connection.class);
+        expect(ds.getConnection()).andReturn(con);
+        stmt = createMock(PreparedStatement.class);
+        userGroupDAO = new RealUserGroupDAO(ds);
     }
 
     @Test
     public void testLoadUserGroupById() throws Exception {
 
         String sqlQuery = "SELECT * FROM usergroup WHERE id=?;";
-        expect(connection.prepareStatement(sqlQuery)).andReturn(statement);
-        statement.setInt(1, 1);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
+        stmt.setInt(1, 1);
 
-        MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
-        String[] columnsUppercase = new String[]{"ID", "NAME"};
-        String[] columnClassesNames = new String[]{int.class.getName(), String.class.getName()};
-        MockResultSetMetaData resultSetMetaData = new MockResultSetMetaData();
-        resultSetMetaData.setupAddColumnNames(columnsUppercase);
-        resultSetMetaData.setupAddColumnClassNames(columnClassesNames);
-        resultSetMetaData.setupGetColumnCount(2);
-        resultSet.setupMetaData(resultSetMetaData);
-        resultSet.addExpectedNamedValues(columns, new Object[]{1, "Test name"});
-        expect(statement.executeQuery()).andReturn(resultSet);
+        MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
+        rs.addExpectedNamedValues(columns,
+          new Object[]{1, "Test name"});
+        expect(stmt.executeQuery()).andReturn(rs);
 
-        resultSet.setExpectedCloseCalls(1);
-        statement.close();
-        connection.close();
+        closeAllAndReplay(ds, con, stmt);
 
-        replay(dataSource, connection, statement);
-
-        UserGroupDAO userGroupDAO = new RealUserGroupDAO(dataSource);
         UserGroup result = userGroupDAO.loadUserGroupById(1);
-        UserGroup expectedUserGroup = new UserGroup("Test name");
-        expectedUserGroup.setId(1);
+        UserGroup expected = new UserGroup("Test name");
+        expected.setId(1);
 
-        assertEquals(expectedUserGroup.toString(), result.toString());
-        verify(dataSource, connection, statement);
-        resultSet.verify();
+        assertAndVerify(expected, result, ds, con, stmt, rs);
     }
 
     @Test
     public void testLoadAllUserGroups() throws Exception {
         String sql = "SELECT * FROM usergroup;";
-        expect(connection.prepareStatement(sql)).andReturn(statement);
+        expect(con.prepareStatement(sql)).andReturn(stmt);
 
-        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
-        resultSet.setupColumnNames(columns);
-        List<UserGroup> expectedUserGroups = createManyUserGroups();
-        resultSet.setupRows(userGrouplistTo2dArray(expectedUserGroups));
-        expect(statement.executeQuery()).andReturn(resultSet);
+        List<UserGroup> expected = createMultipleUserGroups();
+        MockMultiRowResultSet rs =
+          prepareMultiRowResultSetMock(userGroupListTo2dArray(expected), columns, stmt);
 
-        resultSet.setExpectedCloseCalls(1);
-        statement.close();
-        connection.close();
+        closeAllAndReplay(ds, con, stmt);
 
-        replay(dataSource, connection, statement);
-
-        UserGroupDAO userGroupDAO = new RealUserGroupDAO(dataSource);
         List<UserGroup> result = userGroupDAO.loadAllUserGroups();
-        assertEquals(expectedUserGroups.toString(), result.toString());
-        verify(dataSource, connection, statement);
-        resultSet.verify();
+        assertAndVerify(expected, result, ds, con, stmt, rs);
     }
 
-    private List<UserGroup> createManyUserGroups() {
+    private List<UserGroup> createMultipleUserGroups() {
         List<UserGroup> expectedUserGroups = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
             UserGroup userGroup = new UserGroup("Test user group " + i);
@@ -99,7 +78,7 @@ public class RealUserGroupDAOTests {
         return expectedUserGroups;
     }
 
-    private Object[][] userGrouplistTo2dArray(List<UserGroup> userGroups) {
+    private Object[][] userGroupListTo2dArray(List<UserGroup> userGroups) {
         Object[][] array = new Object[(userGroups.size())][2];
         for (int i = 0; i < array.length; i++) {
             UserGroup userGroup = userGroups.get(i);
