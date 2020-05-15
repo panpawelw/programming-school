@@ -14,24 +14,22 @@ import java.util.List;
 
 import static misc.TestUtils.*;
 import static org.easymock.EasyMock.*;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
 
 public class RealUserDAOTest {
 
-    private DataSource dataSource;
-    private Connection connection;
-    private PreparedStatement statement;
+    private DataSource ds;
+    private Connection con;
+    private PreparedStatement stmt;
     private UserDAO userDAO;
     String[] columns = new String[]{"id", "username", "email", "password", "usergroup_id"};
 
     @Before
     public void setup() throws Exception {
-        dataSource = createMock(DataSource.class);
-        connection = createMock(Connection.class);
-        expect(dataSource.getConnection()).andReturn(connection);
-        statement = createMock(PreparedStatement.class);
-        userDAO = new RealUserDAO(dataSource);
+        ds = createMock(DataSource.class);
+        con = createMock(Connection.class);
+        expect(ds.getConnection()).andReturn(con);
+        stmt = createMock(PreparedStatement.class);
+        userDAO = new RealUserDAO(ds);
     }
 
     @Test
@@ -41,24 +39,22 @@ public class RealUserDAOTest {
         String sqlQuery = "INSERT INTO user(username, email, password, usergroup_id) " +
           "VALUES (?, ?, ?, ?);";
         User user = new User("Test name", "Test email", "Test password", 3);
-        expect(connection.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(statement);
+        expect(con.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(stmt);
 
-        statement.setString(2, user.getName());
-        statement.setString(3, user.getEmail());
-        statement.setString(4, user.getPassword());
-        statement.setInt(5, user.getGroup_id());
-        expect(statement.executeUpdate()).andReturn(rowCount);
+        stmt.setString(2, user.getName());
+        stmt.setString(3, user.getEmail());
+        stmt.setString(4, user.getPassword());
+        stmt.setInt(5, user.getGroup_id());
+        expect(stmt.executeUpdate()).andReturn(rowCount);
 
-        MockSingleRowResultSet resultSet = prepareSingleRowResultSetMock();
-        resultSet.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
-        expect(statement.getGeneratedKeys()).andReturn(resultSet);
+        MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
+        rs.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
+        expect(stmt.getGeneratedKeys()).andReturn(rs);
 
-        closeAllAndReplay(dataSource, connection, statement);
+        closeAllAndReplay(ds, con, stmt);
 
         userDAO.saveUserToDB(user);
-        assertEquals(user.getId(), EXPECTED_ID);
-        verify(dataSource, connection, statement);
-        resultSet.verify();
+        assertAndVerify(EXPECTED_ID, user.getId(), ds, con, stmt, rs);
     }
 
     @Test
@@ -69,58 +65,52 @@ public class RealUserDAOTest {
     @Test
     public void testLoadUserById() throws Exception {
         String sqlQuery = "SELECT * FROM user WHERE id=?;";
-        expect(connection.prepareStatement(sqlQuery)).andReturn(statement);
-        statement.setLong(1, 1);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
+        stmt.setLong(1, 1);
 
-        MockSingleRowResultSet resultSet = prepareSingleRowResultSetMock();
-        resultSet.addExpectedNamedValues(columns,
+        MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
+        rs.addExpectedNamedValues(columns,
           new Object[]{1L, "Test name", "Test email", "Test password", 1});
-        expect(statement.executeQuery()).andReturn(resultSet);
+        expect(stmt.executeQuery()).andReturn(rs);
 
-        closeAllAndReplay(dataSource, connection, statement);
+        closeAllAndReplay(ds, con, stmt);
 
-        User user = userDAO.loadUserById(1);
-        User expectedUser =
+        User result = userDAO.loadUserById(1);
+        User expected =
           new User("Test name", "Test email", "Test password", 1);
-        expectedUser.setId(1L);
-        assertEquals(expectedUser.toString(), user.toString());
-        verify(dataSource, connection, statement);
-        resultSet.verify();
+        expected.setId(1L);
+        assertAndVerify(expected, result, ds, con, stmt, rs);
     }
 
     @Test
     public void testLoadAllUsers() throws Exception {
         String sql = "SELECT * FROM user;";
-        expect(connection.prepareStatement(sql)).andReturn(statement);
+        expect(con.prepareStatement(sql)).andReturn(stmt);
 
-        List<User> expectedUsers = createMultipleUsers();
-        MockMultiRowResultSet resultSet =
-          prepareMultiRowResultSetMock(userlistTo2dArray(expectedUsers), columns, statement);
+        List<User> expected = createMultipleUsers();
+        MockMultiRowResultSet rs =
+          prepareMultiRowResultSetMock(userlistTo2dArray(expected), columns, stmt);
 
-        closeAllAndReplay(dataSource, connection, statement);
+        closeAllAndReplay(ds, con, stmt);
 
         List<User> result = userDAO.loadAllUsers();
-        assertEquals(expectedUsers.toString(), result.toString());
-        verify(dataSource, connection, statement);
-        resultSet.verify();
+        assertAndVerify(expected, result, ds, con, stmt, rs);
     }
 
     @Test
     public void testLoadAllUsersByGroupId() throws Exception {
         String sql = "SELECT * FROM user WHERE usergroup_id=?;";
-        expect(connection.prepareStatement(sql)).andReturn(statement);
-        statement.setInt(1, 3);
+        expect(con.prepareStatement(sql)).andReturn(stmt);
+        stmt.setInt(1, 3);
 
-        List<User> expectedUsers = createMultipleUsers(3);
-        MockMultiRowResultSet resultSet =
-          prepareMultiRowResultSetMock(userlistTo2dArray(expectedUsers), columns, statement);
+        List<User> expected = createMultipleUsers(3);
+        MockMultiRowResultSet rs =
+          prepareMultiRowResultSetMock(userlistTo2dArray(expected), columns, stmt);
 
-        closeAllAndReplay(dataSource, connection, statement);
+        closeAllAndReplay(ds, con, stmt);
 
         List<User> result = userDAO.loadAllUsersByGroupId(3);
-        assertEquals(expectedUsers.toString(), result.toString());
-        verify(dataSource, connection, statement);
-        resultSet.verify();
+        assertAndVerify(expected, result, ds, con, stmt, rs);
     }
 
     /**
