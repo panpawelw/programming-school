@@ -1,15 +1,17 @@
 package misc;
 
+import com.mockobjects.MockObject;
 import com.mockobjects.sql.MockMultiRowResultSet;
 import com.mockobjects.sql.MockSingleRowResultSet;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 public class TestUtils {
 
@@ -34,5 +36,13 @@ public class TestUtils {
         MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
         resultSet.setExpectedCloseCalls(1);
         return resultSet;
+    }
+
+    public static void assertAndVerify(Object expectedObject, Object resultObject, DataSource ds,
+                                       Connection c, Statement s, MockObject rs) throws Exception {
+
+        assertEquals(expectedObject.toString(), resultObject.toString());
+        verify(ds, c, s);
+        rs.verify();
     }
 }
