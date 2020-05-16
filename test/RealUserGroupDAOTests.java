@@ -33,6 +33,27 @@ public class RealUserGroupDAOTests {
     }
 
     @Test
+    public void testCreateNewUserGroup() throws Exception {
+        final int EXPECTED_ID = 3;
+        int rowCount = 0;
+        String sqlQuery = "INSERT INTO usergroup (name) VALUES (?);";
+        UserGroup userGroup = new UserGroup("Test name");
+        expect(con.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(stmt);
+
+        stmt.setString(2, userGroup.getName());
+        expect(stmt.executeUpdate()).andReturn(rowCount);
+
+        MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
+        rs.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
+        expect(stmt.getGeneratedKeys()).andReturn(rs);
+
+        closeAllAndReplay(ds, con, stmt);
+
+        userGroupDAO.saveUserGroupToDB(userGroup);
+        assertAndVerify(EXPECTED_ID, userGroup.getId(), ds, con, stmt, rs);
+    }
+
+    @Test
     public void testLoadUserGroupById() throws Exception {
 
         String sqlQuery = "SELECT * FROM usergroup WHERE id=?;";

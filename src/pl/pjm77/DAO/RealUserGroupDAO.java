@@ -24,9 +24,9 @@ public class RealUserGroupDAO implements UserGroupDAO {
     public void saveUserGroupToDB(UserGroup userGroup) {
         try {
             if (userGroup.getId() == 0) {
-                String[] columnNames = {" ID "};
+                String[] columnNames = {"ID"};
                 try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
-                  "INSERT INTO usergroup (name) VALUES (?)", userGroup.getName(), columnNames);
+                  "INSERT INTO usergroup (name) VALUES (?);", columnNames, userGroup.getName());
                      ResultSet rs = ps.getGeneratedKeys())
                 {
                     ps.executeUpdate();
