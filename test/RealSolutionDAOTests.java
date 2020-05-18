@@ -1,5 +1,4 @@
 import com.mockobjects.sql.MockMultiRowResultSet;
-import com.mockobjects.sql.MockResultSetMetaData;
 import com.mockobjects.sql.MockSingleRowResultSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,132 +9,94 @@ import pl.pjm77.model.Solution;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.sql.Timestamp.*;
+import static misc.TestUtils.*;
 import static org.easymock.EasyMock.*;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
 
 public class RealSolutionDAOTests {
 
-    private DataSource dataSource;
-    private Connection connection;
-    private PreparedStatement statement;
+    private DataSource ds;
+    private Connection con;
+    private PreparedStatement stmt;
+    private SolutionDAO solutionDAO;
     String[] columns = new String[]{"id", "created", "updated", "description", "exercise_id", "user_id"};
 
     @Before
     public void setup() throws Exception {
-        dataSource = createMock(DataSource.class);
-        connection = createMock(Connection.class);
-        expect(dataSource.getConnection()).andReturn(connection);
-        statement = createMock(PreparedStatement.class);
+        ds = createMock(DataSource.class);
+        con = createMock(Connection.class);
+        expect(ds.getConnection()).andReturn(con);
+        stmt = createMock(PreparedStatement.class);
+        solutionDAO = new RealSolutionDAO(ds);
     }
 
     @Test
     public void testLoadSolutionById() throws Exception {
         String sqlQuery = "SELECT * FROM solution WHERE id=?;";
-        expect(connection.prepareStatement(sqlQuery)).andReturn(statement);
-        statement.setLong(1, 1);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
+        stmt.setLong(1, 1);
 
-        MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
-        String[] columnsUppercase =
-          new String[]{"ID", "CREATED", "UPDATED", "DESCRIPTION", "EXERCISE_ID", "USER_ID"};
-        String[] columnClassesNames = new String[]{long.class.getName(), Timestamp.class.getName(),
-          Timestamp.class.getName(), String.class.getName(), int.class.getName(), long.class.getName()};
-
-        MockResultSetMetaData resultSetMetaData = new MockResultSetMetaData();
-        resultSetMetaData.setupAddColumnNames(columnsUppercase);
-        resultSetMetaData.setupAddColumnClassNames(columnClassesNames);
-        resultSetMetaData.setupGetColumnCount(6);
-        resultSet.setupMetaData(resultSetMetaData);
-
-        resultSet.addExpectedNamedValues(columns, new Object[]{1L, valueOf("2020-04-20 23:24:10.0"),
+        MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
+        rs.addExpectedNamedValues(columns, new Object[]{1L, valueOf("2020-04-20 23:24:10.0"),
           valueOf("2020-04-20 23:25:23.0"), "test description", 1, 1L});
-        expect(statement.executeQuery()).andReturn(resultSet);
+        expect(stmt.executeQuery()).andReturn(rs);
 
-        resultSet.setExpectedCloseCalls(1);
-        statement.close();
-        connection.close();
+        closeAllAndReplay(ds, con, stmt);
 
-        replay(dataSource, connection, statement);
-        SolutionDAO solutionDAO = new RealSolutionDAO(dataSource);
-        Solution solution = solutionDAO.loadSolutionById(1);
-        Solution expectedSolution = new Solution(valueOf("2020-04-20 23:24:10.0"),
+        Solution result = solutionDAO.loadSolutionById(1);
+        Solution expected = new Solution(valueOf("2020-04-20 23:24:10.0"),
           valueOf("2020-04-20 23:25:23.0"), "test description",1, 1L);
-        expectedSolution.setId(1L);
-        assertEquals(expectedSolution.toString(), solution.toString());
-        verify(dataSource, connection, statement);
-        resultSet.verify();
+        expected.setId(1L);
+        assertAndVerify(expected, result, ds, con, stmt, rs);
     }
 
     @Test
     public void testLoadAllSolutions() throws Exception {
         String sql = "SELECT * FROM solution;";
-        expect(connection.prepareStatement(sql)).andReturn(statement);
+        expect(con.prepareStatement(sql)).andReturn(stmt);
 
-        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
-        resultSet.setupColumnNames(columns);
-        List<Solution> expectedSolutions = createManySolutions();
-        resultSet.setupRows(solutionlistTo2dArray(expectedSolutions));
-        expect(statement.executeQuery()).andReturn(resultSet);
+        List<Solution> expected = createMultipleSolutions();
+        MockMultiRowResultSet rs =
+          prepareMultiRowResultSetMock(solutionlistTo2dArray(expected), columns, stmt);
 
-        resultSet.setExpectedCloseCalls(1);
-        statement.close();
-        connection.close();
+        closeAllAndReplay(ds, con, stmt);
 
-        replay(dataSource, connection, statement);
-
-        SolutionDAO solutionDAO = new RealSolutionDAO(dataSource);
         List<Solution> result = solutionDAO.loadAllSolutions();
-        assertEquals(expectedSolutions.toString(), result.toString());
-        verify(dataSource, connection, statement);
-        resultSet.verify();
+        assertAndVerify(expected, result, ds, con, stmt, rs);
     }
 
     @Test
     public void testLoadAllSolutionsByUserId() throws Exception {
         String sql = "SELECT * FROM solution WHERE user_id=?;";
-        expect(connection.prepareStatement(sql)).andReturn(statement);
-        statement.setLong(1,2);
+        expect(con.prepareStatement(sql)).andReturn(stmt);
+        stmt.setLong(1,2);
 
-        MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
-        resultSet.setupColumnNames(columns);
-        List<Solution> expectedSolutions = createManySolutionsWithSameUserId(2);
-        resultSet.setupRows(solutionlistTo2dArray(expectedSolutions));
-        expect(statement.executeQuery()).andReturn(resultSet);
+        List<Solution> expected = createMultipleSolutions(2);
+        MockMultiRowResultSet rs =
+          prepareMultiRowResultSetMock(solutionlistTo2dArray(expected), columns, stmt);
 
-        resultSet.setExpectedCloseCalls(1);
-        statement.close();
-        connection.close();
+        closeAllAndReplay(ds, con, stmt);
 
-        replay(dataSource, connection, statement);
-
-        SolutionDAO solutionDAO = new RealSolutionDAO(dataSource);
         List<Solution> result = solutionDAO.loadAllSolutionsByUserId(2);
-        assertEquals(expectedSolutions.toString(), result.toString());
-        verify(dataSource, connection, statement);
-        resultSet.verify();
+        assertAndVerify(expected, result, ds, con, stmt, rs);
     }
 
-    private List<Solution> createManySolutions() {
+    /**
+     * Creates a list of test solutions, optionally with identical user ID
+     * @param args - optional user ID (long)
+     * @return - list of solutions
+     */
+    private List<Solution> createMultipleSolutions(long...args) {
         List<Solution> expectedSolutions = new ArrayList<>();
+        long user_id = 1;
+        if (args.length != 0) user_id = args[0];
         for (int i = 1; i < 6; i++) {
+            if(args.length == 0) user_id = i;
             Solution solution = new Solution(valueOf("2020-04-20 23:24:15." + i),
-              valueOf("2020-04-20 23:25:23.0" + i), "Test description " + i, i, i);
-            solution.setId(i);
-            expectedSolutions.add(solution);
-        }
-        return expectedSolutions;
-    }
-
-    private List<Solution> createManySolutionsWithSameUserId(long userId) {
-        List<Solution> expectedSolutions = new ArrayList<>();
-        for (int i = 1; i < 6; i++) {
-            Solution solution = new Solution(valueOf("2020-04-20 23:24:15." + i),
-              valueOf("2020-04-20 23:25:23.0" + i), "Test description " + i, i, userId);
+              valueOf("2020-04-20 23:25:23.0" + i), "Test description " + i, i, user_id);
             solution.setId(i);
             expectedSolutions.add(solution);
         }
