@@ -24,7 +24,7 @@ public class RealExerciseDAO implements ExerciseDAO {
     public void saveExerciseToDB(Exercise exercise) {
         try {
             if (exercise.getId() == 0) {
-                String[] columnNames = {" ID "};
+                String[] columnNames = {"ID"};
                 try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
                   "INSERT INTO exercise (title, description) VALUES (?, ?);", columnNames,
                   exercise.getTitle(), exercise.getDescription()); ResultSet rs = ps.getGeneratedKeys())

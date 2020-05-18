@@ -33,6 +33,28 @@ public class RealExerciseDAOTests {
     }
 
     @Test
+    public void testCreateNewExercise() throws Exception {
+        final int EXPECTED_ID = 2;
+        int rowCount = 0;
+        String sqlQuery = "INSERT INTO exercise (title, description) VALUES (?, ?);";
+        Exercise exercise = new Exercise("Test title", "Test description");
+        expect(con.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(stmt);
+
+        stmt.setString(2, exercise.getTitle());
+        stmt.setString(3, exercise.getDescription());
+        expect(stmt.executeUpdate()).andReturn(rowCount);
+
+        MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
+        rs.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
+        expect(stmt.getGeneratedKeys()).andReturn(rs);
+
+        closeAllAndReplay(ds, con, stmt);
+
+        exerciseDAO.saveExerciseToDB(exercise);
+        assertAndVerify(EXPECTED_ID, exercise.getId(), ds, con, stmt, rs);
+    }
+
+    @Test
     public void testLoadExerciseById() throws Exception {
 
         String sqlQuery = "SELECT * FROM exercise WHERE id=?;";
