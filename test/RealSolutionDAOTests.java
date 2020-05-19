@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static java.sql.Timestamp.*;
@@ -34,6 +35,33 @@ public class RealSolutionDAOTests {
     }
 
     @Test
+    public void testCreateNewSolution() throws Exception {
+        final long EXPECTED_ID = 3L;
+        int rowCount = 0;
+        String sqlQuery = "INSERT INTO solution" +
+          "(created, updated, description, exercise_id, user_id) VALUES (?, ?, ?, ?, ?);";
+        Solution solution = new Solution(new java.sql.Timestamp(new Date().getTime()),
+          null, "test description", 1, 1L);
+        expect(con.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(stmt);
+
+        stmt.setTimestamp(2, solution.getCreated());
+        stmt.setTimestamp(3, solution.getUpdated());
+        stmt.setString(4, solution.getDescription());
+        stmt.setInt(5, solution.getExercise_id());
+        stmt.setLong(6, solution.getUser_id());
+        expect(stmt.executeUpdate()).andReturn(rowCount);
+
+        MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
+        rs.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
+        expect(stmt.getGeneratedKeys()).andReturn(rs);
+
+        closeAllAndReplay(ds, con, stmt);
+
+        solutionDAO.saveSolutionToDB(solution);
+        assertAndVerify(EXPECTED_ID, solution.getId(), ds, con, stmt, rs);
+    }
+
+    @Test
     public void testLoadSolutionById() throws Exception {
         String sqlQuery = "SELECT * FROM solution WHERE id=?;";
         expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
@@ -48,7 +76,7 @@ public class RealSolutionDAOTests {
 
         Solution result = solutionDAO.loadSolutionById(1);
         Solution expected = new Solution(valueOf("2020-04-20 23:24:10.0"),
-          valueOf("2020-04-20 23:25:23.0"), "test description",1, 1L);
+          valueOf("2020-04-20 23:25:23.0"), "test description", 1, 1L);
         expected.setId(1L);
         assertAndVerify(expected, result, ds, con, stmt, rs);
     }
@@ -72,7 +100,7 @@ public class RealSolutionDAOTests {
     public void testLoadAllSolutionsByUserId() throws Exception {
         String sql = "SELECT * FROM solution WHERE user_id=?;";
         expect(con.prepareStatement(sql)).andReturn(stmt);
-        stmt.setLong(1,2);
+        stmt.setLong(1, 2);
 
         List<Solution> expected = createMultipleSolutions(2);
         MockMultiRowResultSet rs =
@@ -86,15 +114,16 @@ public class RealSolutionDAOTests {
 
     /**
      * Creates a list of test solutions, optionally with identical user ID
+     *
      * @param args - optional user ID (long)
      * @return - list of solutions
      */
-    private List<Solution> createMultipleSolutions(long...args) {
+    private List<Solution> createMultipleSolutions(long... args) {
         List<Solution> expectedSolutions = new ArrayList<>();
         long user_id = 1;
         if (args.length != 0) user_id = args[0];
         for (int i = 1; i < 6; i++) {
-            if(args.length == 0) user_id = i;
+            if (args.length == 0) user_id = i;
             Solution solution = new Solution(valueOf("2020-04-20 23:24:15." + i),
               valueOf("2020-04-20 23:25:23.0" + i), "Test description " + i, i, user_id);
             solution.setId(i);

@@ -25,7 +25,7 @@ public class RealSolutionDAO implements SolutionDAO {
     public void saveSolutionToDB(Solution solution) {
         try {
             if (solution.getId() == 0) {
-                String[] columnNames = {" ID "};
+                String[] columnNames = {"ID"};
                 java.sql.Timestamp created = new java.sql.Timestamp(new Date().getTime());
                 try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
                   "INSERT INTO solution(created, updated, description, exercise_id, user_id) " +
