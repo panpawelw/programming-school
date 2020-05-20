@@ -14,6 +14,7 @@ import java.util.List;
 
 import static misc.TestUtils.*;
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 public class RealUserDAOTest {
 
@@ -35,7 +36,7 @@ public class RealUserDAOTest {
     @Test
     public void testCreateNewUser() throws Exception {
         final long EXPECTED_ID = 3L;
-        int rowCount = 0;
+        int rowCount = 1;
         String sqlQuery = "INSERT INTO user(username, email, password, usergroup_id) " +
           "VALUES (?, ?, ?, ?);";
         User user = new User("Test name", "Test email", "Test password", 3);
@@ -46,6 +47,7 @@ public class RealUserDAOTest {
         stmt.setString(4, user.getPassword());
         stmt.setInt(5, user.getGroup_id());
         expect(stmt.executeUpdate()).andReturn(rowCount);
+        System.out.println((rowCount));
 
         MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
         rs.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
@@ -59,7 +61,24 @@ public class RealUserDAOTest {
 
     @Test
     public void testUpdateExistingUser() throws Exception {
+        int rowCount = 1;
+        String sqlQuery = "UPDATE user SET " +
+          "username=?, email=?, password=?, usergroup_id=? WHERE id = ?;";
+        User user = new User("Test name", "Test email", "Test password", 3);
+        user.setId(1);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
 
+        stmt.setString(1, user.getName());
+        stmt.setString(2, user.getEmail());
+        stmt.setString(3, user.getPassword());
+        stmt.setInt(4, user.getGroup_id());
+        stmt.setLong(5, user.getId());
+        expect(stmt.executeUpdate()).andReturn(rowCount);
+
+        closeAllAndReplay(ds, con, stmt);
+        userDAO.saveUserToDB(user);
+        assertEquals(rowCount, 1);
+        verify(ds, con, stmt);
     }
 
     @Test

@@ -16,6 +16,7 @@ import java.util.List;
 import static java.sql.Timestamp.*;
 import static misc.TestUtils.*;
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 public class RealSolutionDAOTests {
 
@@ -30,7 +31,7 @@ public class RealSolutionDAOTests {
         ds = createMock(DataSource.class);
         con = createMock(Connection.class);
         expect(ds.getConnection()).andReturn(con);
-        stmt = createMock(PreparedStatement.class);
+        stmt = createNiceMock(PreparedStatement.class);
         solutionDAO = new RealSolutionDAO(ds);
     }
 
@@ -58,7 +59,10 @@ public class RealSolutionDAOTests {
         closeAllAndReplay(ds, con, stmt);
 
         solutionDAO.saveSolutionToDB(solution);
-        assertAndVerify(EXPECTED_ID, solution.getId(), ds, con, stmt, rs);
+        assertEquals(EXPECTED_ID, solution.getId());
+        verify(ds, con);
+        verifyUnexpectedCalls(stmt);
+        rs.verify();
     }
 
     @Test
