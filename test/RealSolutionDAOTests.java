@@ -45,11 +45,11 @@ public class RealSolutionDAOTests {
           null, "test description", 1, 1L);
         expect(con.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(stmt);
 
-        stmt.setTimestamp(2, solution.getCreated());
-        stmt.setTimestamp(3, solution.getUpdated());
-        stmt.setString(4, solution.getDescription());
-        stmt.setInt(5, solution.getExercise_id());
-        stmt.setLong(6, solution.getUser_id());
+        stmt.setTimestamp(1, solution.getCreated());
+        stmt.setTimestamp(2, solution.getUpdated());
+        stmt.setString(3, solution.getDescription());
+        stmt.setInt(4, solution.getExercise_id());
+        stmt.setLong(5, solution.getUser_id());
         expect(stmt.executeUpdate()).andReturn(rowCount);
 
         MockSingleRowResultSet rs = prepareSingleRowResultSetMock();

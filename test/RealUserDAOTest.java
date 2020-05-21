@@ -42,10 +42,10 @@ public class RealUserDAOTest {
         User user = new User("Test name", "Test email", "Test password", 3);
         expect(con.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(stmt);
 
-        stmt.setString(2, user.getName());
-        stmt.setString(3, user.getEmail());
-        stmt.setString(4, user.getPassword());
-        stmt.setInt(5, user.getGroup_id());
+        stmt.setString(1, user.getName());
+        stmt.setString(2, user.getEmail());
+        stmt.setString(3, user.getPassword());
+        stmt.setInt(4, user.getGroup_id());
         expect(stmt.executeUpdate()).andReturn(rowCount);
         System.out.println((rowCount));
 

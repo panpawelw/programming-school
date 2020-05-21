@@ -19,7 +19,7 @@ public class DbUtils {
         DataSource dataSource = null;
         try {
             dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc" +
-                    "/programming_school");
+              "/programming_school");
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -33,38 +33,46 @@ public class DbUtils {
      * @param con  - Connection object
      * @param sql  - SQL query
      * @param args - if column names are included must be as first parameter and up to 5 optional
-     *            parameters of types of String, int, long or null
+     *             parameters of types of String, int, long or null
      * @return PreparedStatement
      * @throws SQLException - if called on closed connection or
      */
     public static PreparedStatement prepStatement(Connection con, String sql, Object... args)
-            throws SQLException {
-        int paramIndex = 0;
+      throws SQLException {
+        int statementIndex = 1, argumentIndex = 0;
         PreparedStatement ps;
+
+        // Set column names for getGeneratedKeys if present
         if (args.length != 0 && args[0].getClass().toString().equals("class [Ljava.lang.String;")) {
             ps = con.prepareStatement(sql, (String[]) args[0]);
-            paramIndex++;
+            argumentIndex++;
         } else {
             ps = con.prepareStatement(sql);
         }
-        while (paramIndex < args.length) {
+
+        // Set values for preparedStatement if present
+        while (argumentIndex < args.length) {
             // Edge case when saveSolutionToDB has to set a null Timestamp as "updated" field
-            if (args[paramIndex] == null) {
-                ps.setTimestamp(paramIndex + 1, null);
+            if (args[argumentIndex] == null) {
+                ps.setTimestamp(statementIndex, null);
             } else {
-                String argClass = args[paramIndex].getClass().toString();
+                String argClass = args[argumentIndex].getClass().toString();
                 switch (argClass) {
                     case "class java.lang.Integer":
-                        ps.setInt(paramIndex + 1, (Integer) args[paramIndex]); break;
+                        ps.setInt(statementIndex, (Integer) args[argumentIndex]);
+                        break;
                     case "class java.lang.Long":
-                        ps.setLong(paramIndex + 1, (Long) args[paramIndex]); break;
+                        ps.setLong(statementIndex, (Long) args[argumentIndex]);
+                        break;
                     case "class java.lang.String":
-                        ps.setString(paramIndex + 1, (String) args[paramIndex]); break;
+                        ps.setString(statementIndex, (String) args[argumentIndex]);
+                        break;
                     case "class java.sql.Timestamp":
-                        ps.setTimestamp(paramIndex + 1, (Timestamp) args[paramIndex]);
+                        ps.setTimestamp(statementIndex, (Timestamp) args[argumentIndex]);
                 }
             }
-            paramIndex++;
+            statementIndex++;
+            argumentIndex++;
         }
         return ps;
     }

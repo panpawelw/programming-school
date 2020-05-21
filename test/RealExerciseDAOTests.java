@@ -40,8 +40,8 @@ public class RealExerciseDAOTests {
         Exercise exercise = new Exercise("Test title", "Test description");
         expect(con.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(stmt);
 
-        stmt.setString(2, exercise.getTitle());
-        stmt.setString(3, exercise.getDescription());
+        stmt.setString(1, exercise.getTitle());
+        stmt.setString(2, exercise.getDescription());
         expect(stmt.executeUpdate()).andReturn(rowCount);
 
         MockSingleRowResultSet rs = prepareSingleRowResultSetMock();

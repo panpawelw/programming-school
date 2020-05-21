@@ -40,7 +40,7 @@ public class RealUserGroupDAOTests {
         UserGroup userGroup = new UserGroup("Test name");
         expect(con.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(stmt);
 
-        stmt.setString(2, userGroup.getName());
+        stmt.setString(1, userGroup.getName());
         expect(stmt.executeUpdate()).andReturn(rowCount);
 
         MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
