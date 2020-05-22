@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SolutionDAO {
 
-    void saveSolutionToDB(Solution solution);
+    int saveSolutionToDB(Solution solution);
     Solution loadSolutionById(long id);
     void deleteSolution(Solution solution);
     List<Solution> loadAllSolutions();

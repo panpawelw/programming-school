@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ExerciseDAO {
 
-    void saveExerciseToDB(Exercise exercise);
+    int saveExerciseToDB(Exercise exercise);
     Exercise loadExerciseById(int id);
     void deleteExercise(Exercise exercise);
     List<Exercise> loadAllExercises();

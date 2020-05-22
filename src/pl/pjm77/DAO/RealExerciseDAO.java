@@ -21,7 +21,8 @@ public class RealExerciseDAO implements ExerciseDAO {
         this.ds = ds;
     }
 
-    public void saveExerciseToDB(Exercise exercise) {
+    public int saveExerciseToDB(Exercise exercise) {
+        int affectedRows = 0;
         try {
             if (exercise.getId() == 0) {
                 String[] columnNames = {"ID"};
@@ -29,7 +30,7 @@ public class RealExerciseDAO implements ExerciseDAO {
                   "INSERT INTO exercise (title, description) VALUES (?, ?);", columnNames,
                   exercise.getTitle(), exercise.getDescription()); ResultSet rs = ps.getGeneratedKeys())
                 {
-                    ps.executeUpdate();
+                    affectedRows = ps.executeUpdate();
                     if (rs.next()) {
                         exercise.setId(rs.getInt(1));
                     }
@@ -39,12 +40,13 @@ public class RealExerciseDAO implements ExerciseDAO {
                   "UPDATE exercise SET title=?, description=? WHERE id=?;",
                   exercise.getTitle(), exercise.getDescription(), exercise.getId()))
                 {
-                    ps.executeUpdate();
+                    affectedRows = ps.executeUpdate();
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return affectedRows;
     }
 
     public Exercise loadExerciseById(int id) {

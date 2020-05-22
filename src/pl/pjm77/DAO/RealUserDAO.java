@@ -21,7 +21,8 @@ public class RealUserDAO implements UserDAO {
         this.ds = ds;
     }
 
-    public void saveUserToDB(User user) {
+    public int saveUserToDB(User user) {
+        int affectedRows = 0;
         try {
             if (user.getId() == 0) {
                 String[] columnNames = {"ID"};
@@ -30,7 +31,7 @@ public class RealUserDAO implements UserDAO {
                   columnNames, user.getName(), user.getEmail(), user.getPassword(),
                   user.getGroup_id()); ResultSet rs = ps.getGeneratedKeys())
                 {
-                    ps.executeUpdate();
+                    affectedRows = ps.executeUpdate();
                     if (rs.next()) {
                         user.setId(rs.getLong(1));
                     }
@@ -41,12 +42,14 @@ public class RealUserDAO implements UserDAO {
                   user.getName(), user.getEmail(), user.getPassword(),
                   user.getGroup_id(), user.getId()))
                 {
-                    ps.executeUpdate();
+                    affectedRows = ps.executeUpdate();
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println(affectedRows);
+        return affectedRows;
     }
 
     public User loadUserById(long id) {

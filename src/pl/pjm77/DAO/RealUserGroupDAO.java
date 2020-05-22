@@ -21,7 +21,8 @@ public class RealUserGroupDAO implements UserGroupDAO {
         this.ds = ds;
     }
 
-    public void saveUserGroupToDB(UserGroup userGroup) {
+    public int saveUserGroupToDB(UserGroup userGroup) {
+        int affectedRows = 0;
         try {
             if (userGroup.getId() == 0) {
                 String[] columnNames = {"ID"};
@@ -29,19 +30,21 @@ public class RealUserGroupDAO implements UserGroupDAO {
                   "INSERT INTO usergroup (name) VALUES (?);", columnNames, userGroup.getName());
                      ResultSet rs = ps.getGeneratedKeys())
                 {
-                    ps.executeUpdate();
+                    affectedRows = ps.executeUpdate();
                     if (rs.next()) userGroup.setId(rs.getInt(1));
                 }
             } else {
                 try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
-                  "UPDATE usergroup SET name=? WHERE id=?;", userGroup.getName(), userGroup.getId()))
+                  "UPDATE usergroup SET name=? WHERE id=?;", userGroup.getName(),
+                  userGroup.getId()))
                 {
-                    ps.executeUpdate();
+                    affectedRows = ps.executeUpdate();
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return affectedRows;
     }
 
     public UserGroup loadUserGroupById(int id) {

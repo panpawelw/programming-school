@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserDAO {
 
-    void saveUserToDB(User user);
+    int saveUserToDB(User user);
     User loadUserById(long id);
     void deleteUser(User user);
     List<User> loadAllUsers();

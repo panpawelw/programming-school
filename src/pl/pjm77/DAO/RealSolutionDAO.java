@@ -22,7 +22,8 @@ public class RealSolutionDAO implements SolutionDAO {
         this.ds = ds;
     }
 
-    public void saveSolutionToDB(Solution solution) {
+    public int saveSolutionToDB(Solution solution) {
+        int affectedRows = 0;
         try {
             if (solution.getId() == 0) {
                 String[] columnNames = {"ID"};
@@ -32,7 +33,7 @@ public class RealSolutionDAO implements SolutionDAO {
                     "VALUES (?, ?, ?, ?, ?);", columnNames, created, null, solution.getDescription(),
                   solution.getExercise_id(), solution.getUser_id()); ResultSet rs = ps.getGeneratedKeys())
                 {
-                    ps.executeUpdate();
+                    affectedRows = ps.executeUpdate();
                     if (rs.next()) {
                         solution.setId(rs.getLong(1));
                     }
@@ -41,14 +42,15 @@ public class RealSolutionDAO implements SolutionDAO {
                 try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
                   "UPDATE solution SET updated=Now(), description=?, exercise_id=?, user_id=? " +
                     "WHERE id = ?;", solution.getDescription(), solution.getExercise_id(),
-                       solution.getUser_id(), solution.getId()))
+                  solution.getUser_id(), solution.getId()))
                 {
-                    ps.executeUpdate();
+                    affectedRows =  ps.executeUpdate();
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return affectedRows;
     }
 
     public Solution loadSolutionById(long id) {

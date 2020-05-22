@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserGroupDAO {
 
-    void saveUserGroupToDB(UserGroup userGroup);
+    int saveUserGroupToDB(UserGroup userGroup);
     UserGroup loadUserGroupById(int id);
     List<UserGroup> loadAllUserGroups();
     void deleteUserGroup(UserGroup userGroup);
