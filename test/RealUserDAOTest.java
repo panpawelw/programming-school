@@ -76,8 +76,7 @@ public class RealUserDAOTest {
         expect(stmt.executeUpdate()).andReturn(rowCount);
 
         closeAllAndReplay(ds, con, stmt);
-        userDAO.saveUserToDB(user);
-        assertEquals(rowCount, 1);
+        assertEquals(rowCount, userDAO.saveUserToDB(user));
         verify(ds, con, stmt);
     }
 
@@ -134,15 +133,16 @@ public class RealUserDAOTest {
 
     /**
      * Creates a list of test users, optionally with identical group ID
+     *
      * @param args - optional group ID (int)
      * @return - list of users
      */
-    private List<User> createMultipleUsers(int...args) {
+    private List<User> createMultipleUsers(int... args) {
         List<User> expectedUsers = new ArrayList<>();
         int group_id = 1;
         if (args.length != 0) group_id = args[0];
         for (int i = 1; i < 6; i++) {
-            if(args.length == 0) group_id = i;
+            if (args.length == 0) group_id = i;
             User user = new User("Test user " + i,
               "Test email " + i, "Test password " + i, group_id);
             user.setId(i);
@@ -153,6 +153,7 @@ public class RealUserDAOTest {
 
     /**
      * Converts a list of test users into a two dimensional array
+     *
      * @param users - list of users
      * @return - 2D array of users
      */

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static misc.TestUtils.*;
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.sql.*;
 import java.sql.*;
@@ -54,8 +55,24 @@ public class RealUserGroupDAOTests {
     }
 
     @Test
-    public void testLoadUserGroupById() throws Exception {
+    public void testUpdateExistingUserGroup() throws Exception {
+        int rowCount = 1;
+        String sqlQuery = "UPDATE usergroup SET name=? WHERE id=?;";
+        UserGroup userGroup = new UserGroup("Test name");
+        userGroup.setId(1);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
 
+        stmt.setString(1, userGroup.getName());
+        stmt.setInt(2, userGroup.getId());
+        expect(stmt.executeUpdate()).andReturn(rowCount);
+
+        closeAllAndReplay(ds, con, stmt);
+        assertEquals(rowCount, userGroupDAO.saveUserGroupToDB(userGroup));
+        verify(ds, con, stmt);
+    }
+
+    @Test
+    public void testLoadUserGroupById() throws Exception {
         String sqlQuery = "SELECT * FROM usergroup WHERE id=?;";
         expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
         stmt.setInt(1, 1);
