@@ -14,6 +14,7 @@ import java.util.List;
 
 import static misc.TestUtils.*;
 import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 public class RealExerciseDAOTests {
 
@@ -52,6 +53,24 @@ public class RealExerciseDAOTests {
 
         exerciseDAO.saveExerciseToDB(exercise);
         assertAndVerify(EXPECTED_ID, exercise.getId(), ds, con, stmt, rs);
+    }
+
+    @Test
+    public void testUpdateExistingExercise() throws Exception {
+        int rowCount = 1;
+        String sqlQuery = "UPDATE exercise SET title=?, description=? WHERE id=?;";
+        Exercise exercise = new Exercise("Test title", "Test description");
+        exercise.setId(1);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
+
+        stmt.setString(1, exercise.getTitle());
+        stmt.setString(2, exercise.getDescription());
+        stmt.setInt(3, exercise.getId());
+        expect(stmt.executeUpdate()).andReturn(rowCount);
+
+        closeAllAndReplay(ds, con, stmt);
+        assertEquals(rowCount, exerciseDAO.saveExerciseToDB(exercise));
+        verify(ds, con, stmt);
     }
 
     @Test
