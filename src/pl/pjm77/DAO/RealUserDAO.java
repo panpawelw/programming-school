@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.w3c.dom.ls.LSOutput;
 import pl.pjm77.model.User;
 
 import javax.sql.DataSource;
@@ -65,15 +66,17 @@ public class RealUserDAO implements UserDAO {
         return null;
     }
 
-    public void deleteUser(User user) {
+    public int deleteUser(User user) {
+        int affectedRows = 0;
         try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
           "DELETE FROM user WHERE id=?", user.getId()))
         {
-            ps.executeUpdate();
+            affectedRows = ps.executeUpdate();
             user.setId(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return affectedRows;
     }
 
     public List<User> loadAllUsers() {

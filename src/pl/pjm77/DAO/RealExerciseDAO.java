@@ -76,15 +76,17 @@ public class RealExerciseDAO implements ExerciseDAO {
         return exercises;
     }
 
-    public void deleteExercise(Exercise exercise) {
+    public int deleteExercise(Exercise exercise) {
+        int affectedRows = 0;
         try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
           "DELETE * FROM exercise WHERE id=?;", exercise.getId()))
         {
-            ps.executeUpdate();
+            affectedRows = ps.executeUpdate();
             exercise.setId(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return affectedRows;
     }
 
     /**

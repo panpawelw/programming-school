@@ -9,5 +9,5 @@ public interface UserGroupDAO {
     int saveUserGroupToDB(UserGroup userGroup);
     UserGroup loadUserGroupById(int id);
     List<UserGroup> loadAllUserGroups();
-    void deleteUserGroup(UserGroup userGroup);
+    int deleteUserGroup(UserGroup userGroup);
 }

@@ -8,6 +8,6 @@ public interface ExerciseDAO {
 
     int saveExerciseToDB(Exercise exercise);
     Exercise loadExerciseById(int id);
-    void deleteExercise(Exercise exercise);
+    int deleteExercise(Exercise exercise);
     List<Exercise> loadAllExercises();
 }

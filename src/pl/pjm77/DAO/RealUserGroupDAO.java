@@ -74,15 +74,17 @@ public class RealUserGroupDAO implements UserGroupDAO {
         return userGroups;
     }
 
-    public void deleteUserGroup(UserGroup userGroup) {
+    public int deleteUserGroup(UserGroup userGroup) {
+        int affectedRows = 0;
         try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
           "DELETE * FROM usergroup WHERE id=?;", userGroup.getId()))
         {
-            ps.executeUpdate();
+            affectedRows = ps.executeUpdate();
             userGroup.setId(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return affectedRows;
     }
 
     /**

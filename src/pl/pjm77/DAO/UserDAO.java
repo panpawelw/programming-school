@@ -8,7 +8,7 @@ public interface UserDAO {
 
     int saveUserToDB(User user);
     User loadUserById(long id);
-    void deleteUser(User user);
+    int deleteUser(User user);
     List<User> loadAllUsers();
     List<User> loadAllUsersByGroupId(int usergroup_id);
 }

@@ -8,7 +8,7 @@ public interface SolutionDAO {
 
     int saveSolutionToDB(Solution solution);
     Solution loadSolutionById(long id);
-    void deleteSolution(Solution solution);
+    int deleteSolution(Solution solution);
     List<Solution> loadAllSolutions();
     List<Solution> loadAllSolutionsByUserId(long id);
 }

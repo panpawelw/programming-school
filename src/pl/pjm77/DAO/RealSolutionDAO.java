@@ -66,15 +66,17 @@ public class RealSolutionDAO implements SolutionDAO {
         return null;
     }
 
-    public void deleteSolution(Solution solution) {
+    public int deleteSolution(Solution solution) {
+        int affectedRows = 0;
         try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
           "DELETE * FROM solution WHERE id=?;", solution.getId()))
         {
-            ps.executeUpdate();
+            affectedRows = ps.executeUpdate();
             solution.setId(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return affectedRows;
     }
 
     public List<Solution> loadAllSolutions() {
