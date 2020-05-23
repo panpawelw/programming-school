@@ -23,6 +23,7 @@ public class RealSolutionDAOTests {
     private DataSource ds;
     private Connection con;
     private PreparedStatement stmt;
+    private PreparedStatement niceStmt;
     private SolutionDAO solutionDAO;
     String[] columns = new String[]{"id", "created", "updated", "description", "exercise_id", "user_id"};
 
@@ -31,7 +32,8 @@ public class RealSolutionDAOTests {
         ds = createMock(DataSource.class);
         con = createMock(Connection.class);
         expect(ds.getConnection()).andReturn(con);
-        stmt = createNiceMock(PreparedStatement.class);
+        stmt = createMock(PreparedStatement.class);
+        niceStmt = createNiceMock(PreparedStatement.class);
         solutionDAO = new RealSolutionDAO(ds);
     }
 
@@ -43,26 +45,49 @@ public class RealSolutionDAOTests {
           "(created, updated, description, exercise_id, user_id) VALUES (?, ?, ?, ?, ?);";
         Solution solution = new Solution(new java.sql.Timestamp(new Date().getTime()),
           null, "test description", 1, 1L);
-        expect(con.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(stmt);
+        expect(con.prepareStatement(sqlQuery, new String[]{"ID"})).andReturn(niceStmt);
 
-        stmt.setTimestamp(1, solution.getCreated());
-        stmt.setTimestamp(2, solution.getUpdated());
-        stmt.setString(3, solution.getDescription());
-        stmt.setInt(4, solution.getExercise_id());
-        stmt.setLong(5, solution.getUser_id());
-        expect(stmt.executeUpdate()).andReturn(rowCount);
+        niceStmt.setTimestamp(1, solution.getCreated());
+        niceStmt.setTimestamp(2, solution.getUpdated());
+        niceStmt.setString(3, solution.getDescription());
+        niceStmt.setInt(4, solution.getExercise_id());
+        niceStmt.setLong(5, solution.getUser_id());
+        expect(niceStmt.executeUpdate()).andReturn(rowCount);
 
         MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
         rs.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
-        expect(stmt.getGeneratedKeys()).andReturn(rs);
+        expect(niceStmt.getGeneratedKeys()).andReturn(rs);
 
-        closeAllAndReplay(ds, con, stmt);
+        closeAllAndReplay(ds, con, niceStmt);
 
         solutionDAO.saveSolutionToDB(solution);
         assertEquals(EXPECTED_ID, solution.getId());
         verify(ds, con);
-        verifyUnexpectedCalls(stmt);
+        verifyUnexpectedCalls(niceStmt);
         rs.verify();
+    }
+
+    @Test
+    public void testUpdateExistingSolution() throws Exception {
+        int rowCount = 1;
+        String sqlQuery = "UPDATE solution SET " +
+          "updated=Now(), description=?, exercise_id=?, user_id=? WHERE id = ?;";
+        Solution solution = new Solution(null, new java.sql.Timestamp(new Date().getTime()),
+          "Test description", 1, 3);
+        solution.setId(1);
+        expect(con.prepareStatement(sqlQuery)).andReturn(niceStmt);
+
+        niceStmt.setString(1, solution.getDescription());
+        niceStmt.setInt(2, solution.getExercise_id());
+        niceStmt.setLong(3, solution.getUser_id());
+        niceStmt.setLong(3, solution.getId());
+        expect(niceStmt.executeUpdate()).andReturn(rowCount);
+
+        closeAllAndReplay(ds, con, niceStmt);
+
+        assertEquals(rowCount, solutionDAO.saveSolutionToDB(solution));
+        verify(ds, con);
+        verifyUnexpectedCalls(niceStmt);
     }
 
     @Test
