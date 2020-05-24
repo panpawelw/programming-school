@@ -92,6 +92,21 @@ public class RealUserGroupDAOTests {
     }
 
     @Test
+    public void testDeleteUserGroup() throws Exception {
+        String sqlQuery = "DELETE FROM usergroup WHERE id=?;";
+        int rowCount = 1;
+        UserGroup userGroup = new UserGroup("Test name");
+        userGroup.setId(2);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
+        stmt.setInt(1, 2);
+        expect(stmt.executeUpdate()).andReturn(rowCount);
+
+        closeAllAndReplay(ds, con, stmt);
+        assertEquals(rowCount, userGroupDAO.deleteUserGroup(userGroup));
+        verify(ds, con, stmt);
+    }
+
+    @Test
     public void testLoadAllUserGroups() throws Exception {
         String sql = "SELECT * FROM usergroup;";
         expect(con.prepareStatement(sql)).andReturn(stmt);

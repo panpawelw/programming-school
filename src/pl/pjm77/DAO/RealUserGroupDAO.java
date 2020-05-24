@@ -77,7 +77,7 @@ public class RealUserGroupDAO implements UserGroupDAO {
     public int deleteUserGroup(UserGroup userGroup) {
         int affectedRows = 0;
         try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
-          "DELETE * FROM usergroup WHERE id=?;", userGroup.getId()))
+          "DELETE FROM usergroup WHERE id=?;", userGroup.getId()))
         {
             affectedRows = ps.executeUpdate();
             userGroup.setId(0);
