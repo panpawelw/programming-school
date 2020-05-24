@@ -94,6 +94,21 @@ public class RealExerciseDAOTests {
     }
 
     @Test
+    public void testDeleteExercise() throws Exception {
+        String sqlQuery = "DELETE FROM exercise WHERE id=?;";
+        int rowCount = 1;
+        Exercise exercise = new Exercise("Test name", "Test description");
+        exercise.setId(3);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
+        stmt.setInt(1, 3);
+        expect(stmt.executeUpdate()).andReturn(rowCount);
+
+        closeAllAndReplay(ds, con, stmt);
+        assertEquals(rowCount, exerciseDAO.deleteExercise(exercise));
+        verify(ds, con, stmt);
+    }
+
+    @Test
     public void testLoadAllExercises() throws Exception {
         String sql = "SELECT * FROM exercise;";
         expect(con.prepareStatement(sql)).andReturn(stmt);

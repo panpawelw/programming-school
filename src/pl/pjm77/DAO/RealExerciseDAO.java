@@ -79,7 +79,7 @@ public class RealExerciseDAO implements ExerciseDAO {
     public int deleteExercise(Exercise exercise) {
         int affectedRows = 0;
         try (Connection con = ds.getConnection(); PreparedStatement ps = prepStatement(con,
-          "DELETE * FROM exercise WHERE id=?;", exercise.getId()))
+          "DELETE FROM exercise WHERE id=?;", exercise.getId()))
         {
             affectedRows = ps.executeUpdate();
             exercise.setId(0);
