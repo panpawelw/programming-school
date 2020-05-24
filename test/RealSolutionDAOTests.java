@@ -111,6 +111,22 @@ public class RealSolutionDAOTests {
     }
 
     @Test
+    public void testDeleteSolution() throws Exception {
+        String sqlQuery = "DELETE FROM solution WHERE id=?;";
+        int rowCount = 1;
+        Solution solution = new Solution(valueOf("2020-04-20 23:24:10.0"),
+          valueOf("2020-04-20 23:25:23.0"), "test description", 1, 1L);
+        solution.setId(1);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
+        stmt.setLong(1, 1);
+        expect(stmt.executeUpdate()).andReturn(rowCount);
+
+        closeAllAndReplay(ds, con, stmt);
+        assertEquals(rowCount, solutionDAO.deleteSolution(solution));
+        verify(ds, con, stmt);
+    }
+
+    @Test
     public void testLoadAllSolutions() throws Exception {
         String sql = "SELECT * FROM solution;";
         expect(con.prepareStatement(sql)).andReturn(stmt);
