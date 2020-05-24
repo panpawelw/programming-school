@@ -47,7 +47,6 @@ public class RealUserDAOTest {
         stmt.setString(3, user.getPassword());
         stmt.setInt(4, user.getGroup_id());
         expect(stmt.executeUpdate()).andReturn(rowCount);
-        System.out.println((rowCount));
 
         MockSingleRowResultSet rs = prepareSingleRowResultSetMock();
         rs.addExpectedIndexedValues(new Object[]{EXPECTED_ID});
@@ -101,9 +100,24 @@ public class RealUserDAOTest {
     }
 
     @Test
+    public void testDeleteUser() throws Exception {
+        String sqlQuery = "DELETE FROM user WHERE id=?";
+        int rowCount = 1;
+        User user = new User("Test name", "Test email", "Test password", 3);
+        user.setId(4);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
+        stmt.setLong(1, 4);
+        expect(stmt.executeUpdate()).andReturn(rowCount);
+
+        closeAllAndReplay(ds, con, stmt);
+        assertEquals(rowCount, userDAO.deleteUser(user));
+        verify(ds, con, stmt);
+    }
+
+    @Test
     public void testLoadAllUsers() throws Exception {
-        String sql = "SELECT * FROM user;";
-        expect(con.prepareStatement(sql)).andReturn(stmt);
+        String sqlQuery = "SELECT * FROM user;";
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
 
         List<User> expected = createMultipleUsers();
         MockMultiRowResultSet rs =
@@ -117,9 +131,10 @@ public class RealUserDAOTest {
 
     @Test
     public void testLoadAllUsersByGroupId() throws Exception {
-        String sql = "SELECT * FROM user WHERE usergroup_id=?;";
-        expect(con.prepareStatement(sql)).andReturn(stmt);
+        String sqlQuery = "SELECT * FROM user WHERE usergroup_id=?;";
         stmt.setInt(1, 3);
+        expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
+
 
         List<User> expected = createMultipleUsers(3);
         MockMultiRowResultSet rs =
