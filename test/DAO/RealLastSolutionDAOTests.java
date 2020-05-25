@@ -1,3 +1,5 @@
+package DAO;
+
 import com.mockobjects.sql.MockMultiRowResultSet;
 import org.junit.Before;
 import org.junit.Test;
