@@ -10,18 +10,23 @@ import java.sql.Timestamp;
 
 public class DbUtils {
 
+    private static DataSource dataSource = null;
+
+    private DbUtils() {}
+
     /**
      * Prepares a data source.
      *
      * @return Datasource object
      */
     public static DataSource initDB() {
-        DataSource dataSource = null;
-        try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc" +
-              "/programming_school");
-        } catch (NamingException e) {
-            e.printStackTrace();
+        if (dataSource != null) {
+            try {
+                dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc" +
+                  "/programming_school");
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
         }
         return dataSource;
     }
