@@ -11,7 +11,6 @@ import pl.pjm77.model.Solution;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -157,26 +156,6 @@ public class RealSolutionDAOTests {
 
         List<Solution> result = solutionDAO.loadAllSolutionsByUserId(2);
         assertAndVerify(expected, result, ds, con, stmt, rs);
-    }
-
-    /**
-     * Creates a list of test solutions, optionally with identical user ID
-     *
-     * @param args - optional user ID (long)
-     * @return - list of solutions
-     */
-    private List<Solution> createMultipleSolutions(long... args) {
-        List<Solution> expectedSolutions = new ArrayList<>();
-        long user_id = 1;
-        if (args.length != 0) user_id = args[0];
-        for (int i = 1; i < 6; i++) {
-            if (args.length == 0) user_id = i;
-            Solution solution = new Solution(valueOf("2020-04-20 23:24:15." + i),
-              valueOf("2020-04-20 23:25:23.0" + i), "Test description " + i, i, user_id);
-            solution.setId(i);
-            expectedSolutions.add(solution);
-        }
-        return expectedSolutions;
     }
 
     private Object[][] solutionlistTo2dArray(List<Solution> solutions) {

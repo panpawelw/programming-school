@@ -20,7 +20,7 @@ public class DbUtils {
      * @return Datasource object
      */
     public static DataSource initDB() {
-        if (dataSource != null) {
+        if (dataSource == null) {
             try {
                 dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc" +
                   "/programming_school");

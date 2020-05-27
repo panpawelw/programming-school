@@ -11,7 +11,6 @@ import pl.pjm77.model.User;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
 import java.util.List;
 
 import static misc.TestUtils.*;
@@ -146,26 +145,6 @@ public class RealUserDAOTest {
 
         List<User> result = userDAO.loadAllUsersByGroupId(3);
         assertAndVerify(expected, result, ds, con, stmt, rs);
-    }
-
-    /**
-     * Creates a list of test users, optionally with identical group ID
-     *
-     * @param args - optional group ID (int)
-     * @return - list of users
-     */
-    private List<User> createMultipleUsers(int... args) {
-        List<User> expectedUsers = new ArrayList<>();
-        int group_id = 1;
-        if (args.length != 0) group_id = args[0];
-        for (int i = 1; i < 6; i++) {
-            if (args.length == 0) group_id = i;
-            User user = new User("Test user " + i,
-              "Test email " + i, "Test password " + i, group_id);
-            user.setId(i);
-            expectedUsers.add(user);
-        }
-        return expectedUsers;
     }
 
     /**

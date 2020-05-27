@@ -11,7 +11,6 @@ import pl.pjm77.model.Exercise;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
 import java.util.List;
 
 import static misc.TestUtils.*;
@@ -123,21 +122,6 @@ public class RealExerciseDAOTests {
 
         List<Exercise> result = exerciseDAO.loadAllExercises();
         assertAndVerify(expected, result, ds, con, stmt, rs);
-    }
-
-    /**
-     * Creates a list of test exercises
-     * @return - list of exercises
-     */
-    private List<Exercise> createMultipleExercises() {
-        List<Exercise> expectedExercises = new ArrayList<>();
-        for (int i = 1; i < 6; i++) {
-            Exercise exercise = new Exercise("Test exercise title " + i,
-              "Test exercise description " + i);
-            exercise.setId(i);
-            expectedExercises.add(exercise);
-        }
-        return expectedExercises;
     }
 
     /**

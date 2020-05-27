@@ -10,10 +10,9 @@ import pl.pjm77.model.LastSolution;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
 import java.util.List;
 
-import static java.sql.Timestamp.valueOf;
+import static misc.TestUtils.createMultipleLastSolutions;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
@@ -44,7 +43,7 @@ public class RealLastSolutionDAOTests {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
-        List<LastSolution> expectedLastSolutions = createManyLastSolutions();
+        List<LastSolution> expectedLastSolutions = createMultipleLastSolutions();
         resultSet.setupRows(lastSolutionlistTo2dArray(expectedLastSolutions));
         expect(statement.executeQuery()).andReturn(resultSet);
 
@@ -73,7 +72,7 @@ public class RealLastSolutionDAOTests {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
-        List<LastSolution> expectedLastSolutions = createManyLastSolutionsByUserId(2);
+        List<LastSolution> expectedLastSolutions = createMultipleLastSolutions();
         resultSet.setupRows(lastSolutionlistTo2dArray(expectedLastSolutions));
         expect(statement.executeQuery()).andReturn(resultSet);
 
@@ -88,28 +87,6 @@ public class RealLastSolutionDAOTests {
         assertEquals(expectedLastSolutions.toString(), result.toString());
         verify(dataSource, connection, statement);
         resultSet.verify();
-    }
-
-    private List<LastSolution> createManyLastSolutions() {
-        List<LastSolution> expectedLastSolutions = new ArrayList<>();
-        for (int i = 1; i < 6; i++) {
-            LastSolution lastSolution = new LastSolution("Test title " + i,
-              "Test name " + i, valueOf("2020-04-20 23:25:23.0" + i));
-            lastSolution.setId(i);
-            expectedLastSolutions.add(lastSolution);
-        }
-        return expectedLastSolutions;
-    }
-
-    private List<LastSolution> createManyLastSolutionsByUserId(long id) {
-        List<LastSolution> expectedLastSolutions = new ArrayList<>();
-        for (int i = 1; i < 6; i++) {
-            LastSolution lastSolution = new LastSolution("Test title " + i,
-              "Test name " + i, valueOf("2020-04-20 23:25:23.0" + i));
-            lastSolution.setId(id);
-            expectedLastSolutions.add(lastSolution);
-        }
-        return expectedLastSolutions;
     }
 
     private Object[][] lastSolutionlistTo2dArray(List<LastSolution> lastSolutions) {

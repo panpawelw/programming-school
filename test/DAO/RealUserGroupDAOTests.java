@@ -11,7 +11,6 @@ import static org.junit.Assert.assertEquals;
 
 import javax.sql.*;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import pl.pjm77.DAO.RealUserGroupDAO;
@@ -121,16 +120,6 @@ public class RealUserGroupDAOTests {
 
         List<UserGroup> result = userGroupDAO.loadAllUserGroups();
         assertAndVerify(expected, result, ds, con, stmt, rs);
-    }
-
-    private List<UserGroup> createMultipleUserGroups() {
-        List<UserGroup> expectedUserGroups = new ArrayList<>();
-        for (int i = 1; i < 6; i++) {
-            UserGroup userGroup = new UserGroup("Test user group " + i);
-            userGroup.setId(i);
-            expectedUserGroups.add(userGroup);
-        }
-        return expectedUserGroups;
     }
 
     private Object[][] userGroupListTo2dArray(List<UserGroup> userGroups) {
