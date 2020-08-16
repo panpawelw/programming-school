@@ -10,6 +10,9 @@ import java.sql.Timestamp;
 
 public class DbUtils {
 
+
+    private static final String LOCAL_DATABASE = "java:comp/env/jdbc/programming_school_local";
+//    private static final String AWS_DATABASE = "java:comp/env/jdbc/programming_school_AWS";
     private static DataSource dataSource = null;
 
     private DbUtils() {}
@@ -22,8 +25,7 @@ public class DbUtils {
     public static DataSource initDB() {
         if (dataSource == null) {
             try {
-                dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc" +
-                  "/programming_school");
+                dataSource = (DataSource) new InitialContext().lookup(LOCAL_DATABASE);
             } catch (NamingException e) {
                 e.printStackTrace();
             }

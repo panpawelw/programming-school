@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.ls.LSOutput;
 import pl.pjm77.model.User;
 
 import javax.sql.DataSource;
