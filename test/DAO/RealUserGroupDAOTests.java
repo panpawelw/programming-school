@@ -13,9 +13,9 @@ import javax.sql.*;
 import java.sql.*;
 import java.util.List;
 
-import pl.pjm77.DAO.RealUserGroupDAO;
-import pl.pjm77.DAO.UserGroupDAO;
-import pl.pjm77.model.UserGroup;
+import com.panpawelw.DAO.RealUserGroupDAO;
+import com.panpawelw.DAO.UserGroupDAO;
+import com.panpawelw.model.UserGroup;
 
 public class RealUserGroupDAOTests {
 

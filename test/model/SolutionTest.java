@@ -3,7 +3,7 @@ package model;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import pl.pjm77.model.Solution;
+import com.panpawelw.model.Solution;
 
 import java.sql.Timestamp;
 

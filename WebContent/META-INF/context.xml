@@ -5,8 +5,8 @@
             name="jdbc/programming_school_local"
             auth="Container"
             type="javax.sql.DataSource"
-            username="root"
-            password="mojSQL"
+            username="********"
+            password="********"
             driverClassName="com.mysql.cj.jdbc.Driver"
             url="jdbc:mysql://localhost:3306/programming_school?autoReconnect=true&amp;useSSL=false
             &amp;useUnicode=true&amp;characterEncoding=utf8&amp;useJDBCCompliantTimezoneShift=true
@@ -18,10 +18,10 @@
             name="jdbc/programming_school_AWS"
             auth="Container"
             type="javax.sql.DataSource"
-            username="${RDS_USERNAME}"
-            password="${RDS_PASSWORD}"
+            username="********"
+            password="********"
             driverClassName="com.mysql.cj.jdbc.Driver"
-            url="jdbc:mysql://${RDS_HOSTNAME}:${RDS_PORT}/${RDS_DB_NAME}?autoReconnect=true&amp;useSSL=false
+            url="jdbc:mysql://localhost:3306/programming_school?autoReconnect=true&amp;useSSL=false
             &amp;useUnicode=true&amp;characterEncoding=utf8&amp;useJDBCCompliantTimezoneShift=true
             &amp;useLegacyDatetimeCode=false&amp;serverTimezone=EET"
             maxTotal="100"

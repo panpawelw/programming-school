@@ -4,9 +4,9 @@ import com.mockobjects.sql.MockMultiRowResultSet;
 import com.mockobjects.sql.MockSingleRowResultSet;
 import org.junit.Before;
 import org.junit.Test;
-import pl.pjm77.DAO.ExerciseDAO;
-import pl.pjm77.DAO.RealExerciseDAO;
-import pl.pjm77.model.Exercise;
+import com.panpawelw.DAO.ExerciseDAO;
+import com.panpawelw.DAO.RealExerciseDAO;
+import com.panpawelw.model.Exercise;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

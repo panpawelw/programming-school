@@ -3,9 +3,9 @@ package DAO;
 import com.mockobjects.sql.MockMultiRowResultSet;
 import org.junit.Before;
 import org.junit.Test;
-import pl.pjm77.DAO.LastSolutionDAO;
-import pl.pjm77.DAO.RealLastSolutionDAO;
-import pl.pjm77.model.LastSolution;
+import com.panpawelw.DAO.LastSolutionDAO;
+import com.panpawelw.DAO.RealLastSolutionDAO;
+import com.panpawelw.model.LastSolution;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

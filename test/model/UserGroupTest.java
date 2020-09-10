@@ -3,7 +3,7 @@ package model;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import pl.pjm77.model.UserGroup;
+import com.panpawelw.model.UserGroup;
 
 public class UserGroupTest {
 

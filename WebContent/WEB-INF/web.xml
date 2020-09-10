@@ -27,7 +27,7 @@
   </resource-ref>
   <filter>
     <filter-name>requestEncodeFilter</filter-name>
-    <filter-class>pl.pjm77.misc.RequestEncodeFilter</filter-class>
+    <filter-class>com.panpawelw.misc.RequestEncodeFilter</filter-class>
     <init-param>
       <param-name>encoding</param-name>
       <param-value>UTF-8</param-value>

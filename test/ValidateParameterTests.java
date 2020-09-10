@@ -2,7 +2,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import pl.pjm77.misc.ValidateParameter;
+import com.panpawelw.misc.ValidateParameter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

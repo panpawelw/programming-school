@@ -4,13 +4,12 @@
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
 
 	<New id="programming_school" class="org.eclipse.jetty.plus.jndi.Resource">
-		<Arg></Arg>
 		<Arg>jdbc/programming_school</Arg>
 		<Arg>
 			<New class="com.mysql.jdbc.jdbc2.optional.MysqlDataSource">
 				<Set name="Url">jdbc:mysql://localhost:3306/programming_school</Set>
-				<Set name="User">root</Set>
-				<Set name="Password">mojSQL</Set>
+				<Set name="User">********</Set>
+				<Set name="Password">********</Set>
 			</New>
 		</Arg>
 	</New>
@@ -22,8 +21,8 @@
 			<!--<New class="org.apache.commons.dbcp.BasicDataSource">-->
 				<!--<Set name="driverClassName">com.mysql.jdbc.Driver</Set>-->
 				<!--<Set name="url">jdbc:mysql://localhost:3306/programming_school</Set>-->
-				<!--<Set name="username">root</Set>-->
-				<!--<Set name="password">mojSQL</Set>-->
+				<!--<Set name="username">********</Set>-->
+				<!--<Set name="password">********</Set>-->
 				<!--<Set name="maxActive" type="int">100</Set>-->
 				<!--<Set name="maxIdle" type="int">30</Set>-->
 				<!--<Set name="maxWait" type="int">1000</Set>-->
@@ -37,4 +36,3 @@
 	<!--</New>-->
 
 </Configure>
-

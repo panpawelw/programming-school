@@ -3,7 +3,7 @@ package misc;
 import com.mockobjects.MockObject;
 import com.mockobjects.sql.MockMultiRowResultSet;
 import com.mockobjects.sql.MockSingleRowResultSet;
-import pl.pjm77.model.*;
+import com.panpawelw.model.*;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
