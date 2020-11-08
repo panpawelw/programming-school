@@ -48,7 +48,6 @@ public class RealUserDAO implements UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println(affectedRows);
         return affectedRows;
     }
 

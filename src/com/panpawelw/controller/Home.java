@@ -24,13 +24,17 @@ public class Home extends HttpServlet {
         super();
     }
 
-    public void init() {
-        lastSolutionDAO = new RealLastSolutionDAO(DbUtils.initDB());
+    public void init() throws ServletException {
+        if(lastSolutionDAO == null) lastSolutionDAO = new RealLastSolutionDAO(DbUtils.initDB());
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void setLastSolutionDAO(LastSolutionDAO lastSolutionDAO) {
+        this.lastSolutionDAO = lastSolutionDAO;
+    }
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String contextParam = getServletContext().getInitParameter("number-solutions");
+        String contextParam = request.getServletContext().getInitParameter("number-solutions");
         long recentSolutions = 5;
         if (contextParam != null & !Objects.equals(contextParam, "")) {
             try {
@@ -42,8 +46,6 @@ public class Home extends HttpServlet {
         }
         List<LastSolution> lastSolutions = lastSolutionDAO.loadMostRecentSolutions(recentSolutions);
         request.setAttribute("lastsolutions", lastSolutions);
-
-        getServletContext().getRequestDispatcher("/jsp/index.jsp")
-                           .forward(request, response);
+        getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request, response);
     }
 }
