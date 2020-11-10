@@ -23,7 +23,13 @@ public class ExercisesAdminDelete extends HttpServlet {
         super();
     }
 
-    public void init() { exerciseDAO = new RealExerciseDAO(DbUtils.initDB()); }
+    public void init() {
+        if(exerciseDAO == null) exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
+    }
+
+    public void setExerciseDAO(ExerciseDAO exerciseDAO) {
+        this.exerciseDAO = exerciseDAO;
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

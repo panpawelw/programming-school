@@ -27,9 +27,19 @@ public class UserDetails extends HttpServlet {
     }
 
     public void init() {
-        userDAO = new RealUserDAO(DbUtils.initDB());
-        userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
-        lastSolutionDAO = new RealLastSolutionDAO(DbUtils.initDB());
+        if(userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
+        if(userGroupDAO == null) userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
+        if(lastSolutionDAO == null) lastSolutionDAO = new RealLastSolutionDAO(DbUtils.initDB());
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+    public void setUserGroupDAO(UserGroupDAO userGroupDAO) {
+        this.userGroupDAO = userGroupDAO;
+    }
+    public void setLastSolutionDAO(LastSolutionDAO lastSolutionDAO) {
+        this.lastSolutionDAO = lastSolutionDAO;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,7 +58,7 @@ public class UserDetails extends HttpServlet {
         UserGroup userGroup = userGroupDAO.loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());
         List<LastSolution> usersSolutions = lastSolutionDAO.loadMostRecentSolutionsByUserId(userId);
-        request.setAttribute("userssolutions", usersSolutions);
+        request.setAttribute("userslastSolutions", usersSolutions);
         getServletContext()
                 .getRequestDispatcher("/jsp/userdetailsview.jsp").forward(request, response);
         response.getWriter().append("")

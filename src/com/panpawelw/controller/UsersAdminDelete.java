@@ -24,7 +24,11 @@ public class UsersAdminDelete extends HttpServlet {
     }
 
     public void init() {
-        userDAO = new RealUserDAO(DbUtils.initDB());
+        if(userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

@@ -26,9 +26,19 @@ public class SolutionDetails extends HttpServlet {
     }
 
     public void init() {
-        userDAO = new RealUserDAO(DbUtils.initDB());
-        exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
-        solutionDAO = new RealSolutionDAO(DbUtils.initDB());
+        if(userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
+        if(exerciseDAO == null) exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
+        if(solutionDAO == null) solutionDAO = new RealSolutionDAO(DbUtils.initDB());
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+    public void setExerciseDAO(ExerciseDAO exerciseDAO) {
+        this.exerciseDAO = exerciseDAO;
+    }
+    public void setSolutionDAO(SolutionDAO solutionDAO) {
+        this.solutionDAO = solutionDAO;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

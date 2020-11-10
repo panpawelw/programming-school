@@ -24,7 +24,11 @@ public class ExercisesAdminAddEdit extends HttpServlet {
     }
 
     public void init() {
-        exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
+        if(exerciseDAO == null) exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
+    }
+
+    public void setExerciseDAO(ExerciseDAO exerciseDAO) {
+        this.exerciseDAO = exerciseDAO;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

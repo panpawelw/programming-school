@@ -28,8 +28,16 @@ public class UsersList extends HttpServlet {
     }
 
     public void init() {
-        userDAO = new RealUserDAO(DbUtils.initDB());
-        userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
+        if(userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
+        if(userGroupDAO == null) userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    public void setUserGroupDAO(UserGroupDAO userGroupDAO) {
+        this.userGroupDAO = userGroupDAO;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

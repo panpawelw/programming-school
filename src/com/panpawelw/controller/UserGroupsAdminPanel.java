@@ -24,7 +24,11 @@ public class UserGroupsAdminPanel extends HttpServlet {
     }
 
     public void init() {
-        userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
+        if(userGroupDAO == null) this.userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
+    }
+
+    public void setUserGroupDAO(UserGroupDAO userGroupDAO) {
+        this.userGroupDAO = userGroupDAO;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

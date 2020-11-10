@@ -28,8 +28,16 @@ public class UsersAdminAddEdit extends HttpServlet {
     }
 
     public void init() {
-        passwordEncoder = new BCryptPasswordEncoder();
-        userDAO = new RealUserDAO(DbUtils.initDB());
+        if(passwordEncoder == null) passwordEncoder = new BCryptPasswordEncoder();
+        if(userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

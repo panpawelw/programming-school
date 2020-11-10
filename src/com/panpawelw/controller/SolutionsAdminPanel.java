@@ -24,7 +24,11 @@ public class SolutionsAdminPanel extends HttpServlet {
     }
 
     public void init() {
-        solutionDAO = new RealSolutionDAO(DbUtils.initDB());
+        if(solutionDAO == null) solutionDAO = new RealSolutionDAO(DbUtils.initDB());
+    }
+
+    public void setSolutionDAO(SolutionDAO solutionDAO) {
+        this.solutionDAO = solutionDAO;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
