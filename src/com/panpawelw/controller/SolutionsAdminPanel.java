@@ -31,7 +31,7 @@ public class SolutionsAdminPanel extends HttpServlet {
         this.solutionDAO = solutionDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Solution> solutionsList = solutionDAO.loadAllSolutions();
         request.setAttribute("solutionslist", solutionsList);
         String errorMessage = (String) request.getAttribute("errorMessage");

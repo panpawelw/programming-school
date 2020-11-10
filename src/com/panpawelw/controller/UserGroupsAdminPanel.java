@@ -31,7 +31,7 @@ public class UserGroupsAdminPanel extends HttpServlet {
         this.userGroupDAO = userGroupDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<UserGroup> groupsList = userGroupDAO.loadAllUserGroups();
         request.setAttribute("groupslist", groupsList);
         String errorMessage = (String) request.getAttribute("errorMessage");

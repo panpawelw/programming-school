@@ -31,7 +31,7 @@ public class ExercisesAdminPanel extends HttpServlet {
 		this.exerciseDAO = exerciseDAO;
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Exercise> exercisesList = exerciseDAO.loadAllExercises();
 		request.setAttribute("exerciseslist", exercisesList);
 		String errorMessage = (String) request.getAttribute("errorMessage");
