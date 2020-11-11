@@ -10,7 +10,7 @@ package com.panpawelw.misc;
 
 public class ValidateParameter {
 
-    /** Validates parameter to long
+    /** Validates long parameter
      *
      * @param param - parameter in String format
      * @param message - message to be displayed in case of error
@@ -33,7 +33,7 @@ public class ValidateParameter {
         return result;
     }
 
-    /**Validates parameter to integer
+    /** Validates integer parameter
      *
      * @param param - parameter as String
      * @param message - message to be displayed in case of error

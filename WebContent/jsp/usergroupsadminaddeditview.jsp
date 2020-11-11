@@ -12,10 +12,10 @@
 <div class="content">
     <h3>Add / edit user group</h3>
     <form action="addeditgroup" method="post">
-        <input type="hidden" name="id" value="${requestScope.groupId}"/>
+        <input type="hidden" name="id" value="${requestScope.group.id}"/>
         <label for="group_name">Group name</label>
         <input type="text" name="group_name" id="group_name" autofocus
-               value="${requestScope.groupName}"/><br>
+               value="${requestScope.group.name}"/><br>
         <br>
         <input type="submit" value="${requestScope.button}"/>
     </form>

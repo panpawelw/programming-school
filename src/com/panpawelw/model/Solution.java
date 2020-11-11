@@ -13,6 +13,10 @@ public class Solution {
 
     public Solution() {}
 
+    public Solution(long id) {
+        this.id = id;
+    }
+
     public Solution(String description, int exercise_id, long user_id) {
         this.description = description;
         this.exercise_id = exercise_id;

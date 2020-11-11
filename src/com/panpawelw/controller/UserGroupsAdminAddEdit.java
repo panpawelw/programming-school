@@ -35,20 +35,16 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
-        if (groupId == 0) {
-            request.setAttribute("groupId", groupId);
-            request.setAttribute("groupName", null);
+        if(groupId < 0) getServletContext().getRequestDispatcher("/groupsadminpanel")
+                .forward(request, response);
+        if(groupId == 0) {
+            request.setAttribute("group", new UserGroup(0));
             request.setAttribute("button", "Add group");
-            getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
         } else if (groupId > 0) {
-            UserGroup userGroup = userGroupDAO.loadUserGroupById(groupId);
-            request.setAttribute("groupId", groupId);
-            request.setAttribute("groupName", userGroup.getName());
+            request.setAttribute("group", userGroupDAO.loadUserGroupById(groupId));
             request.setAttribute("button", "Edit group");
-            getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
-        } else {
-            getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
         }
+        getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

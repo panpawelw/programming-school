@@ -35,25 +35,17 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
-        if (exerciseId == 0) {
-            request.setAttribute("exerciseId", 0);
-            request.setAttribute("exerciseTitle", null);
-            request.setAttribute("exerciseDescription", null);
+        if(exerciseId < 0) getServletContext().getRequestDispatcher("/exercisesadminpanel")
+                .forward(request, response);
+        if(exerciseId == 0) {
+            request.setAttribute("exercise", new Exercise(0));
             request.setAttribute("button", "Add exercise");
-            getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
-                    .forward(request, response);
-        } else if (exerciseId > 0) {
-            Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
-            request.setAttribute("exerciseId", exerciseId);
-            request.setAttribute("exerciseTitle", exercise.getTitle());
-            request.setAttribute("exerciseDescription", exercise.getDescription());
-            request.setAttribute("button", "Edit exercise");
-            getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
-                    .forward(request, response);
         } else {
-            getServletContext().getRequestDispatcher("/exercisesadminpanel")
-                    .forward(request, response);
+            request.setAttribute("exercise", exerciseDAO.loadExerciseById(exerciseId));
+            request.setAttribute("button", "Edit exercise");
         }
+        getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
+                .forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

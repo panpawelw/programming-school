@@ -12,16 +12,16 @@
 <div class="content">
     <h3>Add / edit user</h3>
     <form action="addedituser" method="POST">
-        <input type="hidden" name="id" value="${requestScope.userId}"/>
+        <input type="hidden" name="id" value="${requestScope.user.id}"/>
         <label for="name">User name:</label>
-        <input type="text" name="name" id="name" autofocus value="${requestScope.userName}"/><br>
+        <input type="text" name="name" id="name" autofocus value="${requestScope.user.name}"/><br>
         <label for="email">User email:</label>
-        <input type="text" name="email" id="email" value="${requestScope.userEmail}"/><br>
+        <input type="text" name="email" id="email" value="${requestScope.user.email}"/><br>
         <label for="password">User password:</label>
         <input type="text" name="password" id="password"/><br>
         <label for="group_id">Group id:</label>
         <input type="number" name="group_id" id="group_id" min="1" step="1"
-               value="${requestScope.userGroup_id}"/><br>
+               value="${requestScope.user.group_id}"/><br>
         <br>
         <input type="submit" value="${requestScope.button}"/>
     </form>

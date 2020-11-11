@@ -12,13 +12,13 @@
 <div class="content">
 	<h3>Add / edit exercise</h3>
 	<form action="addeditexercise" accept-charset="UTF-8" method="post">
-		<input type="hidden" name="id" value="${requestScope.exerciseId}"/>
+		<input type="hidden" name="id" value="${requestScope.exercise.id}"/>
 		<label for="title">Exercise title</label>
 		<input type="text" name="title" id="title" autofocus
-			   value="${requestScope.exerciseTitle}"/><br>
+			   value="${requestScope.exercise.title}"/><br>
 		<label for="description">Exercise description</label><br>
 		<textarea rows="30" cols="50" name="description"
-				  id="description">${requestScope.exerciseDescription}</textarea><br><br>
+				  id="description">${requestScope.exercise.description}</textarea><br><br>
 		<input type="submit" value="${requestScope.button}"/>
 	</form>
 </div>

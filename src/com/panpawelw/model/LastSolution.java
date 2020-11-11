@@ -17,6 +17,13 @@ public class LastSolution {
         this.modified = modified;
     }
 
+    public LastSolution(long id, String title, String name, Timestamp modified) {
+        this.id = id;
+        this.title = title;
+        this.name = name;
+        this.modified = modified;
+    }
+
     public String getTitle() {
         return title;
     }

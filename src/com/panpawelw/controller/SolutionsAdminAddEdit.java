@@ -39,24 +39,15 @@ public class SolutionsAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int solutionId = ValidateParameter.checkInt(idParam, "Incorrect solution Id!");
+        if(solutionId < 0) getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);
         if (solutionId == 0) {
-            request.setAttribute("solutionId", 0);
+            request.setAttribute("solution", new Solution(0L));
             request.setAttribute("button", "Add solution");
-            request.setAttribute("solutionDescription", null);
-            request.setAttribute("solutionExercise_id", null);
-            request.setAttribute("solutionUser_id", null);
-            getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
-        } else if (solutionId > 0) {
-            Solution solution = solutionDAO.loadSolutionById(solutionId);
-            request.setAttribute("solutionId", solutionId);
-            request.setAttribute("button", "Edit solution");
-            request.setAttribute("solutionDescription", solution.getDescription());
-            request.setAttribute("solutionExercise_id", solution.getExercise_id());
-            request.setAttribute("solutionUser_id", solution.getUser_id());
-            getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
         } else {
-            getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);
+            request.setAttribute("solution", solutionDAO.loadSolutionById(solutionId));
+            request.setAttribute("button", "Edit solution");
         }
+        getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

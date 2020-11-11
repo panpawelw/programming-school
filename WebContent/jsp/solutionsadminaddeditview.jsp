@@ -12,16 +12,16 @@
 <div class="content">
     <h3>Add / edit solution</h3>
     <form action="addeditsolution" method="post">
-        <input type="hidden" name="id" value="${requestScope.solutionId}"/>
+        <input type="hidden" name="id" value="${requestScope.solution.id}"/>
         <label for="exercise_id">Exercise Id</label>
         <input type="number" name="exercise_id" id="exercise_id" min="1" step="1" autofocus
-               value="${requestScope.solutionExercise_id}"/><br>
+               value="${requestScope.solution.exercise_id}"/><br>
         <label for="user_id">User Id</label>
         <input type="number" name="user_id" id="user_id" min="1" step="1"
-               value="${requestScope.solutionUser_id}"/><br>
+               value="${requestScope.solution.user_id}"/><br>
         <label for="description">Exercise Description</label><br>
         <textarea rows="30" cols="50" name="description"
-                  id="description">${requestScope.solutionDescription}</textarea><br>
+                  id="description">${requestScope.solution.description}</textarea><br>
         <br>
         <input type="submit" value="${requestScope.button}"/>
     </form>

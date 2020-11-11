@@ -10,6 +10,10 @@ public class User {
 
     public User() {}
 
+    public User(long id) {
+        this.id = id;
+    }
+
     public User(String name, String email, String password, int group_id) {
         this.name = name;
         this.email = email;
