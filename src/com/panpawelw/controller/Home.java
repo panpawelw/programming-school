@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.panpawelw.DAO.LastSolutionDAO;
 import com.panpawelw.DAO.RealLastSolutionDAO;
 import com.panpawelw.misc.DbUtils;
+import com.panpawelw.misc.ValidateParameter;
 import com.panpawelw.model.LastSolution;
 
 @WebServlet(value = "/")
@@ -34,17 +35,11 @@ public class Home extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String contextParam = request.getServletContext().getInitParameter("number-solutions");
-        long recentSolutions = 5;
-        if (contextParam != null & !Objects.equals(contextParam, "")) {
-            try {
-                recentSolutions = Long.parseLong(contextParam);
-            } catch (NumberFormatException n) {
-                System.out.println("Parameter must be an integer value, using default" +
-                        " value of 5 instead!");
-            }
-        }
-        List<LastSolution> lastSolutions = lastSolutionDAO.loadMostRecentSolutions(recentSolutions);
+        String initParam = request.getServletContext().getInitParameter("last-solutions");
+        long howMany = ValidateParameter.checkLong(initParam, "Parameter " +
+                "must be a value of type long using default 5 instead!");
+        if(howMany < 0) howMany = 5;
+        List<LastSolution> lastSolutions = lastSolutionDAO.loadMostRecentSolutions(howMany);
         request.setAttribute("lastsolutions", lastSolutions);
         getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request, response);
     }

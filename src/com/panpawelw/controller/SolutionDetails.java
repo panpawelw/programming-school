@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.panpawelw.DAO.*;
 import com.panpawelw.misc.DbUtils;
+import com.panpawelw.misc.ValidateParameter;
 import com.panpawelw.model.Exercise;
 import com.panpawelw.model.Solution;
 import com.panpawelw.model.User;
@@ -43,15 +44,7 @@ public class SolutionDetails extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        long solutionId = 0;
-        if (idParam != null && !idParam.equals("")) {
-            try {
-                solutionId = Long.parseLong(idParam);
-            } catch (NumberFormatException e) {
-                System.out.println("Incorrect solution Id!");
-                e.printStackTrace();
-            }
-        }
+        long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
         response.getWriter().append("Solution Id : ").append(String.valueOf(solutionId));
         Solution solution = solutionDAO.loadSolutionById(solutionId);
         request.setAttribute("solution", solution);

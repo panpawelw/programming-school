@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.panpawelw.DAO.*;
 import com.panpawelw.misc.DbUtils;
+import com.panpawelw.misc.ValidateParameter;
 import com.panpawelw.model.LastSolution;
 import com.panpawelw.model.User;
 import com.panpawelw.model.UserGroup;
@@ -44,15 +45,7 @@ public class UserDetails extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        int userId = 0;
-        if (idParam != null && !idParam.equals("")) {
-            try {
-                userId = Integer.parseInt(idParam);
-            } catch (NumberFormatException e) {
-                System.out.println("Incorrect user Id!");
-                e.printStackTrace();
-            }
-        }
+        int userId = ValidateParameter.checkInt(idParam, "Incorrect user Id!");
         User user = userDAO.loadUserById(userId);
         request.setAttribute("user", user);
         UserGroup userGroup = userGroupDAO.loadUserGroupById(user.getGroup_id());
