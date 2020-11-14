@@ -40,7 +40,7 @@ public class UsersAdminAddEdit extends HttpServlet {
         this.passwordEncoder = passwordEncoder;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int userId = ValidateParameter.checkInt(idParam, "Incorrect user Id!");
@@ -56,7 +56,7 @@ public class UsersAdminAddEdit extends HttpServlet {
         getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         String userName = request.getParameter("name");

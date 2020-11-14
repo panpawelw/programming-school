@@ -31,7 +31,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
         this.userGroupDAO = userGroupDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
@@ -47,7 +47,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
         getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         String groupName = request.getParameter("group_name");

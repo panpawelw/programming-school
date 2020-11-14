@@ -35,7 +35,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
         this.solutionDAO = solutionDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int solutionId = ValidateParameter.checkInt(idParam, "Incorrect solution Id!");
@@ -50,7 +50,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
         getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         String solutionDescription = request.getParameter("description");

@@ -31,7 +31,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
         this.exerciseDAO = exerciseDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
@@ -48,7 +48,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
                 .forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         String exerciseTitle = request.getParameter("title");
