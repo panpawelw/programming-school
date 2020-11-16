@@ -31,7 +31,7 @@ public class SolutionsAdminDelete extends HttpServlet {
         this.solutionDAO = solutionDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");

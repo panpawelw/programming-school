@@ -31,7 +31,7 @@ public class UserGroupsAdminDelete extends HttpServlet {
         this.userGroupDAO = userGroupDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");

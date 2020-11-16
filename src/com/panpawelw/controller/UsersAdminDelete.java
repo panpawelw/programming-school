@@ -31,7 +31,7 @@ public class UsersAdminDelete extends HttpServlet {
         this.userDAO = userDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         long userId = ValidateParameter.checkLong(idParam, "Incorrect user Id!");

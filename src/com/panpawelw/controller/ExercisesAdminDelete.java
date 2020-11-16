@@ -31,7 +31,7 @@ public class ExercisesAdminDelete extends HttpServlet {
         this.exerciseDAO = exerciseDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
