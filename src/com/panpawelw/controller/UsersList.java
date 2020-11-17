@@ -40,7 +40,7 @@ public class UsersList extends HttpServlet {
         this.userGroupDAO = userGroupDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int userGroupId = 0;
         if (idParam != null && !idParam.equals("")) {

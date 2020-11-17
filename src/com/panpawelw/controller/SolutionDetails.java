@@ -42,7 +42,7 @@ public class SolutionDetails extends HttpServlet {
         this.solutionDAO = solutionDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
         long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
         response.getWriter().append("Solution Id : ").append(String.valueOf(solutionId));

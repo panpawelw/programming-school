@@ -43,7 +43,7 @@ public class UserDetails extends HttpServlet {
         this.lastSolutionDAO = lastSolutionDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int userId = ValidateParameter.checkInt(idParam, "Incorrect user Id!");
         User user = userDAO.loadUserById(userId);

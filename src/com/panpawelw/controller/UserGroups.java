@@ -31,7 +31,7 @@ public class UserGroups extends HttpServlet {
         this.userGroupDAO = userGroupDAO;
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<UserGroup> userGroups = userGroupDAO.loadAllUserGroups();
         request.setAttribute("usergroups", userGroups);
         getServletContext().getRequestDispatcher("/jsp/usergroupsview.jsp").forward(request, response);
