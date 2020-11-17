@@ -13,6 +13,7 @@ import com.panpawelw.DAO.RealUserGroupDAO;
 import com.panpawelw.DAO.UserDAO;
 import com.panpawelw.DAO.UserGroupDAO;
 import com.panpawelw.misc.DbUtils;
+import com.panpawelw.misc.ValidateParameter;
 import com.panpawelw.model.User;
 import com.panpawelw.model.UserGroup;
 
@@ -42,15 +43,7 @@ public class UsersList extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        int userGroupId = 0;
-        if (idParam != null && !idParam.equals("")) {
-            try {
-                userGroupId = Integer.parseInt(idParam);
-            } catch (NumberFormatException e) {
-                System.out.println("Incorrect group Id!");
-                e.printStackTrace();
-            }
-        }
+        int userGroupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         List<User> GroupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
         request.setAttribute("groupuserslist", GroupUsersList);
         UserGroup userGroup = userGroupDAO.loadUserGroupById(userGroupId);
