@@ -166,3 +166,5 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+/WebContent/WEB-INF/jetty-env.xml
+/WebContent/META-INF/context.xml
