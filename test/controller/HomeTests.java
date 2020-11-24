@@ -1,12 +1,16 @@
 package controller;
 
 import com.panpawelw.controller.Home;
+import com.panpawelw.model.LastSolution;
 import mockDAOs.MockLastSolutionDAO;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,9 +39,29 @@ public class HomeTests {
 
     @Test
     public void homeCorrectInitParameterTest() throws Exception {
-        config.addInitParameter("number-solutions", "7");
+        List<LastSolution> returnedList = getServletOutput("7");
+        assertEquals(returnedList.size(), 7);
+    }
+
+    @Test
+    public void homeIncorrectInitParameterTest() throws Exception {
+        List<LastSolution> returnedList = getServletOutput("x");
+        assertEquals(returnedList.size(), 5);
+    }
+
+    @Test
+    public void listMatch() throws Exception {
+        List<LastSolution> returnedList = getServletOutput("7");
+        List<LastSolution> generatedList = new MockLastSolutionDAO().loadMostRecentSolutions(7);
+        assertEquals(generatedList, returnedList);
+        assertEquals(returnedList.size(), 7);
+    }
+
+    private List<LastSolution> getServletOutput(String initParameter) throws Exception {
+        request.getServletContext().setInitParameter("last-solutions", initParameter);
         home.init(config);
         home.doGet(request, response);
-        assertEquals("7", home.getServletConfig().getInitParameter("number-solutions"));
+        Object rawList = request.getAttribute("lastsolutions");
+        return ((List<?>) rawList).stream().map(el -> (LastSolution) el).collect(Collectors.toList());
     }
 }

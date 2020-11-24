@@ -48,13 +48,11 @@ public class TestUtils {
         verify(ds, c, s);
         rs.verify();
     }
-
-    public static List<LastSolution> createMultipleLastSolutions() {
+    public static List<LastSolution> createMultipleLastSolutions(long number) {
         List<LastSolution> expectedLastSolutions = new ArrayList<>();
-        for (int i = 1; i < 6; i++) {
-            LastSolution lastSolution = new LastSolution("Test title " + i,
+        for (long i = 1; i <= number; i++) {
+            LastSolution lastSolution = new LastSolution(i, "Test title " + i,
               "Test name " + i, valueOf("2020-04-20 23:25:23.0" + i));
-            lastSolution.setId(i);
             expectedLastSolutions.add(lastSolution);
         }
         return expectedLastSolutions;

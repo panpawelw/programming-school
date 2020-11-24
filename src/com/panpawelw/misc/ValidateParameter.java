@@ -23,7 +23,6 @@ public class ValidateParameter {
                 result = Long.parseLong(param);
             } catch (NumberFormatException e) {
                 System.out.println(message);
-                e.printStackTrace();
                 return -2;
             }
         }else {
@@ -46,7 +45,6 @@ public class ValidateParameter {
                 result = Integer.parseInt(param);
             } catch (NumberFormatException e) {
                 System.out.println(message);
-                e.printStackTrace();
                 return -2;
             }
         }else {

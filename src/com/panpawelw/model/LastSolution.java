@@ -1,6 +1,7 @@
 package com.panpawelw.model;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class LastSolution {
 
@@ -53,5 +54,21 @@ public class LastSolution {
     public String toString() {
         return "LastSolution{id=" + this.id + ", title='" + this.title + ", name='" + this.name +
           ", modified=" + this.modified + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LastSolution that = (LastSolution) o;
+        return id == that.id &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(modified, that.modified);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, name, modified);
     }
 }

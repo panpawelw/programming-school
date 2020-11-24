@@ -43,7 +43,7 @@ public class RealLastSolutionDAOTests {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
-        List<LastSolution> expectedLastSolutions = createMultipleLastSolutions();
+        List<LastSolution> expectedLastSolutions = createMultipleLastSolutions(3);
         resultSet.setupRows(lastSolutionlistTo2dArray(expectedLastSolutions));
         expect(statement.executeQuery()).andReturn(resultSet);
 
@@ -72,7 +72,7 @@ public class RealLastSolutionDAOTests {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
-        List<LastSolution> expectedLastSolutions = createMultipleLastSolutions();
+        List<LastSolution> expectedLastSolutions = createMultipleLastSolutions(6);
         resultSet.setupRows(lastSolutionlistTo2dArray(expectedLastSolutions));
         expect(statement.executeQuery()).andReturn(resultSet);
 
