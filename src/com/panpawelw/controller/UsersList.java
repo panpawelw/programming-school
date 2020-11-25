@@ -44,10 +44,12 @@ public class UsersList extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int userGroupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
-        List<User> GroupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
-        request.setAttribute("groupuserslist", GroupUsersList);
-        UserGroup userGroup = userGroupDAO.loadUserGroupById(userGroupId);
-        request.setAttribute("groupname", userGroup.getName());
+        if (userGroupId > 0) {
+            List<User> GroupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
+            request.setAttribute("groupuserslist", GroupUsersList);
+            UserGroup userGroup = userGroupDAO.loadUserGroupById(userGroupId);
+            request.setAttribute("groupname", userGroup.getName());
+        }
         getServletContext().getRequestDispatcher("/jsp/userslistview.jsp").forward(request, response);
     }
 }

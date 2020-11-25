@@ -35,4 +35,15 @@ public class UsersListTests {
         userslist.doGet(request, response);
         assertEquals("/jsp/userslistview.jsp", response.getForwardedUrl());
     }
+
+    @Test
+    public void UsersListCorrectUserGroupIdTest() throws Exception {
+        userslist.setUserDAO(new MockUserDAO());
+        userslist.setUserGroupDAO(new MockUserGroupDAO());
+        request.setParameter("id", "1");
+        userslist.init(config);
+        userslist.doGet(request, response);
+        System.out.println(request.getAttribute("groupuserslist"));
+        System.out.println(request.getAttribute("groupname"));
+    }
 }

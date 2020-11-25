@@ -6,6 +6,8 @@ import com.panpawelw.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import static misc.TestUtils.createMultipleUsers;
+
 public class MockUserDAO implements UserDAO {
 
     @Override
@@ -30,6 +32,6 @@ public class MockUserDAO implements UserDAO {
 
     @Override
     public List<User> loadAllUsersByGroupId(int usergroup_id) {
-        return new ArrayList<>();
+        return createMultipleUsers(usergroup_id);
     }
 }
