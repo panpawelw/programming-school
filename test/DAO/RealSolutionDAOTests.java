@@ -132,7 +132,7 @@ public class RealSolutionDAOTests {
         String sql = "SELECT * FROM solution;";
         expect(con.prepareStatement(sql)).andReturn(stmt);
 
-        List<Solution> expected = createMultipleSolutions();
+        List<Solution> expected = createMultipleSolutions(6);
         MockMultiRowResultSet rs =
           prepareMultiRowResultSetMock(solutionlistTo2dArray(expected), columns, stmt);
 
@@ -148,7 +148,7 @@ public class RealSolutionDAOTests {
         expect(con.prepareStatement(sql)).andReturn(stmt);
         stmt.setLong(1, 2);
 
-        List<Solution> expected = createMultipleSolutions(2);
+        List<Solution> expected = createMultipleSolutions(6,2);
         MockMultiRowResultSet rs =
           prepareMultiRowResultSetMock(solutionlistTo2dArray(expected), columns, stmt);
 

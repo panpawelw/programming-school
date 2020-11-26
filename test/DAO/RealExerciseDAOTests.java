@@ -114,7 +114,7 @@ public class RealExerciseDAOTests {
         String sql = "SELECT * FROM exercise;";
         expect(con.prepareStatement(sql)).andReturn(stmt);
 
-        List<Exercise> expected = createMultipleExercises();
+        List<Exercise> expected = createMultipleExercises(6);
         MockMultiRowResultSet rs =
           prepareMultiRowResultSetMock(exerciselistTo2dArray(expected), columns, stmt);
 

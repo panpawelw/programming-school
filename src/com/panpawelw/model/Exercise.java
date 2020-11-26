@@ -17,6 +17,12 @@ public class Exercise {
         this.description = description;
     }
 
+    public Exercise(int id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+    }
+
     public String getTitle() {
         return title;
     }

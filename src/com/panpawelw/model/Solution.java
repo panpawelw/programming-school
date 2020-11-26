@@ -32,6 +32,16 @@ public class Solution {
         this.user_id = user_id;
     }
 
+    public Solution(long id, Timestamp created, Timestamp updated, String description,
+                    int exercise_id, long user_id) {
+        this.id = id;
+        this.created = created;
+        this.updated = updated;
+        this.description = description;
+        this.exercise_id = exercise_id;
+        this.user_id = user_id;
+    }
+
     public Timestamp getCreated() {
         return created;
     }

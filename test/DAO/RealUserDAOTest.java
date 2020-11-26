@@ -120,7 +120,7 @@ public class RealUserDAOTest {
         String sqlQuery = "SELECT * FROM user;";
         expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
 
-        List<User> expected = createMultipleUsers();
+        List<User> expected = createMultipleUsers(6);
         MockMultiRowResultSet rs =
           prepareMultiRowResultSetMock(userlistTo2dArray(expected), columns, stmt);
 
@@ -137,7 +137,7 @@ public class RealUserDAOTest {
         expect(con.prepareStatement(sqlQuery)).andReturn(stmt);
 
 
-        List<User> expected = createMultipleUsers(3);
+        List<User> expected = createMultipleUsers(6, 3);
         MockMultiRowResultSet rs =
           prepareMultiRowResultSetMock(userlistTo2dArray(expected), columns, stmt);
 

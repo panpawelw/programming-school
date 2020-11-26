@@ -23,6 +23,14 @@ public class User {
         this.group_id = group_id;
     }
 
+    public User(long id, String name, String email, String password, int group_id) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.group_id = group_id;
+    }
+
     public String getName() {
         return name;
     }
