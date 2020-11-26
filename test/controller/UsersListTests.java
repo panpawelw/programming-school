@@ -1,6 +1,7 @@
 package controller;
 
 import com.panpawelw.controller.UsersList;
+import com.panpawelw.model.User;
 import mockDAOs.MockUserDAO;
 import mockDAOs.MockUserGroupDAO;
 import org.junit.Before;
@@ -9,6 +10,11 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static misc.TestUtils.createMultipleUserGroups;
+import static misc.TestUtils.createMultipleUsers;
 import static org.junit.Assert.assertEquals;
 
 public class UsersListTests {
@@ -43,7 +49,13 @@ public class UsersListTests {
         request.setParameter("id", "1");
         userslist.init(config);
         userslist.doGet(request, response);
-        System.out.println(request.getAttribute("groupuserslist"));
-        System.out.println(request.getAttribute("groupname"));
+        Object rawList = request.getAttribute("groupuserslist");
+        List<User> expectedList = createMultipleUsers(1);
+        List<User> returnedList =
+                ((List<?>) rawList).stream().map(el -> (User) el).collect(Collectors.toList());
+        assertEquals(expectedList, returnedList);
+        String expectedUserGroupName = (String) request.getAttribute("groupname");
+        String returnedUserGroupName = createMultipleUserGroups(1).get(0).getName();
+        assertEquals(expectedUserGroupName, returnedUserGroupName);
     }
 }

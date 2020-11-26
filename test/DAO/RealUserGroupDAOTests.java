@@ -112,7 +112,7 @@ public class RealUserGroupDAOTests {
         String sql = "SELECT * FROM usergroup;";
         expect(con.prepareStatement(sql)).andReturn(stmt);
 
-        List<UserGroup> expected = createMultipleUserGroups();
+        List<UserGroup> expected = createMultipleUserGroups(6);
         MockMultiRowResultSet rs =
           prepareMultiRowResultSetMock(userGroupListTo2dArray(expected), columns, stmt);
 

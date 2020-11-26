@@ -52,8 +52,8 @@ public class HomeTests {
     @Test
     public void listMatch() throws Exception {
         List<LastSolution> returnedList = getServletOutput("7");
-        List<LastSolution> generatedList = new MockLastSolutionDAO().loadMostRecentSolutions(7);
-        assertEquals(generatedList, returnedList);
+        List<LastSolution> expectedList = new MockLastSolutionDAO().loadMostRecentSolutions(7);
+        assertEquals(expectedList, returnedList);
         assertEquals(returnedList.size(), 7);
     }
 

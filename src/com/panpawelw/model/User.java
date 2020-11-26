@@ -1,5 +1,7 @@
 package com.panpawelw.model;
 
+import java.util.Objects;
+
 public class User {
 
     private long id;
@@ -64,5 +66,22 @@ public class User {
     @Override
     public String toString() {
         return this.id + ": " + this.name + " email: " + this.email + " group: " + this.group_id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                group_id == user.group_id &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, password, group_id);
     }
 }

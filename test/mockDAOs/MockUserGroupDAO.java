@@ -2,6 +2,7 @@ package mockDAOs;
 
 import com.panpawelw.DAO.UserGroupDAO;
 import com.panpawelw.model.UserGroup;
+import misc.TestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class MockUserGroupDAO implements UserGroupDAO {
 
     @Override
     public UserGroup loadUserGroupById(int id) {
-        return new UserGroup();
+        return TestUtils.createMultipleUserGroups(1).get(0);
     }
 
     @Override

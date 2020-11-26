@@ -78,9 +78,13 @@ public class TestUtils {
         return expectedUsers;
     }
 
-    public static List<UserGroup> createMultipleUserGroups() {
+    /**
+     * Creates a list of test user groups
+     * @return - list of user groups
+     */
+    public static List<UserGroup> createMultipleUserGroups(int howmany) {
         List<UserGroup> expectedUserGroups = new ArrayList<>();
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i <= howmany; i++) {
             UserGroup userGroup = new UserGroup("Test user group " + i);
             userGroup.setId(i);
             expectedUserGroups.add(userGroup);
