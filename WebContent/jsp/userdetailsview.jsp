@@ -21,7 +21,7 @@
 			<th>Last modified</th>
 			<th>Details</th>
 		</tr>
-		<c:forEach items="${requestScope.userssolutions}" var="usersSolution">
+		<c:forEach items="${requestScope.userslastsolutions}" var="usersSolution">
 			<tr>
 				<td>${usersSolution.title}</td>
 				<td>${usersSolution.modified}</td>

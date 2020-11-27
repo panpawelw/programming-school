@@ -50,8 +50,9 @@ public class UserDetails extends HttpServlet {
         request.setAttribute("user", user);
         UserGroup userGroup = userGroupDAO.loadUserGroupById(user.getGroup_id());
         request.setAttribute("groupname", userGroup.getName());
-        List<LastSolution> usersSolutions = lastSolutionDAO.loadMostRecentSolutionsByUserId(userId);
-        request.setAttribute("userslastSolutions", usersSolutions);
+        List<LastSolution> usersLastSolutions =
+                lastSolutionDAO.loadMostRecentSolutionsByUserId(userId);
+        request.setAttribute("userslastsolutions", usersLastSolutions);
         getServletContext()
                 .getRequestDispatcher("/jsp/userdetailsview.jsp").forward(request, response);
         response.getWriter().append("")
