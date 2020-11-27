@@ -58,4 +58,14 @@ public class UsersListTests {
         String returnedUserGroupName = createMultipleUserGroups(1).get(0).getName();
         assertEquals(expectedUserGroupName, returnedUserGroupName);
     }
+
+    @Test
+    public void UsersListIncorrectUserGroupIdTest() throws Exception {
+        userslist.setUserDAO(new MockUserDAO());
+        userslist.setUserGroupDAO(new MockUserGroupDAO());
+        request.setParameter("id", "x");
+        userslist.init(config);
+        userslist.doGet(request, response);
+        assertEquals("/jsp/error.jsp", response.getForwardedUrl());
+    }
 }

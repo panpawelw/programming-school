@@ -47,7 +47,6 @@ public class UsersList extends HttpServlet {
         int userGroupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         List<User> groupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
         UserGroup userGroup = userGroupDAO.loadUserGroupById(userGroupId);
-        System.out.println(userGroupId + " , " + groupUsersList + " , " + userGroup);
         if (userGroupId > 0 && !groupUsersList.isEmpty() && userGroup != null) {
             request.setAttribute("groupuserslist", groupUsersList);
             request.setAttribute("groupname", userGroup.getName());
