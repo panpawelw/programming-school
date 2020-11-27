@@ -29,8 +29,8 @@ public class UsersList extends HttpServlet {
     }
 
     public void init() {
-        if(userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
-        if(userGroupDAO == null) userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
+        if (userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
+        if (userGroupDAO == null) userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
     }
 
     public void setUserDAO(UserDAO userDAO) {
@@ -41,15 +41,20 @@ public class UsersList extends HttpServlet {
         this.userGroupDAO = userGroupDAO;
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int userGroupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
-        if (userGroupId > 0) {
-            List<User> GroupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
-            request.setAttribute("groupuserslist", GroupUsersList);
-            UserGroup userGroup = userGroupDAO.loadUserGroupById(userGroupId);
+        List<User> groupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
+        UserGroup userGroup = userGroupDAO.loadUserGroupById(userGroupId);
+        System.out.println(userGroupId + " , " + groupUsersList + " , " + userGroup);
+        if (userGroupId > 0 && !groupUsersList.isEmpty() && userGroup != null) {
+            request.setAttribute("groupuserslist", groupUsersList);
             request.setAttribute("groupname", userGroup.getName());
+            getServletContext().getRequestDispatcher("/jsp/userslistview.jsp")
+                    .forward(request, response);
         }
-        getServletContext().getRequestDispatcher("/jsp/userslistview.jsp").forward(request, response);
+        request.setAttribute("errormessage", "No such user group exists!");
+        getServletContext().getRequestDispatcher("/jsp/error.jsp").forward(request, response);
     }
 }
