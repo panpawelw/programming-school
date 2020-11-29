@@ -19,7 +19,6 @@ public class AdminPanel extends HttpServlet {
 		getServletContext().getRequestDispatcher("/jsp/panelview.jsp").forward(request, response);
 	}
 
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}

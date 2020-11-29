@@ -47,15 +47,17 @@ public class UserDetails extends HttpServlet {
         String idParam = request.getParameter("id");
         int userId = ValidateParameter.checkInt(idParam, "Incorrect user Id!");
         User user = userDAO.loadUserById(userId);
-        request.setAttribute("user", user);
-        UserGroup userGroup = userGroupDAO.loadUserGroupById(user.getGroup_id());
-        request.setAttribute("groupname", userGroup.getName());
-        List<LastSolution> usersLastSolutions =
-                lastSolutionDAO.loadMostRecentSolutionsByUserId(userId);
-        request.setAttribute("userslastsolutions", usersLastSolutions);
-        getServletContext()
-                .getRequestDispatcher("/jsp/userdetailsview.jsp").forward(request, response);
-        response.getWriter().append("")
-                .append(String.valueOf(userId)).append(request.getContextPath());
+        if (userId > 0 && user !=null) {
+            UserGroup userGroup = userGroupDAO.loadUserGroupById(user.getGroup_id());
+            List<LastSolution> usersLastSolutions =
+                    lastSolutionDAO.loadMostRecentSolutionsByUserId(userId);
+            request.setAttribute("user", user);
+            request.setAttribute("groupname", userGroup.getName());
+            request.setAttribute("userslastsolutions", usersLastSolutions);
+            getServletContext()
+                    .getRequestDispatcher("/jsp/userdetailsview.jsp").forward(request, response);
+        }
+        request.setAttribute("errormessage", "No such user exists!");
+        getServletContext().getRequestDispatcher("/jsp/error.jsp").forward(request, response);
     }
 }
