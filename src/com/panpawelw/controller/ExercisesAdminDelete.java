@@ -35,9 +35,11 @@ public class ExercisesAdminDelete extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
-        if (exerciseId >= 0) {
+        if (exerciseId > 0) {
             Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
             exerciseDAO.deleteExercise(exercise);
+        } else {
+            request.setAttribute("errormessage", "Error deleting exercise!");
         }
         getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
     }

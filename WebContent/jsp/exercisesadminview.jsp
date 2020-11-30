@@ -14,7 +14,7 @@
 	<h1>Exercises administration panel</h1>
 	<h3>Exercises list</h3>
 	<p><a href="${pageContext.request.contextPath}/addeditexercise?id=0">Add exercise</a></p>
-	<p class="error">${requestScope.errorMessage}</p>
+	<p class="error">${requestScope.errormessage}</p>
 	<br>
 	<table class="myTable">
 		<tr>

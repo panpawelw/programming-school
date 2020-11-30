@@ -35,13 +35,17 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
-        if(exerciseId < 0) getServletContext().getRequestDispatcher("/exercisesadminpanel")
-                .forward(request, response);
         if(exerciseId == 0) {
             request.setAttribute("exercise", new Exercise(0));
             request.setAttribute("button", "Add exercise");
         } else {
-            request.setAttribute("exercise", exerciseDAO.loadExerciseById(exerciseId));
+            Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
+            if (exerciseId < 0 || exercise == null ) {
+                request.setAttribute("errormessage", "No such exercise exists!");
+                getServletContext().getRequestDispatcher("/exercisesadminpanel")
+                        .forward(request, response);
+            }
+            request.setAttribute("exercise", exercise);
             request.setAttribute("button", "Edit exercise");
         }
         getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
@@ -64,7 +68,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             exercise.setDescription(exerciseDescription);
             exerciseDAO.saveExerciseToDB(exercise);
         } else {
-            request.setAttribute("errorMessage", "Exercise title nor description can't be empty!");
+            request.setAttribute("errormessage", "Exercise title nor description can't be empty!");
         }
         getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
     }
