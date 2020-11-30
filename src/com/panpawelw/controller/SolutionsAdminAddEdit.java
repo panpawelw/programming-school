@@ -9,9 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.panpawelw.DAO.RealExerciseDAO;
 import com.panpawelw.DAO.RealSolutionDAO;
-import com.panpawelw.DAO.RealUserDAO;
 import com.panpawelw.DAO.SolutionDAO;
 import com.panpawelw.misc.ValidateParameter;
 import com.panpawelw.model.Solution;
@@ -38,16 +36,22 @@ public class SolutionsAdminAddEdit extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        int solutionId = ValidateParameter.checkInt(idParam, "Incorrect solution Id!");
-        if(solutionId < 0) getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);
+        long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
         if (solutionId == 0) {
             request.setAttribute("solution", new Solution(0L));
             request.setAttribute("button", "Add solution");
         } else {
-            request.setAttribute("solution", solutionDAO.loadSolutionById(solutionId));
+            Solution solution = solutionDAO.loadSolutionById(solutionId);
+            if (solutionId < 0 || solution == null) {
+                request.setAttribute("errormessage", "No such solution exists!");
+                getServletContext().getRequestDispatcher("/solutionsadminpanel")
+                        .forward(request, response);
+            }
+            request.setAttribute("solution", solution);
             request.setAttribute("button", "Edit solution");
         }
-        getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp")
+                .forward(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -74,7 +78,8 @@ public class SolutionsAdminAddEdit extends HttpServlet {
             solution.setUser_id(solutionUser_id);
             solutionDAO.saveSolutionToDB(solution);
         } else {
-            request.setAttribute("errorMessage", "Solution exercise Id, user Id nor description can't be empty!");
+            request.setAttribute("errormessage", "Solution exercise Id, user Id nor description " +
+                    "can't be empty!");
         }
         getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);
     }

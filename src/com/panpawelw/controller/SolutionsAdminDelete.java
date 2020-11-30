@@ -35,9 +35,11 @@ public class SolutionsAdminDelete extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
-        if (solutionId >= 0) {
+        if (solutionId > 0) {
             Solution solution = solutionDAO.loadSolutionById(solutionId);
             solutionDAO.deleteSolution(solution);
+        } else {
+            request.setAttribute("errormessage", "Error deleting solution!");
         }
         getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);
     }

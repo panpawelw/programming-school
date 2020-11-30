@@ -40,7 +40,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add exercise");
         } else {
             Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
-            if (exerciseId < 0 || exercise == null ) {
+            if (exerciseId < 0 || exercise == null) {
                 request.setAttribute("errormessage", "No such exercise exists!");
                 getServletContext().getRequestDispatcher("/exercisesadminpanel")
                         .forward(request, response);
