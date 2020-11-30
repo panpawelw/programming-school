@@ -36,10 +36,9 @@ public class UsersListTests {
     public void UsersListForwardTest() throws Exception {
         userslist.setUserDAO(new MockUserDAO());
         userslist.setUserGroupDAO(new MockUserGroupDAO());
-        request.setParameter("id", "1");
         userslist.init(config);
         userslist.doGet(request, response);
-        assertEquals("/jsp/userslistview.jsp", response.getForwardedUrl());
+        assertEquals("/jsp/error.jsp", response.getForwardedUrl());
     }
 
     @Test

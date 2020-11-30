@@ -32,9 +32,8 @@ public class UserDetailsTests {
         userDetails.setUserDAO(new MockUserDAO());
         userDetails.setUserGroupDAO(new MockUserGroupDAO());
         userDetails.setLastSolutionDAO(new MockLastSolutionDAO());
-        request.setParameter("id", "1");
         userDetails.init(config);
         userDetails.doGet(request, response);
-        assertEquals("/jsp/userdetailsview.jsp", response.getForwardedUrl());
+        assertEquals("/jsp/error.jsp", response.getForwardedUrl());
     }
 }

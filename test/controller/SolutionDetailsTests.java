@@ -33,8 +33,7 @@ public class SolutionDetailsTests {
         solutionDetails.setExerciseDAO(new MockExerciseDAO());
         solutionDetails.setSolutionDAO(new MockSolutionDAO());
         solutionDetails.init(config);
-        request.setParameter("id", "1");
         solutionDetails.doGet(request, response);
-        assertEquals("/jsp/solutiondetailsview.jsp", response.getForwardedUrl());
+        assertEquals("/jsp/error.jsp", response.getForwardedUrl());
     }
 }
