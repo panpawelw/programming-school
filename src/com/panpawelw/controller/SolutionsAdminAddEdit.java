@@ -76,7 +76,10 @@ public class SolutionsAdminAddEdit extends HttpServlet {
             solution.setDescription(solutionDescription);
             solution.setExercise_id(solutionExercise_id);
             solution.setUser_id(solutionUser_id);
-            solutionDAO.saveSolutionToDB(solution);
+            int result = solutionDAO.saveSolutionToDB(solution);
+            if (result == 0) {
+                request.setAttribute("errormessage", "Error saving solution!");
+            }
         } else {
             request.setAttribute("errormessage", "Solution exercise Id, user Id nor description " +
                     "can't be empty!");

@@ -35,7 +35,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int exerciseId = ValidateParameter.checkInt(idParam, "Incorrect exercise Id!");
-        if(exerciseId == 0) {
+        if (exerciseId == 0) {
             request.setAttribute("exercise", new Exercise(0));
             request.setAttribute("button", "Add exercise");
         } else {
@@ -66,7 +66,10 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             }
             exercise.setTitle(exerciseTitle);
             exercise.setDescription(exerciseDescription);
-            exerciseDAO.saveExerciseToDB(exercise);
+            int result = exerciseDAO.saveExerciseToDB(exercise);
+            if (result == 0) {
+                request.setAttribute("errormessage", "Error saving exercise!");
+            }
         } else {
             request.setAttribute("errormessage", "Exercise title nor description can't be empty!");
         }
