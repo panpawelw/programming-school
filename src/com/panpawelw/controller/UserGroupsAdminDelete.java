@@ -35,9 +35,11 @@ public class UserGroupsAdminDelete extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
-        if (groupId >= 0) {
+        if (groupId > 0) {
             UserGroup userGroup = userGroupDAO.loadUserGroupById(groupId);
             userGroupDAO.deleteUserGroup(userGroup);
+        } else {
+            request.setAttribute("errormessage", "Error deleting user group!");
         }
         getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
     }

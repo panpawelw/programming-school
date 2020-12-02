@@ -14,7 +14,7 @@
 	<h1>User groups administration panel</h1>
 	<h3>User groups list</h3>
 	<p><a href="${pageContext.request.contextPath}/addeditgroup?id=0">Add user group</a></p>
-	<p class="error">${requestScope.errorMessage}</p>
+	<p class="error">${requestScope.errormessage}</p>
 	<br>
 	<table class="myTable">
 		<tr>

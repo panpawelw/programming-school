@@ -35,13 +35,17 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
-        if(groupId < 0) getServletContext().getRequestDispatcher("/groupsadminpanel")
-                .forward(request, response);
         if(groupId == 0) {
             request.setAttribute("group", new UserGroup(0));
             request.setAttribute("button", "Add group");
-        } else if (groupId > 0) {
-            request.setAttribute("group", userGroupDAO.loadUserGroupById(groupId));
+        } else {
+            UserGroup userGroup = userGroupDAO.loadUserGroupById(groupId);
+            if (groupId < 0 || userGroup == null) {
+                request.setAttribute("errormessage", "Nu such user group exists!");
+                getServletContext().getRequestDispatcher("/groupsadminpanel")
+                        .forward(request, response);
+            }
+            request.setAttribute("group", userGroup);
             request.setAttribute("button", "Edit group");
         }
         getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
@@ -58,7 +62,10 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
                 userGroup = userGroupDAO.loadUserGroupById(groupId);
             }
             userGroup.setName(groupName);
-            userGroupDAO.saveUserGroupToDB(userGroup);
+            int result = userGroupDAO.saveUserGroupToDB(userGroup);
+            if (result == 0) {
+                request.setAttribute("errormessage", "Error saving user group!");
+            }
         } else {
             request.setAttribute("errorMessage", "Group name can't be empty!");
         }
