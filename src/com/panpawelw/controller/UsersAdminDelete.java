@@ -11,6 +11,7 @@ import com.panpawelw.DAO.RealUserDAO;
 import com.panpawelw.DAO.UserDAO;
 import com.panpawelw.misc.ValidateParameter;
 import com.panpawelw.misc.DbUtils;
+import com.panpawelw.model.Exercise;
 import com.panpawelw.model.User;
 
 @WebServlet("/deleteuser")
@@ -35,9 +36,11 @@ public class UsersAdminDelete extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         long userId = ValidateParameter.checkLong(idParam, "Incorrect user Id!");
-        if (userId >= 0) {
+        if (userId > 0) {
             User user = userDAO.loadUserById(userId);
             userDAO.deleteUser(user);
+        } else {
+            request.setAttribute("errormessage", "Error deleting user!");
         }
         getServletContext().getRequestDispatcher("/usersadminpanel").forward(request, response);
     }

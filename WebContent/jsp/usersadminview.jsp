@@ -14,7 +14,7 @@
 	<h1>Users administration panel</h1>
 	<h3>Users list</h3>
 	<p><a href="${pageContext.request.contextPath}/addedituser?id=0">Add user</a></p>
-	<p class="error">${requestScope.errorMessage}</p>
+	<p class="error">${requestScope.errormessage}</p>
 	<br>
 	<table class="myTable">
 		<tr>

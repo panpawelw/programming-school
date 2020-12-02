@@ -44,13 +44,17 @@ public class UsersAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int userId = ValidateParameter.checkInt(idParam, "Incorrect user Id!");
-        if(userId < 0) getServletContext().getRequestDispatcher("/usersadminpanel")
-                .forward(request, response);
         if(userId == 0) {
             request.setAttribute("user", new User(0));
             request.setAttribute("button", "Add user");
-        }else {
-            request.setAttribute("user", userDAO.loadUserById(userId));
+        } else {
+            User user = userDAO.loadUserById(userId);
+            if (userId < 0 || user == null) {
+                request.setAttribute("errormessage", "No such user exists!");
+                getServletContext().getRequestDispatcher("/usersadminpanel")
+                        .forward(request, response);
+            }
+            request.setAttribute("user", user);
             request.setAttribute("button", "Edit user");
         }
         getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp").forward(request, response);
@@ -76,7 +80,10 @@ public class UsersAdminAddEdit extends HttpServlet {
             userPassword = passwordEncoder.encodePassword(userPassword);
             user.setPassword(userPassword);
             user.setGroup_id(userGroup_id);
-            userDAO.saveUserToDB(user);
+            int result = userDAO.saveUserToDB(user);
+            if (result == 0) {
+                request.setAttribute("errormessage", "Error saving user!");
+            }
         } else {
             request.setAttribute("errorMessage",
                     "User name, email, password nor group can't be empty!");
