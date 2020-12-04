@@ -57,7 +57,8 @@ public class UsersAdminAddEdit extends HttpServlet {
             request.setAttribute("user", user);
             request.setAttribute("button", "Edit user");
         }
-        getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp")
+                .forward(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
