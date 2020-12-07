@@ -33,4 +33,14 @@ public class UserGroupsAdminDeleteTests {
         userGroupsAdminDelete.doGet(request, response);
         assertEquals("/groupsadminpanel", response.getForwardedUrl());
     }
+
+    @Test
+    public void UserGroupsAdminDeleteIncorrectParameterTest() throws Exception {
+        userGroupsAdminDelete.setUserGroupDAO(new MockUserGroupDAO());
+        request.setParameter("id","x");
+        userGroupsAdminDelete.init(config);
+        userGroupsAdminDelete.doGet(request, response);
+        assertEquals("Error deleting user group!",
+                request.getAttribute("errormessage"));
+    }
 }

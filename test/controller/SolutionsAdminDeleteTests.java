@@ -33,4 +33,13 @@ public class SolutionsAdminDeleteTests {
         solutionsAdminDelete.doGet(request, response);
         assertEquals("/solutionsadminpanel", response.getForwardedUrl());
     }
+
+    @Test
+    public void SolutionsAdminDeleteIncorrectParameterTest() throws Exception {
+        solutionsAdminDelete.setSolutionDAO(new MockSolutionDAO());
+        request.setParameter("id","x");
+        solutionsAdminDelete.init(config);
+        solutionsAdminDelete.doGet(request, response);
+        assertEquals("Error deleting solution!", request.getAttribute("errormessage"));
+    }
 }

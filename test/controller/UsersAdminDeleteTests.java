@@ -33,4 +33,13 @@ public class UsersAdminDeleteTests {
         usersAdminDelete.doGet(request, response);
         assertEquals("/usersadminpanel", response.getForwardedUrl());
     }
+
+    @Test
+    public void UsersAdminDeleteIncorrectParameterTest() throws Exception {
+        usersAdminDelete.setUserDAO(new MockUserDAO());
+        request.setParameter("id","x");
+        usersAdminDelete.init(config);
+        usersAdminDelete.doGet(request, response);
+        assertEquals("Error deleting user!", request.getAttribute("errormessage"));
+    }
 }

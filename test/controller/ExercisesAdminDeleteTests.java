@@ -33,4 +33,13 @@ public class ExercisesAdminDeleteTests {
         exercisesAdminDelete.doGet(request, response);
         assertEquals("/exercisesadminpanel", response.getForwardedUrl());
     }
+
+    @Test
+    public void ExercisesAdminDeleteIncorrectParameterTest() throws Exception {
+        exercisesAdminDelete.setExerciseDAO(new MockExerciseDAO());
+        request.setParameter("id","x");
+        exercisesAdminDelete.init(config);
+        exercisesAdminDelete.doGet(request, response);
+        assertEquals("Error deleting exercise!", request.getAttribute("errormessage"));
+    }
 }
