@@ -9,6 +9,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class UserGroupsAdminDeleteTests {
 
@@ -42,5 +43,16 @@ public class UserGroupsAdminDeleteTests {
         userGroupsAdminDelete.doGet(request, response);
         assertEquals("Error deleting user group!",
                 request.getAttribute("errormessage"));
+    }
+
+    @Test
+    public void UserGroupsAdminDeleteCorrectParameterTest() throws Exception {
+        userGroupsAdminDelete.setUserGroupDAO(new MockUserGroupDAO());
+        request.setParameter("id", "2");
+        userGroupsAdminDelete.init(config);
+        userGroupsAdminDelete.doGet(request, response);
+        //noinspection ConstantConditions
+        assertNull(request.getAttribute("errormessage"));
+        assertEquals("/groupsadminpanel", response.getForwardedUrl());
     }
 }

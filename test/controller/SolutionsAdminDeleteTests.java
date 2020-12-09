@@ -9,6 +9,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SolutionsAdminDeleteTests {
 
@@ -41,5 +42,16 @@ public class SolutionsAdminDeleteTests {
         solutionsAdminDelete.init(config);
         solutionsAdminDelete.doGet(request, response);
         assertEquals("Error deleting solution!", request.getAttribute("errormessage"));
+    }
+
+    @Test
+    public void SolutionsAdminDeleteCorrectParameterTest() throws Exception {
+        solutionsAdminDelete.setSolutionDAO(new MockSolutionDAO());
+        request.setParameter("id","2");
+        solutionsAdminDelete.init(config);
+        solutionsAdminDelete.doGet(request, response);
+        //noinspection ConstantConditions
+        assertNull(request.getAttribute("errormessage"));
+        assertEquals("/solutionsadminpanel", response.getForwardedUrl());
     }
 }
