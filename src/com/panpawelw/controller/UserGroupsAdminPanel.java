@@ -34,10 +34,6 @@ public class UserGroupsAdminPanel extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<UserGroup> groupsList = userGroupDAO.loadAllUserGroups();
         request.setAttribute("groupslist", groupsList);
-        String errorMessage = String.valueOf(request.getAttribute("errormessage"));
-        if (errorMessage != null) {
-            request.setAttribute("errormessage", errorMessage);
-        }
         getServletContext().getRequestDispatcher("/jsp/usergroupsadminview.jsp").forward(request, response);
     }
 

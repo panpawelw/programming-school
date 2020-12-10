@@ -34,10 +34,6 @@ public class ExercisesAdminPanel extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Exercise> exercisesList = exerciseDAO.loadAllExercises();
 		request.setAttribute("exerciseslist", exercisesList);
-		String errorMessage = String.valueOf(request.getAttribute("errormessage"));
-		if (errorMessage != null) {
-			request.setAttribute("errormessage", errorMessage);
-		}
 		getServletContext().getRequestDispatcher("/jsp/exercisesadminview.jsp").forward(request,response);
 	}
 

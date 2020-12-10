@@ -34,7 +34,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
+        int groupId = ValidateParameter.checkInt(idParam, "Incorrect group ID!");
         if(groupId == 0) {
             request.setAttribute("group", new UserGroup(0));
             request.setAttribute("button", "Add group");
@@ -55,7 +55,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         String groupName = request.getParameter("group_name");
-        int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
+        int groupId = ValidateParameter.checkInt(idParam, "Incorrect group ID!");
         if (groupName != null && !groupName.equals("") && groupId >= 0) {
             UserGroup userGroup = new UserGroup();
             if (groupId != 0) {
@@ -67,7 +67,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
                 request.setAttribute("errormessage", "Error saving user group!");
             }
         } else {
-            request.setAttribute("errorMessage", "Group name can't be empty!");
+            request.setAttribute("errormessage", "Group name can't be empty!");
         }
         getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
     }
