@@ -1,5 +1,7 @@
 package com.panpawelw.model;
 
+import java.util.Objects;
+
 public class Exercise {
 
     private int id;
@@ -50,5 +52,18 @@ public class Exercise {
     @Override
     public String toString() {
         return "id: " + this.id + " title: " + this.title + " description: " + this.description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Exercise exercise = (Exercise) o;
+        return id == exercise.id && Objects.equals(title, exercise.title) && Objects.equals(description, exercise.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description);
     }
 }

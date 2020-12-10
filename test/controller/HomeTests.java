@@ -50,7 +50,7 @@ public class HomeTests {
     }
 
     @Test
-    public void listMatch() throws Exception {
+    public void homeListsMatchTest() throws Exception {
         List<LastSolution> returnedList = getServletOutput("7");
         List<LastSolution> expectedList = new MockLastSolutionDAO().loadMostRecentSolutions(7);
         assertEquals(expectedList, returnedList);

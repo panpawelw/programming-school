@@ -6,6 +6,8 @@ import com.panpawelw.model.Exercise;
 import java.util.ArrayList;
 import java.util.List;
 
+import static misc.TestUtils.createMultipleExercises;
+
 public class MockExerciseDAO implements ExerciseDAO {
 
     @Override
@@ -25,6 +27,6 @@ public class MockExerciseDAO implements ExerciseDAO {
 
     @Override
     public List<Exercise> loadAllExercises() {
-        return new ArrayList<>();
+        return createMultipleExercises(10);
     }
 }
