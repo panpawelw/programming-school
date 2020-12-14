@@ -16,23 +16,21 @@ public class UserDetailsTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private UserDetails userDetails;
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         userDetails = new UserDetails();
+        userDetails.setUserDAO(new MockUserDAO());
+        userDetails.setUserGroupDAO(new MockUserGroupDAO());
+        userDetails.setLastSolutionDAO(new MockLastSolutionDAO());
+        userDetails.init(new MockServletConfig());
     }
 
     @Test
     public void UserDetailsForwardTest() throws Exception {
-        userDetails.setUserDAO(new MockUserDAO());
-        userDetails.setUserGroupDAO(new MockUserGroupDAO());
-        userDetails.setLastSolutionDAO(new MockLastSolutionDAO());
-        userDetails.init(config);
         userDetails.doGet(request, response);
         assertEquals("/jsp/error.jsp", response.getForwardedUrl());
     }

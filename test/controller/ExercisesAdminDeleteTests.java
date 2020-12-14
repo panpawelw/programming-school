@@ -15,40 +15,34 @@ public class ExercisesAdminDeleteTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private ExercisesAdminDelete exercisesAdminDelete;
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         exercisesAdminDelete = new ExercisesAdminDelete();
+        exercisesAdminDelete.setExerciseDAO(new MockExerciseDAO());
+        exercisesAdminDelete.init(new MockServletConfig());
     }
 
     @Test
     public void ExercisesAdminDeleteForwardTest() throws Exception {
-        exercisesAdminDelete.setExerciseDAO(new MockExerciseDAO());
         request.setParameter("id","0");
-        exercisesAdminDelete.init(config);
         exercisesAdminDelete.doGet(request, response);
         assertEquals("/exercisesadminpanel", response.getForwardedUrl());
     }
 
     @Test
     public void ExercisesAdminDeleteIncorrectParameterTest() throws Exception {
-        exercisesAdminDelete.setExerciseDAO(new MockExerciseDAO());
         request.setParameter("id","x");
-        exercisesAdminDelete.init(config);
         exercisesAdminDelete.doGet(request, response);
         assertEquals("Error deleting exercise!", request.getAttribute("errormessage"));
     }
 
     @Test
     public void ExercisesAdminDeleteCorrectParameterTest() throws Exception {
-        exercisesAdminDelete.setExerciseDAO(new MockExerciseDAO());
         request.setParameter("id","4");
-        exercisesAdminDelete.init(config);
         exercisesAdminDelete.doGet(request, response);
         //noinspection ConstantConditions
         assertNull(request.getAttribute("errormessage"));

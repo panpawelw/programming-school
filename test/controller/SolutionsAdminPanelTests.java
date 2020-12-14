@@ -18,29 +18,25 @@ public class SolutionsAdminPanelTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private SolutionsAdminPanel solutionsAdminPanel;
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         solutionsAdminPanel = new SolutionsAdminPanel();
+        solutionsAdminPanel.setSolutionDAO(new MockSolutionDAO());
+        solutionsAdminPanel.init(new MockServletConfig());
     }
 
     @Test
     public void solutionsAdminPanelForwardTest() throws Exception {
-        solutionsAdminPanel.setSolutionDAO(new MockSolutionDAO());
-        solutionsAdminPanel.init(config);
         solutionsAdminPanel.doGet(request, response);
         assertEquals("/jsp/solutionsadminview.jsp", response.getForwardedUrl());
     }
 
     @Test
     public void solutionsAdminPanelListsMatchTest() throws Exception {
-        solutionsAdminPanel.setSolutionDAO(new MockSolutionDAO());
-        solutionsAdminPanel.init(config);
         solutionsAdminPanel.doGet(request, response);
         Object rawList = request.getAttribute("solutionslist");
         List<Solution> returnedList =

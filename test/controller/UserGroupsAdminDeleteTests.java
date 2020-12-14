@@ -15,31 +15,27 @@ public class UserGroupsAdminDeleteTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private UserGroupsAdminDelete userGroupsAdminDelete;
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         userGroupsAdminDelete = new UserGroupsAdminDelete();
+        userGroupsAdminDelete.setUserGroupDAO(new MockUserGroupDAO());
+        userGroupsAdminDelete.init(new MockServletConfig());
     }
 
     @Test
     public void UserGroupsAdminDeleteForwardTest() throws Exception {
-        userGroupsAdminDelete.setUserGroupDAO(new MockUserGroupDAO());
         request.setParameter("id", "0");
-        userGroupsAdminDelete.init(config);
         userGroupsAdminDelete.doGet(request, response);
         assertEquals("/groupsadminpanel", response.getForwardedUrl());
     }
 
     @Test
     public void UserGroupsAdminDeleteIncorrectParameterTest() throws Exception {
-        userGroupsAdminDelete.setUserGroupDAO(new MockUserGroupDAO());
         request.setParameter("id","x");
-        userGroupsAdminDelete.init(config);
         userGroupsAdminDelete.doGet(request, response);
         assertEquals("Error deleting user group!",
                 request.getAttribute("errormessage"));
@@ -47,9 +43,7 @@ public class UserGroupsAdminDeleteTests {
 
     @Test
     public void UserGroupsAdminDeleteCorrectParameterTest() throws Exception {
-        userGroupsAdminDelete.setUserGroupDAO(new MockUserGroupDAO());
         request.setParameter("id", "2");
-        userGroupsAdminDelete.init(config);
         userGroupsAdminDelete.doGet(request, response);
         //noinspection ConstantConditions
         assertNull(request.getAttribute("errormessage"));

@@ -14,32 +14,27 @@ public class UserGroupsAdminAddEditTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private UserGroupsAdminAddEdit userGroupsAdminAddEdit;
 
     @Before
     public void setup() throws Exception {
-
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         userGroupsAdminAddEdit = new UserGroupsAdminAddEdit();
+        userGroupsAdminAddEdit.setUserGroupDAO(new MockUserGroupDAO());
+        userGroupsAdminAddEdit.init(new MockServletConfig());
     }
 
     @Test
     public void userGroupsAdminAddEditGetForwardTest() throws Exception {
-        userGroupsAdminAddEdit.setUserGroupDAO(new MockUserGroupDAO());
         request.setParameter("id","0");
-        userGroupsAdminAddEdit.init(config);
         userGroupsAdminAddEdit.doGet(request, response);
         assertEquals("/jsp/usergroupsadminaddeditview.jsp", response.getForwardedUrl());
     }
 
     @Test
     public void userGroupsAdminAddEditPostForwardTest() throws Exception {
-        userGroupsAdminAddEdit.setUserGroupDAO(new MockUserGroupDAO());
         request.setParameter("id","0");
-        userGroupsAdminAddEdit.init(config);
         userGroupsAdminAddEdit.doPost(request, response);
         assertEquals("/groupsadminpanel", response.getForwardedUrl());
     }

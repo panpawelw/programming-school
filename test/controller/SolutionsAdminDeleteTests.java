@@ -15,40 +15,34 @@ public class SolutionsAdminDeleteTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private SolutionsAdminDelete solutionsAdminDelete;
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         solutionsAdminDelete = new SolutionsAdminDelete();
+        solutionsAdminDelete.setSolutionDAO(new MockSolutionDAO());
+        solutionsAdminDelete.init(new MockServletConfig());
     }
 
     @Test
     public void SolutionsAdminDeleteForwardTest() throws Exception {
-        solutionsAdminDelete.setSolutionDAO(new MockSolutionDAO());
         request.setParameter("id", "0");
-        solutionsAdminDelete.init(config);
         solutionsAdminDelete.doGet(request, response);
         assertEquals("/solutionsadminpanel", response.getForwardedUrl());
     }
 
     @Test
     public void SolutionsAdminDeleteIncorrectParameterTest() throws Exception {
-        solutionsAdminDelete.setSolutionDAO(new MockSolutionDAO());
         request.setParameter("id","x");
-        solutionsAdminDelete.init(config);
         solutionsAdminDelete.doGet(request, response);
         assertEquals("Error deleting solution!", request.getAttribute("errormessage"));
     }
 
     @Test
     public void SolutionsAdminDeleteCorrectParameterTest() throws Exception {
-        solutionsAdminDelete.setSolutionDAO(new MockSolutionDAO());
         request.setParameter("id","2");
-        solutionsAdminDelete.init(config);
         solutionsAdminDelete.doGet(request, response);
         //noinspection ConstantConditions
         assertNull(request.getAttribute("errormessage"));

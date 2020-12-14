@@ -18,29 +18,25 @@ public class UserGroupsAdminPanelTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private UserGroupsAdminPanel userGroupsAdminPanel;
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         userGroupsAdminPanel = new UserGroupsAdminPanel();
+        userGroupsAdminPanel.setUserGroupDAO(new MockUserGroupDAO());
+        userGroupsAdminPanel.init(new MockServletConfig());
     }
 
     @Test
     public void userGroupsAdminPanelForwardTest() throws Exception {
-        userGroupsAdminPanel.setUserGroupDAO(new MockUserGroupDAO());
-        userGroupsAdminPanel.init(config);
         userGroupsAdminPanel.doGet(request, response);
         assertEquals("/jsp/usergroupsadminview.jsp", response.getForwardedUrl());
     }
 
     @Test
     public void userGroupsAdminPanelListsMatchTest() throws Exception {
-        userGroupsAdminPanel.setUserGroupDAO(new MockUserGroupDAO());
-        userGroupsAdminPanel.init(config);
         userGroupsAdminPanel.doGet(request, response);
         Object rawList = request.getAttribute("groupslist");
         List<UserGroup> returnedList =

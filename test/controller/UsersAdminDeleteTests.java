@@ -15,40 +15,34 @@ public class UsersAdminDeleteTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private UsersAdminDelete usersAdminDelete;
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         usersAdminDelete = new UsersAdminDelete();
+        usersAdminDelete.setUserDAO(new MockUserDAO());
+        usersAdminDelete.init(new MockServletConfig());
     }
 
     @Test
     public void UsersAdminDeleteForwardTest() throws Exception {
-        usersAdminDelete.setUserDAO(new MockUserDAO());
         request.setParameter("id", "1");
-        usersAdminDelete.init(config);
         usersAdminDelete.doGet(request, response);
         assertEquals("/usersadminpanel", response.getForwardedUrl());
     }
 
     @Test
     public void UsersAdminDeleteIncorrectParameterTest() throws Exception {
-        usersAdminDelete.setUserDAO(new MockUserDAO());
         request.setParameter("id","x");
-        usersAdminDelete.init(config);
         usersAdminDelete.doGet(request, response);
         assertEquals("Error deleting user!", request.getAttribute("errormessage"));
     }
 
     @Test
     public void UsersAdminDeleteCorrectParameterTest() throws Exception {
-        usersAdminDelete.setUserDAO(new MockUserDAO());
         request.setParameter("id","3");
-        usersAdminDelete.init(config);
         usersAdminDelete.doGet(request, response);
         //noinspection ConstantConditions
         assertNull(request.getAttribute("errormessage"));

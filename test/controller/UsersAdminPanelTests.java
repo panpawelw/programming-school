@@ -18,29 +18,25 @@ public class UsersAdminPanelTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private UsersAdminPanel usersAdminPanel;
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         usersAdminPanel = new UsersAdminPanel();
+        usersAdminPanel.setUserDAO(new MockUserDAO());
+        usersAdminPanel.init(new MockServletConfig());
     }
 
     @Test
     public void usersAdminPanelForwardTest() throws Exception {
-        usersAdminPanel.setUserDAO(new MockUserDAO());
-        usersAdminPanel.init(config);
         usersAdminPanel.doGet(request, response);
         assertEquals("/jsp/usersadminview.jsp", response.getForwardedUrl());
     }
 
     @Test
     public void usersAdminPanelListsMatchTest() throws Exception {
-        usersAdminPanel.setUserDAO(new MockUserDAO());
-        usersAdminPanel.init(config);
         usersAdminPanel.doGet(request, response);
         Object rawList = request.getAttribute("userslist");
         List<User> returnedList =

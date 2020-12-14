@@ -21,32 +21,27 @@ public class UsersListTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private UsersList userslist;
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         userslist = new UsersList();
+        userslist.setUserDAO(new MockUserDAO());
+        userslist.setUserGroupDAO(new MockUserGroupDAO());
+        userslist.init(new MockServletConfig());
     }
 
     @Test
     public void UsersListForwardTest() throws Exception {
-        userslist.setUserDAO(new MockUserDAO());
-        userslist.setUserGroupDAO(new MockUserGroupDAO());
-        userslist.init(config);
         userslist.doGet(request, response);
         assertEquals("/jsp/error.jsp", response.getForwardedUrl());
     }
 
     @Test
     public void UsersListCorrectUserGroupIdTest() throws Exception {
-        userslist.setUserDAO(new MockUserDAO());
-        userslist.setUserGroupDAO(new MockUserGroupDAO());
         request.setParameter("id", "1");
-        userslist.init(config);
         userslist.doGet(request, response);
         Object rawList = request.getAttribute("groupuserslist");
         List<User> expectedList = createMultipleUsers(1);
@@ -60,10 +55,7 @@ public class UsersListTests {
 
     @Test
     public void UsersListIncorrectUserGroupIdTest() throws Exception {
-        userslist.setUserDAO(new MockUserDAO());
-        userslist.setUserGroupDAO(new MockUserGroupDAO());
         request.setParameter("id", "x");
-        userslist.init(config);
         userslist.doGet(request, response);
         assertEquals("/jsp/error.jsp", response.getForwardedUrl());
     }

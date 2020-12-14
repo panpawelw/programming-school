@@ -18,21 +18,19 @@ public class HomeTests {
 
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
-    private MockServletConfig config;
     private Home home;
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
-        config = new MockServletConfig();
         home = new Home();
         home.setLastSolutionDAO(new MockLastSolutionDAO());
+        home.init(new MockServletConfig());
     }
 
     @Test
     public void homeForwardTest() throws Exception {
-        home.init(config);
         home.doGet(request, response);
         assertEquals("/jsp/index.jsp", response.getForwardedUrl());
     }
@@ -59,7 +57,6 @@ public class HomeTests {
 
     private List<LastSolution> getServletOutput(String initParameter) throws Exception {
         request.getServletContext().setInitParameter("last-solutions", initParameter);
-        home.init(config);
         home.doGet(request, response);
         Object rawList = request.getAttribute("lastsolutions");
         return ((List<?>) rawList).stream().map(el -> (LastSolution) el).collect(Collectors.toList());
