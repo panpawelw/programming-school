@@ -1,12 +1,16 @@
 package controller;
 
 import com.panpawelw.controller.SolutionsAdminPanel;
+import com.panpawelw.model.Solution;
 import mockDAOs.MockSolutionDAO;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,6 +34,19 @@ public class SolutionsAdminPanelTests {
         solutionsAdminPanel.setSolutionDAO(new MockSolutionDAO());
         solutionsAdminPanel.init(config);
         solutionsAdminPanel.doGet(request, response);
+        assertEquals("/jsp/solutionsadminview.jsp", response.getForwardedUrl());
+    }
+
+    @Test
+    public void solutionsAdminPanelListsMatchTest() throws Exception {
+        solutionsAdminPanel.setSolutionDAO(new MockSolutionDAO());
+        solutionsAdminPanel.init(config);
+        solutionsAdminPanel.doGet(request, response);
+        Object rawList = request.getAttribute("solutionslist");
+        List<Solution> returnedList =
+                ((List<?>) rawList).stream().map(el -> (Solution) el).collect(Collectors.toList());
+        List<Solution> expectedList = new MockSolutionDAO().loadAllSolutions();
+        assertEquals(returnedList, expectedList);
         assertEquals("/jsp/solutionsadminview.jsp", response.getForwardedUrl());
     }
 }
