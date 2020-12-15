@@ -44,6 +44,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
                 request.setAttribute("errormessage", "Nu such user group exists!");
                 getServletContext().getRequestDispatcher("/groupsadminpanel")
                         .forward(request, response);
+                return;
             }
             request.setAttribute("group", userGroup);
             request.setAttribute("button", "Edit group");

@@ -38,12 +38,15 @@ public class ExercisesAdminAddEdit extends HttpServlet {
         if (exerciseId == 0) {
             request.setAttribute("exercise", new Exercise(0));
             request.setAttribute("button", "Add exercise");
+            getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
+                    .forward(request, response);
         } else {
             Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
             if (exerciseId < 0 || exercise == null) {
-                request.setAttribute("errormessage", "No such exercise exists!");
+                request.setAttribute("errormessage","No such exercise exists!");
                 getServletContext().getRequestDispatcher("/exercisesadminpanel")
                         .forward(request, response);
+                return;
             }
             request.setAttribute("exercise", exercise);
             request.setAttribute("button", "Edit exercise");

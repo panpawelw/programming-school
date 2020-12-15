@@ -46,6 +46,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
                 request.setAttribute("errormessage", "No such solution exists!");
                 getServletContext().getRequestDispatcher("/solutionsadminpanel")
                         .forward(request, response);
+                return;
             }
             request.setAttribute("solution", solution);
             request.setAttribute("button", "Edit solution");

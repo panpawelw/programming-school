@@ -53,6 +53,7 @@ public class UsersAdminAddEdit extends HttpServlet {
                 request.setAttribute("errormessage", "No such user exists!");
                 getServletContext().getRequestDispatcher("/usersadminpanel")
                         .forward(request, response);
+                return;
             }
             request.setAttribute("user", user);
             request.setAttribute("button", "Edit user");
