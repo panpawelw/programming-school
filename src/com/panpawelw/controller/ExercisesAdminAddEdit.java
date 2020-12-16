@@ -24,7 +24,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
     }
 
     public void init() {
-        if(exerciseDAO == null) exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
+        if (exerciseDAO == null) exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
     }
 
     public void setExerciseDAO(ExerciseDAO exerciseDAO) {
@@ -40,18 +40,18 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add exercise");
             getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
                     .forward(request, response);
-        } else {
+        } else if (exerciseId > 0) {
             Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
-            if (exerciseId < 0 || exercise == null) {
-                request.setAttribute("errormessage","No such exercise exists!");
-                getServletContext().getRequestDispatcher("/exercisesadminpanel")
+            if (exercise != null) {
+                request.setAttribute("exercise", exercise);
+                request.setAttribute("button", "Edit exercise");
+                getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
                         .forward(request, response);
                 return;
             }
-            request.setAttribute("exercise", exercise);
-            request.setAttribute("button", "Edit exercise");
         }
-        getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
+        request.setAttribute("errormessage", "No such exercise exists!");
+        getServletContext().getRequestDispatcher("/exercisesadminpanel")
                 .forward(request, response);
     }
 

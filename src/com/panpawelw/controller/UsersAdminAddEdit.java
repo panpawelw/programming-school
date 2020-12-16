@@ -47,18 +47,20 @@ public class UsersAdminAddEdit extends HttpServlet {
         if(userId == 0) {
             request.setAttribute("user", new User(0));
             request.setAttribute("button", "Add user");
-        } else {
+            getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp")
+                    .forward(request, response);
+        } else if (userId > 0){
             User user = userDAO.loadUserById(userId);
-            if (userId < 0 || user == null) {
-                request.setAttribute("errormessage", "No such user exists!");
-                getServletContext().getRequestDispatcher("/usersadminpanel")
+            if (user != null) {
+                request.setAttribute("user", user);
+                request.setAttribute("button", "Edit user");
+                getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp")
                         .forward(request, response);
                 return;
             }
-            request.setAttribute("user", user);
-            request.setAttribute("button", "Edit user");
         }
-        getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp")
+        request.setAttribute("errormessage", "No such user exists!");
+        getServletContext().getRequestDispatcher("/usersadminpanel")
                 .forward(request, response);
     }
 

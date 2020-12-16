@@ -40,18 +40,20 @@ public class SolutionsAdminAddEdit extends HttpServlet {
         if (solutionId == 0) {
             request.setAttribute("solution", new Solution(0L));
             request.setAttribute("button", "Add solution");
-        } else {
+            getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp")
+                    .forward(request, response);
+        } else if (solutionId > 0){
             Solution solution = solutionDAO.loadSolutionById(solutionId);
-            if (solutionId < 0 || solution == null) {
-                request.setAttribute("errormessage", "No such solution exists!");
-                getServletContext().getRequestDispatcher("/solutionsadminpanel")
+            if (solution != null) {
+                request.setAttribute("solution", solution);
+                request.setAttribute("button", "Edit solution");
+                getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp")
                         .forward(request, response);
                 return;
             }
-            request.setAttribute("solution", solution);
-            request.setAttribute("button", "Edit solution");
         }
-        getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp")
+        request.setAttribute("errormessage", "No such solution exists!");
+        getServletContext().getRequestDispatcher("/solutionsadminpanel")
                 .forward(request, response);
     }
 

@@ -38,18 +38,21 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
         if(groupId == 0) {
             request.setAttribute("group", new UserGroup(0));
             request.setAttribute("button", "Add group");
-        } else {
+            getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp")
+                    .forward(request, response);
+        } else if (groupId > 0) {
             UserGroup userGroup = userGroupDAO.loadUserGroupById(groupId);
-            if (groupId < 0 || userGroup == null) {
-                request.setAttribute("errormessage", "Nu such user group exists!");
-                getServletContext().getRequestDispatcher("/groupsadminpanel")
+            if (userGroup != null) {
+                request.setAttribute("group", userGroup);
+                request.setAttribute("button", "Edit group");
+                getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp")
                         .forward(request, response);
                 return;
             }
-            request.setAttribute("group", userGroup);
-            request.setAttribute("button", "Edit group");
         }
-        getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp").forward(request, response);
+        request.setAttribute("errormessage", "Nu such user group exists!");
+        getServletContext().getRequestDispatcher("/groupsadminpanel")
+                .forward(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
