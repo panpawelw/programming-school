@@ -3,7 +3,6 @@ package mockDAOs;
 import com.panpawelw.DAO.UserDAO;
 import com.panpawelw.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static misc.TestUtils.createMultipleUsers;
@@ -17,7 +16,7 @@ public class MockUserDAO implements UserDAO {
 
     @Override
     public User loadUserById(long id) {
-        return new User();
+        return createMultipleUsers(1).get(0);
     }
 
     @Override
@@ -27,11 +26,11 @@ public class MockUserDAO implements UserDAO {
 
     @Override
     public List<User> loadAllUsers() {
-        return new ArrayList<>();
+        return createMultipleUsers(10);
     }
 
     @Override
     public List<User> loadAllUsersByGroupId(int usergroup_id) {
-        return createMultipleUsers(usergroup_id);
+        return createMultipleUsers(10, usergroup_id);
     }
 }

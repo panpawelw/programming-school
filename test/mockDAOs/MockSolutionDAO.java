@@ -6,6 +6,8 @@ import com.panpawelw.model.Solution;
 import java.util.ArrayList;
 import java.util.List;
 
+import static misc.TestUtils.createMultipleSolutions;
+
 public class MockSolutionDAO implements SolutionDAO {
 
     @Override
@@ -15,7 +17,7 @@ public class MockSolutionDAO implements SolutionDAO {
 
     @Override
     public Solution loadSolutionById(long id) {
-        return new Solution();
+        return createMultipleSolutions(1).get(0);
     }
 
     @Override
@@ -25,11 +27,11 @@ public class MockSolutionDAO implements SolutionDAO {
 
     @Override
     public List<Solution> loadAllSolutions() {
-        return new ArrayList<>();
+        return createMultipleSolutions(10);
     }
 
     @Override
     public List<Solution> loadAllSolutionsByUserId(long id) {
-        return new ArrayList<>();
+        return createMultipleSolutions(10, id);
     }
 }

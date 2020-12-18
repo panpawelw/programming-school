@@ -9,13 +9,14 @@ import static misc.TestUtils.createMultipleExercises;
 
 public class MockExerciseDAO implements ExerciseDAO {
 
+    @Override
     public int saveExerciseToDB(Exercise exercise) {
         return 1;
     }
 
     @Override
     public Exercise loadExerciseById(int id) {
-        return new Exercise();
+        return createMultipleExercises(1).get(0);
     }
 
     @Override
