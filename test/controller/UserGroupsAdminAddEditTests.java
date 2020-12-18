@@ -1,13 +1,15 @@
 package controller;
 
+import com.panpawelw.DAO.UserGroupDAO;
 import com.panpawelw.controller.UserGroupsAdminAddEdit;
-import mockDAOs.MockUserGroupDAO;
+import com.panpawelw.model.UserGroup;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
 public class UserGroupsAdminAddEditTests {
@@ -15,27 +17,72 @@ public class UserGroupsAdminAddEditTests {
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
     private UserGroupsAdminAddEdit userGroupsAdminAddEdit;
+    private final UserGroupDAO mockUserGroupDAO = mock(UserGroupDAO.class);
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
         userGroupsAdminAddEdit = new UserGroupsAdminAddEdit();
-        userGroupsAdminAddEdit.setUserGroupDAO(new MockUserGroupDAO());
+        userGroupsAdminAddEdit.setUserGroupDAO(mockUserGroupDAO);
         userGroupsAdminAddEdit.init(new MockServletConfig());
     }
 
     @Test
     public void userGroupsAdminAddEditGetForwardTest() throws Exception {
-        request.setParameter("id","0");
         userGroupsAdminAddEdit.doGet(request, response);
-        assertEquals("/jsp/usergroupsadminaddeditview.jsp", response.getForwardedUrl());
+        assertEquals("/groupsadminpanel", response.getForwardedUrl());
     }
 
     @Test
     public void userGroupsAdminAddEditPostForwardTest() throws Exception {
-        request.setParameter("id","0");
         userGroupsAdminAddEdit.doPost(request, response);
         assertEquals("/groupsadminpanel", response.getForwardedUrl());
+    }
+
+    @Test
+    public void userGroupsAdminAddEditGetIncorrectIntegerParameterTest() throws Exception {
+        request.setParameter("id", "16456");
+        expect(mockUserGroupDAO.loadUserGroupById(16456)).andReturn(null);
+        incorrectParameterTest();
+    }
+
+    @Test
+    public void userGroupsAdminAddEditGetIncorrectIntegerSubZeroParameterTest() throws Exception {
+        request.setParameter("id", "-10");
+        incorrectParameterTest();
+    }
+
+    @Test
+    public void userGroupsAdminAddEditGetCharacterParameterTest() throws Exception {
+        request.setParameter("id", "x");
+        incorrectParameterTest();
+    }
+
+    @Test
+    public void userGroupsAdminAddEditGetNullParameterTest() throws Exception {
+        request.setParameter("id", "null");
+        incorrectParameterTest();
+    }
+
+    @Test
+    public void userGroupsAdminAddEditGetCorrectParameterTest() throws Exception {
+        request.setParameter("id", "5");
+        UserGroup expectedUserGroup = new UserGroup(3, "Test name");
+        expect(mockUserGroupDAO.loadUserGroupById(5)).andReturn(expectedUserGroup);
+        replay(mockUserGroupDAO);
+        userGroupsAdminAddEdit.doGet(request,response);
+        UserGroup returnedUserGroup = (UserGroup) request.getAttribute("group");
+        assertEquals(expectedUserGroup, returnedUserGroup);
+        assertEquals("/jsp/usergroupsadminaddeditview.jsp", response.getForwardedUrl());
+        verify(mockUserGroupDAO);
+    }
+
+    private void incorrectParameterTest() throws Exception {
+        replay(mockUserGroupDAO);
+        userGroupsAdminAddEdit.doGet(request,response);
+        assertEquals("No such user group exists!", request.getAttribute("errormessage"));
+        assertEquals("/groupsadminpanel", response.getForwardedUrl());
+        verify(mockUserGroupDAO);
     }
 }

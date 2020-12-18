@@ -3,14 +3,12 @@ package mockDAOs;
 import com.panpawelw.DAO.ExerciseDAO;
 import com.panpawelw.model.Exercise;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static misc.TestUtils.createMultipleExercises;
 
 public class MockExerciseDAO implements ExerciseDAO {
 
-    @Override
     public int saveExerciseToDB(Exercise exercise) {
         return 1;
     }

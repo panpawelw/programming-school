@@ -50,7 +50,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
                 return;
             }
         }
-        request.setAttribute("errormessage", "Nu such user group exists!");
+        request.setAttribute("errormessage", "No such user group exists!");
         getServletContext().getRequestDispatcher("/groupsadminpanel")
                 .forward(request, response);
     }

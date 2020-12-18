@@ -1,13 +1,18 @@
 package controller;
 
+import com.panpawelw.DAO.SolutionDAO;
 import com.panpawelw.controller.SolutionsAdminAddEdit;
-import mockDAOs.MockSolutionDAO;
+import com.panpawelw.model.Solution;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 
+import java.sql.Timestamp;
+
+import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
 public class SolutionsAdminAddEditTest {
@@ -15,29 +20,74 @@ public class SolutionsAdminAddEditTest {
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
     private SolutionsAdminAddEdit solutionsAdminAddEdit;
+    private final SolutionDAO mockSolutionDAO = mock(SolutionDAO.class);
 
     @Before
     public void setup() throws Exception {
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
         solutionsAdminAddEdit = new SolutionsAdminAddEdit();
-        solutionsAdminAddEdit.setSolutionDAO(new MockSolutionDAO());
+        solutionsAdminAddEdit.setSolutionDAO(mockSolutionDAO);
         solutionsAdminAddEdit.init(new MockServletConfig());
     }
 
     @Test
     public void solutionsAdminAddEditGetForwardTest() throws Exception {
-        request.setParameter("id","0");
         solutionsAdminAddEdit.doGet(request, response);
-        assertEquals("/jsp/solutionsadminaddeditview.jsp", response.getForwardedUrl());
+        assertEquals("/solutionsadminpanel", response.getForwardedUrl());
     }
 
     @Test
     public void solutionsAdminAddEditPostForwardTest() throws Exception {
-        request.setParameter("id","0");
-        request.setParameter("exercise_id","0");
-        request.setParameter("user_id","0");
         solutionsAdminAddEdit.doPost(request, response);
         assertEquals("/solutionsadminpanel", response.getForwardedUrl());
+    }
+
+    @Test
+    public void solutionsAdminAddEditGetIncorrectIntegerParameterTest() throws Exception {
+        request.setParameter("id", "16456");
+        expect(mockSolutionDAO.loadSolutionById(16456)).andReturn(null);
+        incorrectParameterTest();
+    }
+
+    @Test
+    public void solutionsAdminAddEditGetIncorrectIntegerSubZeroParameterTest() throws Exception {
+        request.setParameter("id", "-10");
+        incorrectParameterTest();
+    }
+
+    @Test
+    public void solutionsAdminAddEditGetCharacterParameterTest() throws Exception {
+        request.setParameter("id", "x");
+        incorrectParameterTest();
+    }
+
+    @Test
+    public void solutionsAdminAddEditGetNullParameterTest() throws Exception {
+        request.setParameter("id", "null");
+        incorrectParameterTest();
+    }
+
+    @Test
+    public void solutionsAdminAddEditGetCorrectParameterTest() throws Exception {
+        request.setParameter("id", "5");
+        Solution expectedSolution = new Solution(5, new Timestamp(System.currentTimeMillis()),
+                new Timestamp(System.currentTimeMillis()),
+                "Test description", 5, 3);
+        expect(mockSolutionDAO.loadSolutionById(5)).andReturn(expectedSolution);
+        replay(mockSolutionDAO);
+        solutionsAdminAddEdit.doGet(request,response);
+        Solution returnedSolution = (Solution) request.getAttribute("solution");
+        assertEquals(expectedSolution, returnedSolution);
+        assertEquals("/jsp/solutionsadminaddeditview.jsp", response.getForwardedUrl());
+        verify(mockSolutionDAO);
+    }
+
+    private void incorrectParameterTest() throws Exception {
+        replay(mockSolutionDAO);
+        solutionsAdminAddEdit.doGet(request,response);
+        assertEquals("No such solution exists!", request.getAttribute("errormessage"));
+        assertEquals("/solutionsadminpanel", response.getForwardedUrl());
+        verify(mockSolutionDAO);
     }
 }
