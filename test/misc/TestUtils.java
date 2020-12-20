@@ -60,7 +60,7 @@ public class TestUtils {
         List<User> expectedUsers = new ArrayList<>();
         int group_id = 1;
         if (optionalGroupId.length != 0) group_id = optionalGroupId[0];
-        for (int i = 1; i < howmany; i++) {
+        for (int i = 1; i <= howmany; i++) {
             if (optionalGroupId.length == 0) group_id = i;
             expectedUsers.add(new User(i, "Test user " + i,
               "Test email " + i, "Test password " + i, group_id));

@@ -44,7 +44,7 @@ public class UsersListTests {
         request.setParameter("id", "1");
         userslist.doGet(request, response);
         Object rawList = request.getAttribute("groupuserslist");
-        List<User> expectedList = createMultipleUsers(1);
+        List<User> expectedList = createMultipleUsers(10,1);
         List<User> returnedList =
                 ((List<?>) rawList).stream().map(el -> (User) el).collect(Collectors.toList());
         assertEquals(expectedList, returnedList);
