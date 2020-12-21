@@ -73,8 +73,7 @@ public class ExercisesAdminAddEditTests {
         expect(mockExerciseDAO.loadExerciseById(5)).andReturn(expectedExercise);
         replay(mockExerciseDAO);
         exercisesAdminAddEdit.doGet(request,response);
-        Exercise returnedExercise = (Exercise) request.getAttribute("exercise");
-        assertEquals(expectedExercise, returnedExercise);
+        assertEquals(expectedExercise, request.getAttribute("exercise"));
         assertEquals("/jsp/exercisesadminaddeditview.jsp", response.getForwardedUrl());
         verify(mockExerciseDAO);
     }

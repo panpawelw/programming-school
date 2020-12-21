@@ -73,15 +73,17 @@ public class SolutionDetailsTests {
         Solution expectedSolution = new Solution(12, new Timestamp(System.currentTimeMillis()),
                 new Timestamp(System.currentTimeMillis()), "Test description", 5,
                 8);
+        Exercise expectedExercise = new Exercise(5, "Test title","Test description");
+        User expectedUser = new User(8, "Test name", "Test email",
+                "Test password", 3);
         expect(mockSolutionDAO.loadSolutionById(12)).andReturn(expectedSolution);
-        expect(mockExerciseDAO.loadExerciseById(5)).andReturn(new Exercise(5, "Test title",
-                "Test description"));
-        expect(mockUserDAO.loadUserById(8)).andReturn(new User(8, "Test name",
-                "Test email","Test password", 3));
+        expect(mockExerciseDAO.loadExerciseById(5)).andReturn(expectedExercise);
+        expect(mockUserDAO.loadUserById(8)).andReturn(expectedUser);
         replay(mockSolutionDAO, mockExerciseDAO, mockUserDAO);
         solutionDetails.doGet(request, response);
-        Solution returnedSolution = (Solution) request.getAttribute("solution");
-        assertEquals(expectedSolution, returnedSolution);
+        assertEquals(expectedSolution, request.getAttribute("solution"));
+        assertEquals(expectedExercise, request.getAttribute("exercise"));
+        assertEquals(expectedUser, request.getAttribute("user"));
         assertEquals("/jsp/solutiondetailsview.jsp", response.getForwardedUrl());
         verify(mockSolutionDAO, mockExerciseDAO, mockUserDAO);
     }

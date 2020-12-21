@@ -73,8 +73,7 @@ public class UsersAdminAddEditTests {
         expect(mockUserDAO.loadUserById(5)).andReturn(expectedUser);
         replay(mockUserDAO);
         usersAdminAddEdit.doGet(request,response);
-        User returnedUser = (User) request.getAttribute("user");
-        assertEquals(expectedUser, returnedUser);
+        assertEquals(expectedUser, request.getAttribute("user"));
         assertEquals("/jsp/usersadminaddeditview.jsp", response.getForwardedUrl());
         verify(mockUserDAO);
     }

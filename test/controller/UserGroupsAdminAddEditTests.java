@@ -72,8 +72,7 @@ public class UserGroupsAdminAddEditTests {
         expect(mockUserGroupDAO.loadUserGroupById(5)).andReturn(expectedUserGroup);
         replay(mockUserGroupDAO);
         userGroupsAdminAddEdit.doGet(request,response);
-        UserGroup returnedUserGroup = (UserGroup) request.getAttribute("group");
-        assertEquals(expectedUserGroup, returnedUserGroup);
+        assertEquals(expectedUserGroup, request.getAttribute("group"));
         assertEquals("/jsp/usergroupsadminaddeditview.jsp", response.getForwardedUrl());
         verify(mockUserGroupDAO);
     }
