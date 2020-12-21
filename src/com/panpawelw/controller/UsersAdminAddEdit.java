@@ -43,7 +43,7 @@ public class UsersAdminAddEdit extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        int userId = ValidateParameter.checkInt(idParam, "Incorrect user ID!");
+        int userId = ValidateParameter.checkInt(idParam, "Incorrect user Id!");
         if(userId == 0) {
             request.setAttribute("user", new User(0));
             request.setAttribute("button", "Add user");
@@ -71,8 +71,8 @@ public class UsersAdminAddEdit extends HttpServlet {
         String userEmail = request.getParameter("email");
         String userPassword = request.getParameter("password");
         String group_idParam = request.getParameter("group_id");
-        long userId = ValidateParameter.checkLong(idParam, "Incorrect user ID!");
-        int userGroup_id = ValidateParameter.checkInt(group_idParam, "Incorrect group ID!");
+        long userId = ValidateParameter.checkLong(idParam, "Incorrect user Id!");
+        int userGroup_id = ValidateParameter.checkInt(group_idParam, "Incorrect group Id!");
         if (userName != null && !userName.equals("") && userEmail != null && !userEmail.equals("")
                 && userPassword != null && !userPassword.equals("") && userGroup_id > 0 && userId >= 0) {
             User user = new User();
@@ -90,7 +90,7 @@ public class UsersAdminAddEdit extends HttpServlet {
             }
         } else {
             request.setAttribute("errormessage",
-                    "User name, email, password nor group ID can't be empty!");
+                    "User name, email, password nor group Id can't be empty!");
         }
         getServletContext().getRequestDispatcher("/usersadminpanel").forward(request, response);
     }

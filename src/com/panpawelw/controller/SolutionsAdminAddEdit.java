@@ -36,7 +36,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution ID!");
+        long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
         if (solutionId == 0) {
             request.setAttribute("solution", new Solution(0L));
             request.setAttribute("button", "Add solution");
@@ -63,7 +63,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
         String solutionDescription = request.getParameter("description");
         String exercise_idParam = request.getParameter("exercise_id");
         String user_idParam = request.getParameter("user_id");
-        long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution ID!");
+        long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
         int solutionExercise_id = ValidateParameter.checkInt(exercise_idParam,
                 "Incorrect exercise ID!");
         long solutionUser_id = ValidateParameter.checkLong(user_idParam,
@@ -87,7 +87,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
                 request.setAttribute("errormessage", "Error saving solution!");
             }
         } else {
-            request.setAttribute("errormessage", "Solution exercise ID, user ID nor description " +
+            request.setAttribute("errormessage", "Solution exercise Id, user Id nor description " +
                     "can't be empty!");
         }
         getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);

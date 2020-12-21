@@ -34,7 +34,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        int groupId = ValidateParameter.checkInt(idParam, "Incorrect group ID!");
+        int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         if(groupId == 0) {
             request.setAttribute("group", new UserGroup(0));
             request.setAttribute("button", "Add group");
@@ -59,7 +59,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         String groupName = request.getParameter("group_name");
-        int groupId = ValidateParameter.checkInt(idParam, "Incorrect group ID!");
+        int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         if (groupName != null && !groupName.equals("") && groupId >= 0) {
             UserGroup userGroup = new UserGroup();
             if (groupId != 0) {
