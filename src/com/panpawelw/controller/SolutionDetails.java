@@ -45,14 +45,17 @@ public class SolutionDetails extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
         long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
-        Solution solution = solutionDAO.loadSolutionById(solutionId);
-        if (solutionId > 0 && solution !=null) {
-            User user = userDAO.loadUserById(solution.getUser_id());
-            Exercise exercise = exerciseDAO.loadExerciseById(solution.getExercise_id());
-            request.setAttribute("solution", solution);
-            request.setAttribute("user", user);
-            request.setAttribute("exercise", exercise);
-            getServletContext().getRequestDispatcher("/jsp/solutiondetailsview.jsp").forward(request, response);
+        if (solutionId > 0) {
+            Solution solution = solutionDAO.loadSolutionById(solutionId);
+            if (solution != null) {
+                User user = userDAO.loadUserById(solution.getUser_id());
+                Exercise exercise = exerciseDAO.loadExerciseById(solution.getExercise_id());
+                request.setAttribute("solution", solution);
+                request.setAttribute("user", user);
+                request.setAttribute("exercise", exercise);
+                getServletContext().getRequestDispatcher("/jsp/solutiondetailsview.jsp").forward(request, response);
+                return;
+            }
         }
         request.setAttribute("errormessage", "No such solution exists!");
         getServletContext().getRequestDispatcher("/jsp/error.jsp").forward(request, response);

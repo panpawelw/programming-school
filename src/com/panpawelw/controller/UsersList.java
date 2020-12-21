@@ -45,13 +45,16 @@ public class UsersList extends HttpServlet {
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
         int userGroupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
-        UserGroup userGroup = userGroupDAO.loadUserGroupById(userGroupId);
-        if (userGroupId > 0 && userGroup != null) {
-            List<User> groupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
-            request.setAttribute("groupuserslist", groupUsersList);
-            request.setAttribute("groupname", userGroup.getName());
-            getServletContext().getRequestDispatcher("/jsp/userslistview.jsp")
-                    .forward(request, response);
+        if (userGroupId > 0) {
+            UserGroup userGroup = userGroupDAO.loadUserGroupById(userGroupId);
+            if (userGroup != null) {
+                List<User> groupUsersList = userDAO.loadAllUsersByGroupId(userGroupId);
+                request.setAttribute("groupuserslist", groupUsersList);
+                request.setAttribute("groupname", userGroup.getName());
+                getServletContext().getRequestDispatcher("/jsp/userslistview.jsp")
+                        .forward(request, response);
+                return;
+            }
         }
         request.setAttribute("errormessage", "No such user group exists!");
         getServletContext().getRequestDispatcher("/jsp/error.jsp").forward(request, response);
