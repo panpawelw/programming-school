@@ -68,7 +68,7 @@ public class SolutionDetailsTests {
     }
 
     @Test
-    public void correctParameterTest() throws Exception {
+    public void solutionDetailscorrectParameterTest() throws Exception {
         request.setParameter("id", "12");
         Solution expectedSolution = new Solution(12, new Timestamp(System.currentTimeMillis()),
                 new Timestamp(System.currentTimeMillis()), "Test description", 5,
