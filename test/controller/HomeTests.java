@@ -16,15 +16,12 @@ import static org.junit.Assert.assertEquals;
 
 public class HomeTests {
 
-    private MockHttpServletRequest request;
-    private MockHttpServletResponse response;
-    private Home home;
+    private final MockHttpServletRequest request = new MockHttpServletRequest();
+    private final MockHttpServletResponse response = new MockHttpServletResponse();
+    private final Home home = new Home();
 
     @Before
     public void setup() throws Exception {
-        request = new MockHttpServletRequest();
-        response = new MockHttpServletResponse();
-        home = new Home();
         home.setLastSolutionDAO(new MockLastSolutionDAO());
         home.init(new MockServletConfig());
     }
@@ -52,7 +49,6 @@ public class HomeTests {
         List<LastSolution> returnedList = getServletOutput("7");
         List<LastSolution> expectedList = new MockLastSolutionDAO().loadMostRecentSolutions(7);
         assertEquals(expectedList, returnedList);
-        assertEquals(returnedList.size(), 7);
     }
 
     private List<LastSolution> getServletOutput(String initParameter) throws Exception {
