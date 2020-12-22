@@ -38,11 +38,8 @@ public class UsersAdminPanelTests {
     @Test
     public void usersAdminPanelListsMatchTest() throws Exception {
         usersAdminPanel.doGet(request, response);
-        Object rawList = request.getAttribute("userslist");
-        List<User> returnedList =
-                ((List<?>) rawList).stream().map(el -> (User) el).collect(Collectors.toList());
         List<User> expectedList = new MockUserDAO().loadAllUsers();
-        assertEquals(returnedList, expectedList);
+        assertEquals(expectedList, request.getAttribute("userslist"));
         assertEquals("/jsp/usersadminview.jsp", response.getForwardedUrl());
     }
 }

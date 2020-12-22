@@ -38,11 +38,8 @@ public class ExercisesAdminPanelTests {
     @Test
     public void exercisesAdminPanelListsMatchTest() throws Exception {
         exercisesAdminPanel.doGet(request, response);
-        Object rawList = request.getAttribute("exerciseslist");
-        List<Exercise> returnedList =
-                ((List<?>) rawList).stream().map(el -> (Exercise) el).collect(Collectors.toList());
         List<Exercise> expectedList = new MockExerciseDAO().loadAllExercises();
-        assertEquals(returnedList, expectedList);
+        assertEquals(expectedList, request.getAttribute("exerciseslist"));
         assertEquals("/jsp/exercisesadminview.jsp", response.getForwardedUrl());
     }
 }

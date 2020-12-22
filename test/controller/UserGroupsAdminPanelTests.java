@@ -38,11 +38,8 @@ public class UserGroupsAdminPanelTests {
     @Test
     public void userGroupsAdminPanelListsMatchTest() throws Exception {
         userGroupsAdminPanel.doGet(request, response);
-        Object rawList = request.getAttribute("groupslist");
-        List<UserGroup> returnedList =
-                ((List<?>) rawList).stream().map(el -> (UserGroup) el).collect(Collectors.toList());
         List<UserGroup> expectedList = new MockUserGroupDAO().loadAllUserGroups();
-        assertEquals(returnedList, expectedList);
+        assertEquals(expectedList, request.getAttribute("groupslist"));
         assertEquals("/jsp/usergroupsadminview.jsp", response.getForwardedUrl());
     }
 }

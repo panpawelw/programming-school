@@ -38,11 +38,8 @@ public class SolutionsAdminPanelTests {
     @Test
     public void solutionsAdminPanelListsMatchTest() throws Exception {
         solutionsAdminPanel.doGet(request, response);
-        Object rawList = request.getAttribute("solutionslist");
-        List<Solution> returnedList =
-                ((List<?>) rawList).stream().map(el -> (Solution) el).collect(Collectors.toList());
         List<Solution> expectedList = new MockSolutionDAO().loadAllSolutions();
-        assertEquals(returnedList, expectedList);
+        assertEquals(expectedList, request.getAttribute("solutionslist"));
         assertEquals("/jsp/solutionsadminview.jsp", response.getForwardedUrl());
     }
 }
