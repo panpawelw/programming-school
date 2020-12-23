@@ -14,16 +14,13 @@ import static org.junit.Assert.assertEquals;
 
 public class ExercisesAdminAddEditTests {
 
-    private MockHttpServletRequest request;
-    private MockHttpServletResponse response;
-    private ExercisesAdminAddEdit exercisesAdminAddEdit;
+    private final MockHttpServletRequest request = new MockHttpServletRequest();
+    private final MockHttpServletResponse response  = new MockHttpServletResponse();
+    private final ExercisesAdminAddEdit exercisesAdminAddEdit = new ExercisesAdminAddEdit();
     private final ExerciseDAO mockExerciseDAO = mock(ExerciseDAO.class);
 
     @Before
     public void setup() throws Exception {
-        request = new MockHttpServletRequest();
-        response = new MockHttpServletResponse();
-        exercisesAdminAddEdit = new ExercisesAdminAddEdit();
         exercisesAdminAddEdit.setExerciseDAO(mockExerciseDAO);
         exercisesAdminAddEdit.init(new MockServletConfig());
     }

@@ -14,16 +14,13 @@ import static org.junit.Assert.assertEquals;
 
 public class UsersAdminAddEditTests {
 
-    private MockHttpServletRequest request;
-    private MockHttpServletResponse response;
-    private UsersAdminAddEdit usersAdminAddEdit;
+    private final MockHttpServletRequest request = new MockHttpServletRequest();
+    private final MockHttpServletResponse response = new MockHttpServletResponse();
+    private final UsersAdminAddEdit usersAdminAddEdit = new UsersAdminAddEdit();
     private final UserDAO mockUserDAO = mock(UserDAO.class);
 
     @Before
     public void setup() throws Exception {
-        request = new MockHttpServletRequest();
-        response = new MockHttpServletResponse();
-        usersAdminAddEdit = new UsersAdminAddEdit();
         usersAdminAddEdit.setUserDAO(mockUserDAO);
         usersAdminAddEdit.init(new MockServletConfig());
     }
