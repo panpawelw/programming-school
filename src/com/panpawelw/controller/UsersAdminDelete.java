@@ -24,7 +24,7 @@ public class UsersAdminDelete extends HttpServlet {
     }
 
     public void init() {
-        if(userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
+        if (userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
     }
 
     public void setUserDAO(UserDAO userDAO) {
@@ -38,9 +38,11 @@ public class UsersAdminDelete extends HttpServlet {
         int result = 0;
         if (userId > 0) {
             User user = userDAO.loadUserById(userId);
-            result = userDAO.deleteUser(user);
+            if (user != null) {
+                result = userDAO.deleteUser(user);
+            }
         }
-        if (userId <=0 || result !=1) {
+        if (userId <= 0 || result != 1) {
             request.setAttribute("errormessage", "Error deleting user!");
         }
         getServletContext().getRequestDispatcher("/usersadminpanel").forward(request, response);

@@ -24,7 +24,7 @@ public class UserGroupsAdminDelete extends HttpServlet {
     }
 
     public void init() {
-        if(userGroupDAO == null) this.userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
+        if (userGroupDAO == null) this.userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
     }
 
     public void setUserGroupDAO(UserGroupDAO userGroupDAO) {
@@ -38,9 +38,11 @@ public class UserGroupsAdminDelete extends HttpServlet {
         int result = 0;
         if (userGroupId > 0) {
             UserGroup userGroup = userGroupDAO.loadUserGroupById(userGroupId);
-            result = userGroupDAO.deleteUserGroup(userGroup);
+            if (userGroup != null) {
+                result = userGroupDAO.deleteUserGroup(userGroup);
+            }
         }
-        if (userGroupId <=0 || result !=1) {
+        if (userGroupId <= 0 || result != 1) {
             request.setAttribute("errormessage", "Error deleting user group!");
         }
         getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);

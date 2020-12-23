@@ -24,7 +24,7 @@ public class SolutionsAdminDelete extends HttpServlet {
     }
 
     public void init() {
-        if(solutionDAO == null) solutionDAO = new RealSolutionDAO(DbUtils.initDB());
+        if (solutionDAO == null) solutionDAO = new RealSolutionDAO(DbUtils.initDB());
     }
 
     public void setSolutionDAO(SolutionDAO solutionDAO) {
@@ -38,9 +38,11 @@ public class SolutionsAdminDelete extends HttpServlet {
         int result = 0;
         if (solutionId > 0) {
             Solution solution = solutionDAO.loadSolutionById(solutionId);
-            result = solutionDAO.deleteSolution(solution);
+            if (solution != null) {
+                result = solutionDAO.deleteSolution(solution);
+            }
         }
-        if (solutionId <=0 || result !=1) {
+        if (solutionId <= 0 || result != 1) {
             request.setAttribute("errormessage", "Error deleting solution!");
         }
         getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);

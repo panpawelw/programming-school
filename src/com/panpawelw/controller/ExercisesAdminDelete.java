@@ -24,7 +24,7 @@ public class ExercisesAdminDelete extends HttpServlet {
     }
 
     public void init() {
-        if(exerciseDAO == null) exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
+        if (exerciseDAO == null) exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
     }
 
     public void setExerciseDAO(ExerciseDAO exerciseDAO) {
@@ -38,9 +38,11 @@ public class ExercisesAdminDelete extends HttpServlet {
         int result = 0;
         if (exerciseId > 0) {
             Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
-            result = exerciseDAO.deleteExercise(exercise);
+            if (exercise != null) {
+                result = exerciseDAO.deleteExercise(exercise);
+            }
         }
-        if (exerciseId <=0 || result !=1) {
+        if (exerciseId <= 0 || result != 1) {
             request.setAttribute("errormessage", "Error deleting exercise!");
         }
         getServletContext().getRequestDispatcher("/exercisesadminpanel").forward(request, response);
