@@ -1,8 +1,8 @@
 package controller;
 
+import com.panpawelw.DAO.UserGroupDAO;
 import com.panpawelw.controller.UserGroupsAdminPanel;
 import com.panpawelw.model.UserGroup;
-import mockDAOs.MockUserGroupDAO;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -10,22 +10,21 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletConfig;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+import static misc.TestUtils.createMultipleUserGroups;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
 public class UserGroupsAdminPanelTests {
 
-    private MockHttpServletRequest request;
-    private MockHttpServletResponse response;
-    private UserGroupsAdminPanel userGroupsAdminPanel;
+    private final MockHttpServletRequest request = new MockHttpServletRequest();
+    private final MockHttpServletResponse response = new MockHttpServletResponse();
+    private final UserGroupsAdminPanel userGroupsAdminPanel = new UserGroupsAdminPanel();
+    private final UserGroupDAO mockUserGroupDAO = mock(UserGroupDAO.class);
 
     @Before
     public void setup() throws Exception {
-        request = new MockHttpServletRequest();
-        response = new MockHttpServletResponse();
-        userGroupsAdminPanel = new UserGroupsAdminPanel();
-        userGroupsAdminPanel.setUserGroupDAO(new MockUserGroupDAO());
+        userGroupsAdminPanel.setUserGroupDAO(mockUserGroupDAO);
         userGroupsAdminPanel.init(new MockServletConfig());
     }
 
@@ -37,9 +36,12 @@ public class UserGroupsAdminPanelTests {
 
     @Test
     public void userGroupsAdminPanelListsMatchTest() throws Exception {
+        List<UserGroup> expectedList = createMultipleUserGroups(10);
+        expect(mockUserGroupDAO.loadAllUserGroups()).andReturn(expectedList);
+        replay(mockUserGroupDAO);
         userGroupsAdminPanel.doGet(request, response);
-        List<UserGroup> expectedList = new MockUserGroupDAO().loadAllUserGroups();
         assertEquals(expectedList, request.getAttribute("groupslist"));
         assertEquals("/jsp/usergroupsadminview.jsp", response.getForwardedUrl());
+        verify(mockUserGroupDAO);
     }
 }
