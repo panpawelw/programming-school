@@ -13,11 +13,10 @@ import javax.sql.*;
 import java.sql.*;
 import java.util.List;
 
-import com.panpawelw.DAO.RealUserGroupDAO;
 import com.panpawelw.DAO.UserGroupDAO;
 import com.panpawelw.model.UserGroup;
 
-public class RealUserGroupDAOTests {
+public class UserGroupDAOTests {
 
     private DataSource ds;
     private Connection con;
@@ -31,7 +30,7 @@ public class RealUserGroupDAOTests {
         con = createMock(Connection.class);
         expect(ds.getConnection()).andReturn(con);
         stmt = createMock(PreparedStatement.class);
-        userGroupDAO = new RealUserGroupDAO(ds);
+        userGroupDAO = new UserGroupDAO(ds);
     }
 
     @Test

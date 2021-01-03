@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.panpawelw.DAO.RealSolutionDAO;
 import com.panpawelw.DAO.SolutionDAO;
 import com.panpawelw.misc.DbUtils;
 import com.panpawelw.model.Solution;
@@ -24,7 +23,7 @@ public class SolutionsAdminPanel extends HttpServlet {
     }
 
     public void init() {
-        if(solutionDAO == null) solutionDAO = new RealSolutionDAO(DbUtils.initDB());
+        if(solutionDAO == null) solutionDAO = new SolutionDAO(DbUtils.initDB());
     }
 
     public void setSolutionDAO(SolutionDAO solutionDAO) {

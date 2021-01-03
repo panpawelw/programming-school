@@ -28,9 +28,9 @@ public class UserDetails extends HttpServlet {
     }
 
     public void init() {
-        if(userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
-        if(userGroupDAO == null) userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
-        if(lastSolutionDAO == null) lastSolutionDAO = new RealLastSolutionDAO(DbUtils.initDB());
+        if(userDAO == null) userDAO = new UserDAO(DbUtils.initDB());
+        if(userGroupDAO == null) userGroupDAO = new UserGroupDAO(DbUtils.initDB());
+        if(lastSolutionDAO == null) lastSolutionDAO = new LastSolutionDAO(DbUtils.initDB());
     }
 
     public void setUserDAO(UserDAO userDAO) {

@@ -27,9 +27,9 @@ public class SolutionDetails extends HttpServlet {
     }
 
     public void init() {
-        if(userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
-        if(exerciseDAO == null) exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
-        if(solutionDAO == null) solutionDAO = new RealSolutionDAO(DbUtils.initDB());
+        if(userDAO == null) userDAO = new UserDAO(DbUtils.initDB());
+        if(exerciseDAO == null) exerciseDAO = new ExerciseDAO(DbUtils.initDB());
+        if(solutionDAO == null) solutionDAO = new SolutionDAO(DbUtils.initDB());
     }
 
     public void setUserDAO(UserDAO userDAO) {

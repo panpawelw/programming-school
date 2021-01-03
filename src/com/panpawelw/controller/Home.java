@@ -2,7 +2,6 @@ package com.panpawelw.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.panpawelw.DAO.LastSolutionDAO;
-import com.panpawelw.DAO.RealLastSolutionDAO;
 import com.panpawelw.misc.DbUtils;
 import com.panpawelw.misc.ValidateParameter;
 import com.panpawelw.model.LastSolution;
@@ -26,7 +24,7 @@ public class Home extends HttpServlet {
     }
 
     public void init() throws ServletException {
-        if(lastSolutionDAO == null) lastSolutionDAO = new RealLastSolutionDAO(DbUtils.initDB());
+        if(lastSolutionDAO == null) lastSolutionDAO = new LastSolutionDAO(DbUtils.initDB());
     }
 
     public void setLastSolutionDAO(LastSolutionDAO lastSolutionDAO) {

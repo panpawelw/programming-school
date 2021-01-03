@@ -1,7 +1,7 @@
 package controller;
 
-import com.panpawelw.DAO.SolutionDAO;
 import com.panpawelw.DAO.ExerciseDAO;
+import com.panpawelw.DAO.SolutionDAO;
 import com.panpawelw.DAO.UserDAO;
 import com.panpawelw.controller.SolutionDetails;
 import com.panpawelw.model.Exercise;

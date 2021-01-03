@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.panpawelw.DAO.RealUserGroupDAO;
 import com.panpawelw.DAO.UserGroupDAO;
 import com.panpawelw.misc.ValidateParameter;
 import com.panpawelw.misc.DbUtils;
@@ -24,7 +23,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
     }
 
     public void init() {
-        if(userGroupDAO == null) this.userGroupDAO = new RealUserGroupDAO(DbUtils.initDB());
+        if(userGroupDAO == null) this.userGroupDAO = new UserGroupDAO(DbUtils.initDB());
     }
 
     public void setUserGroupDAO(UserGroupDAO userGroupDAO) {

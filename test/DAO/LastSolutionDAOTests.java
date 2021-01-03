@@ -4,7 +4,6 @@ import com.mockobjects.sql.MockMultiRowResultSet;
 import org.junit.Before;
 import org.junit.Test;
 import com.panpawelw.DAO.LastSolutionDAO;
-import com.panpawelw.DAO.RealLastSolutionDAO;
 import com.panpawelw.model.LastSolution;
 
 import javax.sql.DataSource;
@@ -16,7 +15,7 @@ import static misc.TestUtils.createMultipleLastSolutions;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
-public class RealLastSolutionDAOTests {
+public class LastSolutionDAOTests {
 
     private DataSource dataSource;
     private Connection connection;
@@ -53,7 +52,7 @@ public class RealLastSolutionDAOTests {
 
         replay(dataSource, connection, statement);
 
-        LastSolutionDAO lastSolutionDAO = new RealLastSolutionDAO(dataSource);
+        LastSolutionDAO lastSolutionDAO = new LastSolutionDAO(dataSource);
         List<LastSolution> result = lastSolutionDAO.loadMostRecentSolutions(3);
         assertEquals(expectedLastSolutions.toString(), result.toString());
         verify(dataSource, connection, statement);
@@ -82,7 +81,7 @@ public class RealLastSolutionDAOTests {
 
         replay(dataSource, connection, statement);
 
-        LastSolutionDAO lastSolutionDAO = new RealLastSolutionDAO(dataSource);
+        LastSolutionDAO lastSolutionDAO = new LastSolutionDAO(dataSource);
         List<LastSolution> result = lastSolutionDAO.loadMostRecentSolutionsByUserId(2);
         assertEquals(expectedLastSolutions.toString(), result.toString());
         verify(dataSource, connection, statement);

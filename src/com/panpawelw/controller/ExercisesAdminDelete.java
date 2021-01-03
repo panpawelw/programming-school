@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.panpawelw.DAO.ExerciseDAO;
-import com.panpawelw.DAO.RealExerciseDAO;
 import com.panpawelw.misc.ValidateParameter;
 import com.panpawelw.misc.DbUtils;
 import com.panpawelw.model.Exercise;
@@ -24,7 +23,7 @@ public class ExercisesAdminDelete extends HttpServlet {
     }
 
     public void init() {
-        if (exerciseDAO == null) exerciseDAO = new RealExerciseDAO(DbUtils.initDB());
+        if (exerciseDAO == null) exerciseDAO = new ExerciseDAO(DbUtils.initDB());
     }
 
     public void setExerciseDAO(ExerciseDAO exerciseDAO) {

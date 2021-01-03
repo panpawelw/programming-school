@@ -4,7 +4,6 @@ import com.mockobjects.sql.MockMultiRowResultSet;
 import com.mockobjects.sql.MockSingleRowResultSet;
 import org.junit.Before;
 import org.junit.Test;
-import com.panpawelw.DAO.RealSolutionDAO;
 import com.panpawelw.DAO.SolutionDAO;
 import com.panpawelw.model.Solution;
 
@@ -19,7 +18,7 @@ import static misc.TestUtils.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
-public class RealSolutionDAOTests {
+public class SolutionDAOTests {
 
     private DataSource ds;
     private Connection con;
@@ -35,7 +34,7 @@ public class RealSolutionDAOTests {
         expect(ds.getConnection()).andReturn(con);
         stmt = createMock(PreparedStatement.class);
         niceStmt = createNiceMock(PreparedStatement.class);
-        solutionDAO = new RealSolutionDAO(ds);
+        solutionDAO = new SolutionDAO(ds);
     }
 
     @Test

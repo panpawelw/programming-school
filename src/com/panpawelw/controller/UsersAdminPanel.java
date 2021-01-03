@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.panpawelw.DAO.RealUserDAO;
 import com.panpawelw.DAO.UserDAO;
 import com.panpawelw.misc.DbUtils;
 import com.panpawelw.model.User;
@@ -24,7 +23,7 @@ public class UsersAdminPanel extends HttpServlet {
     }
 
     public void init() {
-        if(userDAO == null) userDAO = new RealUserDAO(DbUtils.initDB());
+        if(userDAO == null) userDAO = new UserDAO(DbUtils.initDB());
     }
 
     public void setUserDAO(UserDAO userDAO) {

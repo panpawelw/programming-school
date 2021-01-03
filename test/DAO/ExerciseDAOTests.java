@@ -5,7 +5,6 @@ import com.mockobjects.sql.MockSingleRowResultSet;
 import org.junit.Before;
 import org.junit.Test;
 import com.panpawelw.DAO.ExerciseDAO;
-import com.panpawelw.DAO.RealExerciseDAO;
 import com.panpawelw.model.Exercise;
 
 import javax.sql.DataSource;
@@ -17,7 +16,7 @@ import static misc.TestUtils.*;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 
-public class RealExerciseDAOTests {
+public class ExerciseDAOTests {
 
     private DataSource ds;
     private Connection con;
@@ -31,7 +30,7 @@ public class RealExerciseDAOTests {
         con = createMock(Connection.class);
         expect(ds.getConnection()).andReturn(con);
         stmt = createMock(PreparedStatement.class);
-        exerciseDAO = new RealExerciseDAO(ds);
+        exerciseDAO = new ExerciseDAO(ds);
     }
 
     @Test
