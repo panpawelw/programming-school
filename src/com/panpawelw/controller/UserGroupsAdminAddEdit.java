@@ -67,10 +67,10 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             userGroup.setName(groupName);
             int result = userGroupDAO.saveUserGroupToDB(userGroup);
             if (result == 0) {
-                request.setAttribute("errormessage", "Error saving user group!");
+                request.setAttribute("errormessage", "Database error!");
             }
         } else {
-            request.setAttribute("errormessage", "Group name can't be empty!");
+            request.setAttribute("errormessage", "Incorrect parameters!");
         }
         getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
     }

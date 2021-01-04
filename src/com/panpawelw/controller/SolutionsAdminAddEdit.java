@@ -68,7 +68,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
         long solutionUser_id = ValidateParameter.checkLong(user_idParam,
                 "Incorrect user Id!");
         if (solutionDescription != null && !solutionDescription.equals("") &&
-                solutionExercise_id != 0 && solutionUser_id != 0 && solutionId >= 0) {
+                solutionExercise_id > 0 && solutionUser_id > 0 && solutionId >= 0) {
             Solution solution = new Solution();
             Date date = new Date();
             java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
@@ -83,11 +83,10 @@ public class SolutionsAdminAddEdit extends HttpServlet {
             solution.setUser_id(solutionUser_id);
             int result = solutionDAO.saveSolutionToDB(solution);
             if (result == 0) {
-                request.setAttribute("errormessage", "Error saving solution!");
+                request.setAttribute("errormessage", "Database error!");
             }
         } else {
-            request.setAttribute("errormessage", "Solution exercise Id, user Id nor description " +
-                    "can't be empty!");
+            request.setAttribute("errormessage", "Incorrect parameters!");
         }
         getServletContext().getRequestDispatcher("/solutionsadminpanel").forward(request, response);
     }

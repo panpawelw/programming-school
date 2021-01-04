@@ -70,11 +70,10 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             exercise.setDescription(exerciseDescription);
             int result = exerciseDAO.saveExerciseToDB(exercise);
             if (result == 0) {
-                request.setAttribute("errormessage", "Error saving exercise!");
+                request.setAttribute("errormessage", "Database error!");
             }
         } else {
-            request.setAttribute("errormessage",
-                    "Exercise title nor description can't be empty!");
+            request.setAttribute("errormessage", "Incorrect parameters!");
         }
         getServletContext().getRequestDispatcher("/exercisesadminpanel")
                 .forward(request, response);

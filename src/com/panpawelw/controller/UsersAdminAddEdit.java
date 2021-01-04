@@ -85,11 +85,10 @@ public class UsersAdminAddEdit extends HttpServlet {
             user.setGroup_id(userGroup_id);
             int result = userDAO.saveUserToDB(user);
             if (result == 0) {
-                request.setAttribute("errormessage", "Error saving user!");
+                request.setAttribute("errormessage", "Database error!");
             }
         } else {
-            request.setAttribute("errormessage",
-                    "User name, email, password nor group Id can't be empty!");
+            request.setAttribute("errormessage", "Incorrect parameters!");
         }
         getServletContext().getRequestDispatcher("/usersadminpanel").forward(request, response);
     }
