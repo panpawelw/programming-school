@@ -39,6 +39,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add group");
             getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp")
                     .forward(request, response);
+            return;
         } else if (groupId > 0) {
             UserGroup userGroup = userGroupDAO.loadUserGroupById(groupId);
             if (userGroup != null) {

@@ -48,6 +48,7 @@ public class UsersAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add user");
             getServletContext().getRequestDispatcher("/jsp/usersadminaddeditview.jsp")
                     .forward(request, response);
+            return;
         } else if (userId > 0){
             User user = userDAO.loadUserById(userId);
             if (user != null) {

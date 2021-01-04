@@ -41,6 +41,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add solution");
             getServletContext().getRequestDispatcher("/jsp/solutionsadminaddeditview.jsp")
                     .forward(request, response);
+            return;
         } else if (solutionId > 0){
             Solution solution = solutionDAO.loadSolutionById(solutionId);
             if (solution != null) {

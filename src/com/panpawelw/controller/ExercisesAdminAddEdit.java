@@ -39,6 +39,7 @@ public class ExercisesAdminAddEdit extends HttpServlet {
             request.setAttribute("button", "Add exercise");
             getServletContext().getRequestDispatcher("/jsp/exercisesadminaddeditview.jsp")
                     .forward(request, response);
+            return;
         } else if (exerciseId > 0) {
             Exercise exercise = exerciseDAO.loadExerciseById(exerciseId);
             if (exercise != null) {
