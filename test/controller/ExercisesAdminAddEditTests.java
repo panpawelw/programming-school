@@ -32,53 +32,59 @@ public class ExercisesAdminAddEditTests {
     }
 
     @Test
+    public void exercisesAdminAddEditGetIncorrectExerciseIdTest() throws Exception {
+        request.setParameter("id", "16456");
+        expect(mockExerciseDAO.loadExerciseById(16456)).andReturn(null);
+        testGetMethod("/exercisesadminpanel", "No such exercise exists!");
+    }
+
+    @Test
+    public void exercisesAdminAddEditGetNewExerciseTest() throws Exception {
+        request.setParameter("id", "0");
+        testGetMethod("/jsp/exercisesadminaddeditview.jsp", null,
+                new Exercise(0, null, null));
+    }
+
+    @Test
+    public void exercisesAdminAddEditGetExistingExerciseTest() throws Exception {
+        request.setParameter("id", "5");
+        Exercise expectedExercise = new Exercise(5, "Test title",
+                "Test description");
+        expect(mockExerciseDAO.loadExerciseById(5)).andReturn(expectedExercise);
+        testGetMethod("/jsp/exercisesadminaddeditview.jsp",
+                null, expectedExercise);
+    }
+
+    @Test
     public void exercisesAdminAddEditPostForwardTest() throws Exception {
         exercisesAdminAddEdit.doPost(request, response);
         assertEquals("/exercisesadminpanel", response.getForwardedUrl());
     }
 
     @Test
-    public void exercisesAdminAddEditGetIncorrectIntegerParameterTest() throws Exception {
-        request.setParameter("id", "16456");
-        expect(mockExerciseDAO.loadExerciseById(16456)).andReturn(null);
-        incorrectParameterTest();
+    public void exercisesAdminAddEditPostIncorrectIdParameterTest() throws Exception {
+        request.setParameter("id", "xxx");
+        testIncorrectPostParameter("Incorrect parameters!");
     }
 
-    @Test
-    public void exercisesAdminAddEditGetIncorrectIntegerSubZeroParameterTest() throws Exception {
-        request.setParameter("id", "-10");
-        incorrectParameterTest();
-    }
-
-    @Test
-    public void exercisesAdminAddEditGetCharacterParameterTest() throws Exception {
-        request.setParameter("id", "x");
-        incorrectParameterTest();
-    }
-
-    @Test
-    public void exercisesAdminAddEditGetNullParameterTest() throws Exception {
-        request.setParameter("id", "null");
-        incorrectParameterTest();
-    }
-
-    @Test
-    public void exercisesAdminAddEditGetCorrectParameterTest() throws Exception {
-        request.setParameter("id", "5");
-        Exercise expectedExercise = new Exercise(5, "Test title",
-                "Test description");
-        expect(mockExerciseDAO.loadExerciseById(5)).andReturn(expectedExercise);
+    private void testGetMethod(String expectedUrl, String expectedErrorMessage,
+                               Exercise... expectedExercise) throws Exception {
         replay(mockExerciseDAO);
         exercisesAdminAddEdit.doGet(request,response);
-        assertEquals(expectedExercise, request.getAttribute("exercise"));
-        assertEquals("/jsp/exercisesadminaddeditview.jsp", response.getForwardedUrl());
+        assertEquals(expectedUrl, response.getForwardedUrl());
+        if (expectedErrorMessage != null) {
+            assertEquals(expectedErrorMessage, request.getAttribute("errormessage"));
+        }
+        if (expectedExercise.length > 0) {
+            assertEquals(expectedExercise[0], request.getAttribute("exercise"));
+        }
         verify(mockExerciseDAO);
     }
 
-    private void incorrectParameterTest() throws Exception {
+    private void testIncorrectPostParameter(String errorMessage) throws Exception {
         replay(mockExerciseDAO);
-        exercisesAdminAddEdit.doGet(request,response);
-        assertEquals("No such exercise exists!", request.getAttribute("errormessage"));
+        exercisesAdminAddEdit.doPost(request, response);
+        assertEquals(errorMessage, request.getAttribute("errormessage"));
         assertEquals("/exercisesadminpanel", response.getForwardedUrl());
         verify(mockExerciseDAO);
     }
