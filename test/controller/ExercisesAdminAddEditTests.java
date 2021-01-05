@@ -64,7 +64,80 @@ public class ExercisesAdminAddEditTests {
     @Test
     public void exercisesAdminAddEditPostIncorrectIdParameterTest() throws Exception {
         request.setParameter("id", "xxx");
+        request.setParameter("title", "Test title");
+        request.setParameter("description", "Test description");
         testIncorrectPostParameter("Incorrect parameters!");
+    }
+
+    @Test
+    public void exercisesAdminAddEditPostNullIdParameterTest() throws Exception {
+        request.setParameter("title", "Test title");
+        request.setParameter("description", "Test description");
+        testIncorrectPostParameter("Incorrect parameters!");
+    }
+
+    @Test
+    public void exercisesAdminAddEditPostEmptyTitleParameterTest() throws Exception {
+        request.setParameter("id", "1");
+        request.setParameter("title", "");
+        request.setParameter("description", "Test description");
+        testIncorrectPostParameter("Incorrect parameters!");
+    }
+
+    @Test
+    public void exercisesAdminAddEditPostNullTitleParameterTest() throws Exception {
+        request.setParameter("id", "1");
+        request.setParameter("description", "Test description");
+        testIncorrectPostParameter("Incorrect parameters!");
+    }
+
+    @Test
+    public void exercisesAdminAddEditPostEmptyDescriptionParameterTest() throws Exception {
+        request.setParameter("id", "1");
+        request.setParameter("title", "Test title");
+        request.setParameter("description", "");
+        testIncorrectPostParameter("Incorrect parameters!");
+    }
+
+    @Test
+    public void exercisesAdminAddEditPostNullDescriptionParameterTest() throws Exception {
+        request.setParameter("id", "1");
+        request.setParameter("title", "Test title");
+        testIncorrectPostParameter("Incorrect parameters!");
+    }
+
+    @Test
+    public void exercisesAdminAddEditPostNewExerciseTest() throws Exception {
+        request.setParameter("id", "0");
+        request.setParameter("title", "Test title");
+        request.setParameter("description", "Test description");
+        expect(mockExerciseDAO.saveExerciseToDB(new Exercise(0, "Test title",
+                "Test description"))).andReturn(1);
+        testIncorrectPostParameter(null);
+    }
+
+    @Test
+    public void exercisesAdminAddEditPostExistingExerciseTest() throws Exception {
+        request.setParameter("id", "1");
+        request.setParameter("title", "Test title");
+        request.setParameter("description", "Test description");
+        expect(mockExerciseDAO.loadExerciseById(1)).andReturn(new Exercise(1, "Test title",
+                "Test description"));
+        expect(mockExerciseDAO.saveExerciseToDB(new Exercise(1, "Test title",
+                "Test description"))).andReturn(1);
+        testIncorrectPostParameter(null);
+    }
+
+    @Test
+    public void exercisesAdminAddEditPostDatabaseErrorTest() throws Exception {
+        request.setParameter("id", "1");
+        request.setParameter("title", "Test title");
+        request.setParameter("description", "Test description");
+        expect(mockExerciseDAO.loadExerciseById(1)).andReturn(new Exercise(1, "Test title",
+                "Test description"));
+        expect(mockExerciseDAO.saveExerciseToDB(new Exercise(1, "Test title",
+                "Test description"))).andReturn(0);
+        testIncorrectPostParameter("Database error!");
     }
 
     private void testGetMethod(String expectedUrl, String expectedErrorMessage,
@@ -84,7 +157,9 @@ public class ExercisesAdminAddEditTests {
     private void testIncorrectPostParameter(String errorMessage) throws Exception {
         replay(mockExerciseDAO);
         exercisesAdminAddEdit.doPost(request, response);
-        assertEquals(errorMessage, request.getAttribute("errormessage"));
+        if (errorMessage != null) {
+            assertEquals(errorMessage, request.getAttribute("errormessage"));
+        }
         assertEquals("/exercisesadminpanel", response.getForwardedUrl());
         verify(mockExerciseDAO);
     }
