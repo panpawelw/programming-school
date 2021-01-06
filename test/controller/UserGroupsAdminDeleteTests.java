@@ -30,7 +30,7 @@ public class UserGroupsAdminDeleteTests {
     public void userGroupsAdminDeleteForwardTest() throws Exception {
         request.setParameter("id","0");
         userGroupsAdminDelete.doGet(request, response);
-        assertEquals("/groupsadminpanel", response.getForwardedUrl());
+        assertEquals("/usergroupsadminpanel", response.getForwardedUrl());
     }
 
     @Test
@@ -68,7 +68,7 @@ public class UserGroupsAdminDeleteTests {
         userGroupsAdminDelete.doGet(request, response);
         //noinspection ConstantConditions
         assertNull(request.getAttribute("errormessage"));
-        assertEquals("/groupsadminpanel", response.getForwardedUrl());
+        assertEquals("/usergroupsadminpanel", response.getForwardedUrl());
         verify(mockUserGroupDAO);
     }
 
@@ -76,7 +76,7 @@ public class UserGroupsAdminDeleteTests {
         replay(mockUserGroupDAO);
         userGroupsAdminDelete.doGet(request,response);
         assertEquals("Error deleting user group!", request.getAttribute("errormessage"));
-        assertEquals("/groupsadminpanel", response.getForwardedUrl());
+        assertEquals("/usergroupsadminpanel", response.getForwardedUrl());
         verify(mockUserGroupDAO);
     }
 }

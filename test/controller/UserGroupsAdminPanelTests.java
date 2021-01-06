@@ -40,7 +40,7 @@ public class UserGroupsAdminPanelTests {
         expect(mockUserGroupDAO.loadAllUserGroups()).andReturn(expectedList);
         replay(mockUserGroupDAO);
         userGroupsAdminPanel.doGet(request, response);
-        assertEquals(expectedList, request.getAttribute("groupslist"));
+        assertEquals(expectedList, request.getAttribute("usergroupslist"));
         assertEquals("/jsp/usergroupsadminview.jsp", response.getForwardedUrl());
         verify(mockUserGroupDAO);
     }

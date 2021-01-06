@@ -21,11 +21,13 @@
 			<th>Group name</th>
 			<th colspan="2">Actions</th>
 		</tr>
-		<c:forEach items="${requestScope.groupslist}" var="group">
+		<c:forEach items="${requestScope.usergroupslist}" var="usergroup">
 			<tr>
-				<td>${group.name}</td>
-				<td><a href="${pageContext.request.contextPath}/addeditgroup?id=${group.id}">Edit</a></td>
-				<td><a href="${pageContext.request.contextPath}/deletegroup?id=${group.id}">Delete</a></td>
+				<td>${usergroup.name}</td>
+				<td><a href="${pageContext.request.contextPath}/addeditgroup?id=${usergroup.id}">
+					Edit</a></td>
+				<td><a href="${pageContext.request.contextPath}/deletegroup?id=${usergroup.id}">
+					Delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>

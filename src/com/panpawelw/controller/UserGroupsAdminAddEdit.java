@@ -35,7 +35,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
         String idParam = request.getParameter("id");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         if(groupId == 0) {
-            request.setAttribute("group", new UserGroup(0));
+            request.setAttribute("usergroup", new UserGroup(0));
             request.setAttribute("button", "Add group");
             getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp")
                     .forward(request, response);
@@ -43,7 +43,7 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
         } else if (groupId > 0) {
             UserGroup userGroup = userGroupDAO.loadUserGroupById(groupId);
             if (userGroup != null) {
-                request.setAttribute("group", userGroup);
+                request.setAttribute("usergroup", userGroup);
                 request.setAttribute("button", "Edit group");
                 getServletContext().getRequestDispatcher("/jsp/usergroupsadminaddeditview.jsp")
                         .forward(request, response);
@@ -51,14 +51,14 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
             }
         }
         request.setAttribute("errormessage", "No such user group exists!");
-        getServletContext().getRequestDispatcher("/groupsadminpanel")
+        getServletContext().getRequestDispatcher("/usergroupsadminpanel")
                 .forward(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        String groupName = request.getParameter("group_name");
+        String groupName = request.getParameter("usergroup_name");
         int groupId = ValidateParameter.checkInt(idParam, "Incorrect group Id!");
         if (groupName != null && !groupName.equals("") && groupId >= 0) {
             UserGroup userGroup = new UserGroup();
@@ -73,6 +73,6 @@ public class UserGroupsAdminAddEdit extends HttpServlet {
         } else {
             request.setAttribute("errormessage", "Incorrect parameters!");
         }
-        getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
+        getServletContext().getRequestDispatcher("/usergroupsadminpanel").forward(request, response);
     }
 }

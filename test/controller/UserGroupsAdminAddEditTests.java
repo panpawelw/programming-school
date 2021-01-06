@@ -28,14 +28,14 @@ public class UserGroupsAdminAddEditTests {
     @Test
     public void userGroupsAdminAddEditGetForwardTest() throws Exception {
         userGroupsAdminAddEdit.doGet(request, response);
-        assertEquals("/groupsadminpanel", response.getForwardedUrl());
+        assertEquals("/usergroupsadminpanel", response.getForwardedUrl());
     }
 
     @Test
-    public void userGroupsAdminAddEditGetIncorrectUserGroupIdTest() throws Exception {
+    public void userGroupsAdminAddEditGetNotExistingUserGroupIdTest() throws Exception {
         request.setParameter("id", "16456");
         expect(mockUserGroupDAO.loadUserGroupById(16456)).andReturn(null);
-        testGetMethod("/groupsadminpanel", "No such user group exists!");
+        testGetMethod("/usergroupsadminpanel", "No such user group exists!");
     }
 
     @Test
@@ -57,26 +57,26 @@ public class UserGroupsAdminAddEditTests {
     @Test
     public void userGroupsAdminAddEditPostForwardTest() throws Exception {
         userGroupsAdminAddEdit.doPost(request, response);
-        assertEquals("/groupsadminpanel", response.getForwardedUrl());
+        assertEquals("/usergroupsadminpanel", response.getForwardedUrl());
     }
 
     @Test
     public void userGroupsAdminAddEditPostIncorrectIdParameterTest() throws Exception {
         request.setParameter("id", "xxx");
-        request.setParameter("group_name", "Test name");
+        request.setParameter("usergroup_name", "Test name");
         testPostMethod("Incorrect parameters!");
     }
 
     @Test
     public void userGroupsAdminAddEditPostNullIdParameterTest() throws Exception {
-        request.setParameter("group_name", "Test name");
+        request.setParameter("usergroup_name", "Test name");
         testPostMethod("Incorrect parameters!");
     }
 
     @Test
     public void userGroupsAdminAddEditPostEmptyNameParameterTest() throws Exception {
         request.setParameter("id", "1");
-        request.setParameter("group_name", "");
+        request.setParameter("usergroup_name", "");
         testPostMethod("Incorrect parameters!");
     }
 
@@ -89,7 +89,7 @@ public class UserGroupsAdminAddEditTests {
     @Test
     public void userGroupsAdminAddEditPostNewUserGroupTest() throws Exception {
         request.setParameter("id", "0");
-        request.setParameter("group_name", "Test name");
+        request.setParameter("usergroup_name", "Test name");
         expect(mockUserGroupDAO.saveUserGroupToDB(new UserGroup(0, "Test name")))
                 .andReturn(1);
         testPostMethod(null);
@@ -98,7 +98,7 @@ public class UserGroupsAdminAddEditTests {
     @Test
     public void userGroupsAdminAddEditPostExistingUserGroupTest() throws Exception {
         request.setParameter("id", "1");
-        request.setParameter("group_name", "Test name");
+        request.setParameter("usergroup_name", "Test name");
         expect(mockUserGroupDAO.loadUserGroupById(1)).andReturn(new UserGroup(1, "Test name"));
         expect(mockUserGroupDAO.saveUserGroupToDB(new UserGroup(1, "Test name"))).andReturn(1);
         testPostMethod(null);
@@ -107,7 +107,7 @@ public class UserGroupsAdminAddEditTests {
     @Test
     public void userGroupsAdminAddEditPostDatabaseErrorTest() throws Exception {
         request.setParameter("id", "1");
-        request.setParameter("group_name", "Test name");
+        request.setParameter("usergroup_name", "Test name");
         expect(mockUserGroupDAO.loadUserGroupById(1)).andReturn(new UserGroup(1, "Test name"));
         expect(mockUserGroupDAO.saveUserGroupToDB(new UserGroup(1, "Test name"))).andReturn(0);
         testPostMethod("Database error!");
@@ -122,7 +122,7 @@ public class UserGroupsAdminAddEditTests {
             assertEquals(expectedErrorMessage, request.getAttribute("errormessage"));
         }
         if (expectedUserGroup.length > 0) {
-            assertEquals(expectedUserGroup[0], request.getAttribute("group"));
+            assertEquals(expectedUserGroup[0], request.getAttribute("usergroup"));
         }
         verify(mockUserGroupDAO);
     }
@@ -133,7 +133,7 @@ public class UserGroupsAdminAddEditTests {
         if (errorMessage != null) {
             assertEquals(errorMessage, request.getAttribute("errormessage"));
         }
-        assertEquals("/groupsadminpanel", response.getForwardedUrl());
+        assertEquals("/usergroupsadminpanel", response.getForwardedUrl());
         verify(mockUserGroupDAO);
     }
 }

@@ -12,7 +12,7 @@ import com.panpawelw.DAO.UserGroupDAO;
 import com.panpawelw.misc.DbUtils;
 import com.panpawelw.model.UserGroup;
 
-@WebServlet("/groupsadminpanel")
+@WebServlet("/usergroupsadminpanel")
 public class UserGroupsAdminPanel extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -31,8 +31,8 @@ public class UserGroupsAdminPanel extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<UserGroup> groupsList = userGroupDAO.loadAllUserGroups();
-        request.setAttribute("groupslist", groupsList);
+        List<UserGroup> userGroupsList = userGroupDAO.loadAllUserGroups();
+        request.setAttribute("usergroupslist", userGroupsList);
         getServletContext().getRequestDispatcher("/jsp/usergroupsadminview.jsp").forward(request, response);
     }
 

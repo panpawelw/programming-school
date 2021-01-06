@@ -12,7 +12,7 @@
 <div class="content">
 	<h1>Admin panel</h1>
 	<br><br><br>
-	<h2><a href="${pageContext.request.contextPath}/groupsadminpanel">Manage user groups</a></h2>
+	<h2><a href="${pageContext.request.contextPath}/usergroupsadminpanel">Manage user groups</a></h2>
 	<h2><a href="${pageContext.request.contextPath}/usersadminpanel">Manage users</a></h2>
 	<h2><a href="${pageContext.request.contextPath}/exercisesadminpanel">Manage exercises</a></h2>
 	<h2><a href="${pageContext.request.contextPath}/solutionsadminpanel">Manage solutions</a></h2>

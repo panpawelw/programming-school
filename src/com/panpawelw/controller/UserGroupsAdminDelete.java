@@ -44,6 +44,6 @@ public class UserGroupsAdminDelete extends HttpServlet {
         if (userGroupId <= 0 || result != 1) {
             request.setAttribute("errormessage", "Error deleting user group!");
         }
-        getServletContext().getRequestDispatcher("/groupsadminpanel").forward(request, response);
+        getServletContext().getRequestDispatcher("/usergroupsadminpanel").forward(request, response);
     }
 }

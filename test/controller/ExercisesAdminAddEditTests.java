@@ -32,7 +32,7 @@ public class ExercisesAdminAddEditTests {
     }
 
     @Test
-    public void exercisesAdminAddEditGetIncorrectExerciseIdTest() throws Exception {
+    public void exercisesAdminAddEditGetNotExistingExerciseIdTest() throws Exception {
         request.setParameter("id", "16456");
         expect(mockExerciseDAO.loadExerciseById(16456)).andReturn(null);
         testGetMethod("/exercisesadminpanel", "No such exercise exists!");
