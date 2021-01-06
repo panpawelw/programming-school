@@ -66,14 +66,14 @@ public class ExercisesAdminAddEditTests {
         request.setParameter("id", "xxx");
         request.setParameter("title", "Test title");
         request.setParameter("description", "Test description");
-        testIncorrectPostParameter("Incorrect parameters!");
+        testPostMethod("Incorrect parameters!");
     }
 
     @Test
     public void exercisesAdminAddEditPostNullIdParameterTest() throws Exception {
         request.setParameter("title", "Test title");
         request.setParameter("description", "Test description");
-        testIncorrectPostParameter("Incorrect parameters!");
+        testPostMethod("Incorrect parameters!");
     }
 
     @Test
@@ -81,14 +81,14 @@ public class ExercisesAdminAddEditTests {
         request.setParameter("id", "1");
         request.setParameter("title", "");
         request.setParameter("description", "Test description");
-        testIncorrectPostParameter("Incorrect parameters!");
+        testPostMethod("Incorrect parameters!");
     }
 
     @Test
     public void exercisesAdminAddEditPostNullTitleParameterTest() throws Exception {
         request.setParameter("id", "1");
         request.setParameter("description", "Test description");
-        testIncorrectPostParameter("Incorrect parameters!");
+        testPostMethod("Incorrect parameters!");
     }
 
     @Test
@@ -96,14 +96,14 @@ public class ExercisesAdminAddEditTests {
         request.setParameter("id", "1");
         request.setParameter("title", "Test title");
         request.setParameter("description", "");
-        testIncorrectPostParameter("Incorrect parameters!");
+        testPostMethod("Incorrect parameters!");
     }
 
     @Test
     public void exercisesAdminAddEditPostNullDescriptionParameterTest() throws Exception {
         request.setParameter("id", "1");
         request.setParameter("title", "Test title");
-        testIncorrectPostParameter("Incorrect parameters!");
+        testPostMethod("Incorrect parameters!");
     }
 
     @Test
@@ -113,7 +113,7 @@ public class ExercisesAdminAddEditTests {
         request.setParameter("description", "Test description");
         expect(mockExerciseDAO.saveExerciseToDB(new Exercise(0, "Test title",
                 "Test description"))).andReturn(1);
-        testIncorrectPostParameter(null);
+        testPostMethod(null);
     }
 
     @Test
@@ -125,7 +125,7 @@ public class ExercisesAdminAddEditTests {
                 "Test description"));
         expect(mockExerciseDAO.saveExerciseToDB(new Exercise(1, "Test title",
                 "Test description"))).andReturn(1);
-        testIncorrectPostParameter(null);
+        testPostMethod(null);
     }
 
     @Test
@@ -137,7 +137,7 @@ public class ExercisesAdminAddEditTests {
                 "Test description"));
         expect(mockExerciseDAO.saveExerciseToDB(new Exercise(1, "Test title",
                 "Test description"))).andReturn(0);
-        testIncorrectPostParameter("Database error!");
+        testPostMethod("Database error!");
     }
 
     private void testGetMethod(String expectedUrl, String expectedErrorMessage,
@@ -154,7 +154,7 @@ public class ExercisesAdminAddEditTests {
         verify(mockExerciseDAO);
     }
 
-    private void testIncorrectPostParameter(String errorMessage) throws Exception {
+    private void testPostMethod(String errorMessage) throws Exception {
         replay(mockExerciseDAO);
         exercisesAdminAddEdit.doPost(request, response);
         if (errorMessage != null) {
