@@ -65,7 +65,7 @@ public class SolutionsAdminAddEdit extends HttpServlet {
         String user_idParam = request.getParameter("user_id");
         long solutionId = ValidateParameter.checkLong(idParam, "Incorrect solution Id!");
         int solutionExercise_id = ValidateParameter.checkInt(exercise_idParam,
-                "Incorrect exercise ID!");
+                "Incorrect exercise Id!");
         long solutionUser_id = ValidateParameter.checkLong(user_idParam,
                 "Incorrect user Id!");
         if (solutionDescription != null && !solutionDescription.equals("") &&
