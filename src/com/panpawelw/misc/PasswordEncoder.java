@@ -1,15 +1,13 @@
-package com.panpawelw.passwordEncoder;
+package com.panpawelw.misc;
 
 import mindrot.jbcrypt.BCrypt;
 
-public class BCryptPasswordEncoder implements PasswordEncoder {
+public class PasswordEncoder {
 
-    @Override
     public String encodePassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
-    @Override
     public boolean isPasswordValid(String password, String checkAgainst) {
         return true;
     }

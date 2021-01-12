@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.panpawelw.DAO.UserDAO;
 import com.panpawelw.misc.ValidateParameter;
-import com.panpawelw.passwordEncoder.BCryptPasswordEncoder;
-import com.panpawelw.passwordEncoder.PasswordEncoder;
+import com.panpawelw.misc.PasswordEncoder;
 import com.panpawelw.misc.DbUtils;
 import com.panpawelw.model.User;
 
@@ -20,23 +19,18 @@ public class UsersAdminAddEdit extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private UserDAO userDAO;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder = new PasswordEncoder();
 
     public UsersAdminAddEdit() {
         super();
     }
 
     public void init() {
-        if(passwordEncoder == null) passwordEncoder = new BCryptPasswordEncoder();
         if(userDAO == null) userDAO = new UserDAO(DbUtils.initDB());
     }
 
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
-    }
-
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
