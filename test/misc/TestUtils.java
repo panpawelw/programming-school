@@ -8,6 +8,7 @@ import com.panpawelw.model.*;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +19,62 @@ import static org.junit.Assert.assertEquals;
 
 public class TestUtils {
 
-    public static void closeAllAndReplay(DataSource ds, Connection c, Statement s) throws Exception {
+
+    /**
+     * Closes statement and connection and puts mocks in replay mode
+     *
+     * @param ds - datasource
+     * @param c - connection
+     * @param s - statement
+     * @throws SQLException - when there's a problem closing the statement
+     */
+    public static void closeAllAndReplay(DataSource ds, Connection c, Statement s)
+            throws SQLException {
         s.close();
         c.close();
         replay(ds, c, s);
     }
 
+    /**
+     * Asserts equality of expected and resulting objects, verifies mocks
+     *
+     * @param expectedObject - expected result
+     * @param resultObject - actual result
+     * @param ds - datasource
+     * @param c - connection
+     * @param s - statement
+     * @param rs - result set
+     */
+    public static void assertAndVerify(Object expectedObject, Object resultObject, DataSource ds,
+                                       Connection c, Statement s, MockObject rs) throws Exception {
+
+        assertEquals(expectedObject.toString(), resultObject.toString());
+        verify(ds, c, s);
+        rs.verify();
+    }
+
+    /**
+     * Prepares a mock of a single row result set
+     *
+     * @return - result set
+     */
+    public static MockSingleRowResultSet prepareSingleRowResultSetMock() {
+        MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
+        resultSet.setExpectedCloseCalls(1);
+        return resultSet;
+    }
+
+    /**
+     * Prepares a mock of a multi row result set
+     *
+     * @param objectArray - 2 dimensional array of mock results
+     * @param columns - column names
+     * @param statement - prepared statement
+     * @return result set
+     * @throws SQLException - when there's a problem executing query
+     */
     public static MockMultiRowResultSet prepareMultiRowResultSetMock
-      (Object[][] objectArray, String[] columns, PreparedStatement statement) throws Exception {
+    (Object[][] objectArray, String[] columns, PreparedStatement statement) throws SQLException {
 
         MockMultiRowResultSet resultSet = new MockMultiRowResultSet();
         resultSet.setupColumnNames(columns);
@@ -33,20 +82,6 @@ public class TestUtils {
         expect(statement.executeQuery()).andReturn(resultSet);
         resultSet.setExpectedCloseCalls(1);
         return resultSet;
-    }
-
-    public static MockSingleRowResultSet prepareSingleRowResultSetMock() {
-        MockSingleRowResultSet resultSet = new MockSingleRowResultSet();
-        resultSet.setExpectedCloseCalls(1);
-        return resultSet;
-    }
-
-    public static void assertAndVerify(Object expectedObject, Object resultObject, DataSource ds,
-                                       Connection c, Statement s, MockObject rs) throws Exception {
-
-        assertEquals(expectedObject.toString(), resultObject.toString());
-        verify(ds, c, s);
-        rs.verify();
     }
 
     /**
